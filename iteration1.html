@@ -537,15 +537,16 @@
     <div class="card chart-card">
       <div class="card-label">Spend by model</div>
       <div id="chart-model-spend"></div>
-      <div class="foot-note">$1,350 (1.6%) has no model recorded — the same gap flagged in the Phase 1 review, now cost-critical since the model determines the price.</div>
+      <div class="foot-note">$1,600 (1.9%) has no model recorded — the same gap flagged in the Phase 1 review, now cost-critical since the model determines the price.</div>
     </div>
   </div>
 
   <!-- ================= SECTION NAV ================= -->
   <nav class="tabs" aria-label="Jump to section">
     <button class="tab-btn active" data-tab="teams">Teams</button>
-    <button class="tab-btn" data-tab="models">Models</button>
     <button class="tab-btn" data-tab="features">Features</button>
+    <button class="tab-btn" data-tab="models">Models</button>
+    <button class="tab-btn" data-tab="users">Users</button>
     <button class="tab-btn" data-tab="drilldown">Spend by request</button>
     <button class="tab-btn" data-tab="assets">Asset usage</button>
     <button class="tab-btn" data-tab="mlwb">MLWB usage</button>
@@ -585,6 +586,37 @@
       <div class="price-callout">
         <b>End users see less than this.</b> A non-admin only sees their own team's remaining allocation (or the shared pool's remaining balance, if their team has no limit) and, if blocked, the reason and who to ask. That simplified view isn't built in this mockup — this page shows the admin perspective only (<span class="cap-tag">C9</span>).
       </div>
+    </div>
+
+    <!-- ---- SECTION: Users ---- -->
+    <div class="panel-section" id="section-users">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Users</div>
+          <div class="pane-desc">Consumption per user, for visibility only — sorted by spend, so a user drawing disproportionately from the pool stands out.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterUserName">
+          <option value="">User: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearUserFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="usersResultsCount">Showing 8 of 8 users</span>
+        <span>Filtered spend: <span class="total-chip" id="usersResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-users">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by spend. A single user taking a disproportionate share is often a runaway agent, a forgotten test job, or a workflow worth reviewing with that person.</div>
     </div>
 
     <!-- ---- SECTION: Models ---- -->
@@ -908,6 +940,7 @@
     ["2026-09-15","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",588000,0],
     ["2026-09-17","Production","T. Falk","MCP Server Asset","GPT-4o",183000,44000],
     ["2026-09-18","Production 2","L. Byrne","Knowledge Vault","Not recorded",94000,21000],
+    ["2026-09-20","Production","A. Mendes","Agent","Claude 3.5 Sonnet",450000,200000],
     ["2026-09-21","Production","K. Novak","Process Copilots","GPT-4o mini",402000,86000],
     ["2026-09-23","Standard Sandbox","R. Haddad","Decision Intelligence","Claude 3.5 Haiku",118000,31000],
     ["2026-09-24","Production","P. Lindqvist","ML Workbench","Claude 3.5 Sonnet",226000,97000],
@@ -946,9 +979,21 @@
     ["Claude 3.5 Haiku",9800],
     ["Gemini 1.5 Pro",4200],
     ["text-embedding-3-large",3900],
-    ["Not recorded",1350]
+    ["Not recorded",1600]
   ];
   var modelTotal = modelSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var userSpend = [
+    ["A. Mendes",28400],
+    ["P. Lindqvist",12300],
+    ["T. Falk",9800],
+    ["J. Oduya",8900],
+    ["L. Byrne",7600],
+    ["K. Novak",6700],
+    ["R. Haddad",5900],
+    ["E. Marsh",4600]
+  ];
+  var userTotal = userSpend.reduce(function(s,r){return s+r[1];},0);
 
   var modelTokens = [
     ["Claude 3.5 Sonnet",8400000],
@@ -1154,6 +1199,29 @@
     document.getElementById('featuresResultsTotal').textContent = fmtMoney(total);
   }
 
+  // ========== users tab ==========
+  function renderUsers(){
+    var nameFilter = document.getElementById('filterUserName').value;
+    var filtered = userSpend.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){ return b[1]-a[1]; });
+
+    var tbody = document.querySelector('#table-users tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r[1], userTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r[1];}, 0);
+    document.getElementById('usersResultsCount').textContent = 'Showing '+filtered.length+' of '+userSpend.length+' users';
+    document.getElementById('usersResultsTotal').textContent = fmtMoney(total);
+  }
+
   // ========== spend statement tab ==========
   function renderStatement(){
     var tbody = document.querySelector('#table-statement tbody');
@@ -1199,6 +1267,7 @@
 
     fill('filterModelName', MODELS);
     fill('filterFeatureName', FEATURES);
+    fill('filterUserName', USERS);
   }
 
   function withinDateFilter(dateStr, filterVal){
@@ -1257,6 +1326,7 @@
   populateFilterOptions();
   renderCharts();
   renderTeams();
+  renderUsers();
   renderAssetUsage();
   renderModels();
   renderFeatures();
@@ -1312,6 +1382,14 @@
   document.getElementById('clearFeatureFilters').addEventListener('click', function(){
     document.getElementById('filterFeatureName').value = '';
     renderFeatures();
+  });
+
+  ['filterUserName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderUsers);
+  });
+  document.getElementById('clearUserFilters').addEventListener('click', function(){
+    document.getElementById('filterUserName').value = '';
+    renderUsers();
   });
 
   // tabs
