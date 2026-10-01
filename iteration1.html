@@ -791,7 +791,7 @@
       <div class="pane-head">
         <div>
           <div class="pane-title">Spend statement</div>
-          <div class="pane-desc">A year of charges, locked to the price in effect when each request was made. Reproducible for any period and matches the invoice.</div>
+          <div class="pane-desc">A year of charges, locked to the price in effect when each request was made.</div>
         </div>
         <button class="export-btn" id="exportStatement">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
@@ -813,25 +813,9 @@
       <div class="pane-head" style="margin-top:24px;">
         <div>
           <div class="pane-title" style="font-size:14px;">Draw-down price table</div>
-          <div class="pane-desc">Published on docs.celonis.com and archived whenever it's edited. The version in effect at the time of a request is what gets billed — never restated.</div>
+          <div class="pane-desc">Published on <a href="https://docs.celonis.com/ai-pricing" target="_blank" rel="noopener">docs.celonis.com</a>, where current and previous versions can be viewed. The version in effect at the time of a request is what gets billed — never restated.</div>
         </div>
         <span class="version-pill" id="currentVersionPill">Current: v2026.09</span>
-      </div>
-      <div class="table-scroll">
-      <table id="table-price">
-        <thead>
-          <tr>
-            <th>Model</th>
-            <th class="num-col">Prompt $ / 1M tokens</th>
-            <th class="num-col">Completion $ / 1M tokens</th>
-            <th>Effective since</th>
-          </tr>
-        </thead>
-        <tbody><!-- rows injected by JS --></tbody>
-      </table>
-      </div>
-      <div class="price-callout">
-        <b>Example:</b> GPT-4o mini dropped from $0.20 / $0.80 (v2026.08) to $0.15 / $0.60 (v2026.09) on Sep 1. Requests made in August are still billed at the August rate in the statement above — the August price was never restated, only superseded going forward (<span class="cap-tag">C12, C13</span>).
       </div>
     </div>
 
@@ -1159,19 +1143,6 @@
         '<td><span class="version-pill">'+r[1]+'</span></td>'+
         '<td class="num-col num">'+fmt(r[2])+'</td>'+
         '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
-        '</tr>';
-    }).join('');
-
-    var priceTbody = document.querySelector('#table-price tbody');
-    var current = PRICE_HISTORY["v2026.09"].prices;
-    priceTbody.innerHTML = MODELS.filter(function(m){return m !== "Not recorded";}).map(function(m){
-      var p = current[m];
-      var changed = PRICE_HISTORY["v2026.08"].prices[m].prompt !== p.prompt || PRICE_HISTORY["v2026.08"].prices[m].completion !== p.completion;
-      return '<tr>'+
-        '<td>'+m+(changed ? ' <span class="badge new">Updated Sep 1</span>' : '')+'</td>'+
-        '<td class="num-col num">$'+p.prompt.toFixed(2)+'</td>'+
-        '<td class="num-col num">$'+p.completion.toFixed(2)+'</td>'+
-        '<td>2026-09-01</td>'+
         '</tr>';
     }).join('');
   }
