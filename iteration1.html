@@ -543,17 +543,115 @@
 
   <!-- ================= SECTION NAV ================= -->
   <nav class="tabs" aria-label="Jump to section">
-    <button class="tab-btn active" data-tab="drilldown">Spend by request</button>
-    <button class="tab-btn" data-tab="teams">Teams</button>
-    <button class="tab-btn" data-tab="assets">Asset usage</button>
+    <button class="tab-btn active" data-tab="teams">Teams</button>
     <button class="tab-btn" data-tab="models">Models</button>
+    <button class="tab-btn" data-tab="features">Features</button>
+    <button class="tab-btn" data-tab="drilldown">Spend by request</button>
+    <button class="tab-btn" data-tab="assets">Asset usage</button>
+    <button class="tab-btn" data-tab="mlwb">MLWB usage</button>
     <button class="tab-btn" data-tab="statement">Spend statement</button>
   </nav>
 
   <div class="sections">
 
+    <!-- ---- SECTION: Teams ---- -->
+    <div class="panel-section active" id="section-teams">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Teams</div>
+          <div class="pane-desc">Consumption per team environment, for visibility only. No team has a limit set — every team draws from the one shared pool by default.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterTeamName">
+          <option value="">Team: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearTeamFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="teamsResultsCount">Showing 4 of 4 teams</span>
+        <span>Filtered spend: <span class="total-chip" id="teamsResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-teams">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="price-callout">
+        <b>End users see less than this.</b> A non-admin only sees their own team's remaining allocation (or the shared pool's remaining balance, if their team has no limit) and, if blocked, the reason and who to ask. That simplified view isn't built in this mockup — this page shows the admin perspective only (<span class="cap-tag">C9</span>).
+      </div>
+    </div>
+
+    <!-- ---- SECTION: Models ---- -->
+    <div class="panel-section" id="section-models">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Models</div>
+          <div class="pane-desc">Token consumption per model, ordered by volume — plus the cost that volume drove this period. Enabling or disabling a model happens elsewhere; this view is read-only usage data.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterModelName">
+          <option value="">Model: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearModelFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="modelsResultsCount">Showing 7 of 7 models</span>
+        <span>Filtered spend: <span class="total-chip" id="modelsResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-models">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th class="num-col">Tokens consumed this period</th>
+            <th class="num-col">Cost this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by cost. Pricing for active models lives in the draw-down price table on the Spend statement tab.</div>
+    </div>
+
+    <!-- ---- SECTION: Features ---- -->
+    <div class="panel-section" id="section-features">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Features</div>
+          <div class="pane-desc">Consumption per feature, for visibility only — which capability is driving spend.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterFeatureName">
+          <option value="">Feature: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearFeatureFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="featuresResultsCount">Showing 10 of 10 features</span>
+        <span>Filtered spend: <span class="total-chip" id="featuresResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-features">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by spend. See Spend by request for the detailed, per-request breakdown behind these totals.</div>
+    </div>
+
     <!-- ---- SECTION: Spend by request (drill-down) ---- -->
-    <div class="panel-section active" id="section-drilldown">
+    <div class="panel-section" id="section-drilldown">
       <div class="pane-head">
         <div>
           <div class="pane-title">Spend by request</div>
@@ -605,74 +703,17 @@
           </tr>
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
-        <tfoot>
-          <tr>
-            <td colspan="6">Total (filtered)</td>
-            <td class="num-col" id="requestsFootTotal">$0.00</td>
-          </tr>
-        </tfoot>
       </table>
       </div>
       <div class="foot-note">Showing a sample of individual requests for illustration. The full ledger reconciles to the allowance totals above.</div>
     </div>
 
-    <!-- ---- SECTION: Teams ---- -->
-    <div class="panel-section" id="section-teams">
-      <div class="pane-head">
-        <div>
-          <div class="pane-title">Teams</div>
-          <div class="pane-desc">Consumption per team environment, for visibility only. No team has a limit set — every team draws from the one shared pool by default.</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <select class="select-input" id="filterTeamEnv">
-          <option value="">Environment: All</option>
-        </select>
-        <select class="select-input" id="filterTeamName">
-          <option value="">Team: All</option>
-        </select>
-        <button class="clear-filters-btn" id="clearTeamFilters">Clear filters</button>
-      </div>
-      <div class="results-strip">
-        <span id="teamsResultsCount">Showing 4 of 4 teams</span>
-        <span>Filtered spend: <span class="total-chip" id="teamsResultsTotal">$0.00</span></span>
-      </div>
-      <table id="table-teams">
-        <thead>
-          <tr>
-            <th>Team</th>
-            <th>Environment type</th>
-            <th class="num-col">Spend this period</th>
-            <th class="num-col">Share of pool</th>
-            <th>Limit</th>
-          </tr>
-        </thead>
-        <tbody><!-- rows injected by JS --></tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2">Total (filtered)</td>
-            <td class="num-col" id="teamsFootTotal">$0.00</td>
-            <td colspan="2"></td>
-          </tr>
-        </tfoot>
-      </table>
-      <div class="price-callout">
-        <b>End users see less than this.</b> A non-admin only sees their own team's remaining allocation (or the shared pool's remaining balance, if their team has no limit) and, if blocked, the reason and who to ask. That simplified view isn't built in this mockup — this page shows the admin perspective only (<span class="cap-tag">C9</span>).
-      </div>
-    </div>
-
-    <!-- ---- SECTION: Asset usage ---- -->
+    <!-- ---- SECTION: Asset usage (Studio packages) ---- -->
     <div class="panel-section" id="section-assets">
       <div class="pane-head">
         <div>
           <div class="pane-title">Asset usage</div>
-          <div class="pane-desc">Spend per Studio package and ML Workbench job — which asset is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
-        </div>
-      </div>
-
-      <div class="pane-head" style="margin-top:4px;">
-        <div>
-          <div class="pane-title" style="font-size:14px;">Studio Package Usage</div>
+          <div class="pane-desc">Spend per Studio package — which asset is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
         </div>
       </div>
       <div class="filter-bar">
@@ -701,19 +742,17 @@
           </tr>
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">Total (filtered)</td>
-            <td class="num-col" id="studioFootTotal">$0.00</td>
-            <td></td>
-          </tr>
-        </tfoot>
       </table>
       </div>
+      <div class="foot-note">Illustrative sample of assets. Totals here are a subset of the "Process Copilots" feature spend shown in Spend by request, broken out per asset for visibility.</div>
+    </div>
 
-      <div class="pane-head" style="margin-top:24px;">
+    <!-- ---- SECTION: MLWB usage ---- -->
+    <div class="panel-section" id="section-mlwb">
+      <div class="pane-head">
         <div>
-          <div class="pane-title" style="font-size:14px;">ML Workbench Usage</div>
+          <div class="pane-title">MLWB usage</div>
+          <div class="pane-desc">Spend per ML Workbench job — which job is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
         </div>
       </div>
       <div class="filter-bar">
@@ -738,52 +777,9 @@
           </tr>
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2">Total (filtered)</td>
-            <td class="num-col" id="mlwbFootTotal">$0.00</td>
-            <td></td>
-          </tr>
-        </tfoot>
       </table>
       </div>
-      <div class="foot-note">Illustrative sample of assets/jobs. Totals here are a subset of the "Process Copilots" / "ML Workbench" feature spend shown in Spend by request, broken out per asset for visibility.</div>
-    </div>
-
-    <!-- ---- SECTION: Models ---- -->
-    <div class="panel-section" id="section-models">
-      <div class="pane-head">
-        <div>
-          <div class="pane-title">Models</div>
-          <div class="pane-desc">Reference list of models available on the account, grouped by provider. This is model governance, not spend — read-only here. Enabling/disabling a model or provider is Iteration 2 (see scope note above).</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <select class="select-input" id="filterModelProvider">
-          <option value="">Provider: All</option>
-        </select>
-        <select class="select-input" id="filterModelStatus">
-          <option value="">Status: All</option>
-        </select>
-        <button class="clear-filters-btn" id="clearModelFilters">Clear filters</button>
-      </div>
-      <div class="results-strip">
-        <span id="modelsResultsCount">Showing 9 of 9 models</span>
-      </div>
-      <div class="table-scroll">
-      <table id="table-models">
-        <thead>
-          <tr>
-            <th>Provider</th>
-            <th>Model ID</th>
-            <th>Hosted by</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody><!-- rows injected by JS --></tbody>
-      </table>
-      </div>
-      <div class="foot-note">Pricing for active models lives in the draw-down price table on the Spend statement tab — this list is for knowing what's available, not what it costs.</div>
+      <div class="foot-note">Illustrative sample of jobs. Totals here are a subset of the "ML Workbench" feature spend shown in Spend by request, broken out per job for visibility.</div>
     </div>
 
     <!-- ---- SECTION: Spend statement ---- -->
@@ -882,6 +878,10 @@
   function fmtK(n){
     return (n/1000).toFixed(1) + 'K';
   }
+  function fmtTok(n){
+    if(n>=1e6) return (n/1e6).toFixed(1)+'M tokens';
+    return (n/1e3).toFixed(1)+'K tokens';
+  }
   function fmt(n){ return n.toLocaleString('en-US'); }
   function pct(n,total){ return total>0 ? (n/total*100).toFixed(1) : '0.0'; }
 
@@ -950,6 +950,17 @@
   ];
   var modelTotal = modelSpend.reduce(function(s,r){return s+r[1];},0);
 
+  var modelTokens = [
+    ["Claude 3.5 Sonnet",8400000],
+    ["GPT-4o mini",48000000],
+    ["GPT-4o",2900000],
+    ["Claude 3.5 Haiku",9100000],
+    ["Gemini 1.5 Pro",2600000],
+    ["text-embedding-3-large",28000000],
+    ["Not recorded",850000]
+  ];
+  var modelTokensTotal = modelTokens.reduce(function(s,r){return s+r[1];},0);
+
   var statementRows = [
     ["Jul 2026","v2026.08",2460,21300.00],
     ["Aug 2026","v2026.08",2810,24750.00],
@@ -970,19 +981,6 @@
     ["Demand Forecast Retrain","GPT-4o",1120,"2026-09-26"],
     ["Anomaly Detection Pipeline","Claude 3.5 Haiku",640,"2026-09-23"],
     ["Churn Scoring Job","GPT-4o mini",410,"2026-09-19"]
-  ];
-
-  // ========== models reference list ==========
-  var modelsCatalog = [
-    ["Anthropic","claude-3-5-sonnet-20241022","Anthropic","Active"],
-    ["Anthropic","claude-3-5-haiku-20241022","Anthropic","Active"],
-    ["AWS Bedrock","anthropic.claude-3-5-sonnet-v2","AWS Bedrock","Active"],
-    ["AWS Bedrock","amazon.titan-embed-text-v2","AWS Bedrock","Deprecated"],
-    ["Azure OpenAI","gpt-4o","Azure OpenAI","Active"],
-    ["Azure OpenAI","gpt-4o-mini","Azure OpenAI","Active"],
-    ["Google Cloud Vertex AI","gemini-1.5-pro","Vertex AI","Active"],
-    ["Google Cloud Vertex AI","text-embedding-004","Vertex AI","Deprecated"],
-    ["Other providers","text-embedding-3-large","OpenAI (direct)","Active"]
   ];
 
   // ========== charts ==========
@@ -1030,10 +1028,8 @@
 
   // ========== teams tab ==========
   function renderTeams(){
-    var envFilter = document.getElementById('filterTeamEnv').value;
     var nameFilter = document.getElementById('filterTeamName').value;
     var filtered = teamSpend.filter(function(r){
-      if(envFilter && r[1] !== envFilter) return false;
       if(nameFilter && r[0] !== nameFilter) return false;
       return true;
     });
@@ -1043,17 +1039,14 @@
       var share = pct(r[2], teamTotal);
       return '<tr>'+
         '<td>'+r[0]+'</td>'+
-        '<td>'+r[1]+'</td>'+
         '<td class="num-col num">'+fmtMoney(r[2])+'</td>'+
         '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
-        '<td><span class="badge muted">No limit set</span></td>'+
         '</tr>';
     }).join('');
 
     var total = filtered.reduce(function(s,r){return s+r[2];}, 0);
     document.getElementById('teamsResultsCount').textContent = 'Showing '+filtered.length+' of '+teamSpend.length+' teams';
     document.getElementById('teamsResultsTotal').textContent = fmtMoney(total);
-    document.getElementById('teamsFootTotal').textContent = fmtMoney(total);
   }
 
   // ========== asset usage tab ==========
@@ -1083,7 +1076,6 @@
     var studioTotal = filteredStudio.reduce(function(s,r){return s+r[3];}, 0);
     document.getElementById('studioResultsCount').textContent = 'Showing '+filteredStudio.length+' of '+studioAssets.length+' assets';
     document.getElementById('studioResultsTotal').textContent = fmtMoney(studioTotal);
-    document.getElementById('studioFootTotal').textContent = fmtMoney(studioTotal);
 
     var mlwbModel = document.getElementById('filterMlwbModel').value;
     var mlwbSearch = document.getElementById('mlwbSearch').value.trim().toLowerCase();
@@ -1107,31 +1099,59 @@
     var mlwbTotal = filteredMlwb.reduce(function(s,r){return s+r[2];}, 0);
     document.getElementById('mlwbResultsCount').textContent = 'Showing '+filteredMlwb.length+' of '+mlwbJobs.length+' jobs';
     document.getElementById('mlwbResultsTotal').textContent = fmtMoney(mlwbTotal);
-    document.getElementById('mlwbFootTotal').textContent = fmtMoney(mlwbTotal);
   }
 
   // ========== models tab ==========
+  var modelCostByName = {};
+  modelSpend.forEach(function(r){ modelCostByName[r[0]] = r[1]; });
+
   function renderModels(){
-    var provider = document.getElementById('filterModelProvider').value;
-    var status = document.getElementById('filterModelStatus').value;
-    var filtered = modelsCatalog.filter(function(r){
-      if(provider && r[0] !== provider) return false;
-      if(status && r[3] !== status) return false;
+    var nameFilter = document.getElementById('filterModelName').value;
+    var filtered = modelTokens.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
       return true;
+    }).slice().sort(function(a,b){
+      return (modelCostByName[b[0]]||0) - (modelCostByName[a[0]]||0);
     });
+
     var tbody = document.querySelector('#table-models tbody');
     tbody.innerHTML = filtered.map(function(r){
-      var statusBadge = r[3] === 'Deprecated' ?
-        '<span class="badge unrecorded">Deprecated</span>' :
-        '<span class="badge muted">Active</span>';
+      var cost = modelCostByName[r[0]] || 0;
+      var share = pct(cost, modelTotal);
       return '<tr>'+
         '<td>'+r[0]+'</td>'+
-        '<td class="num">'+r[1]+'</td>'+
-        '<td>'+r[2]+'</td>'+
-        '<td>'+statusBadge+'</td>'+
+        '<td class="num-col num">'+fmtTok(r[1])+'</td>'+
+        '<td class="num-col num">'+fmtMoney(cost)+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
         '</tr>';
     }).join('');
-    document.getElementById('modelsResultsCount').textContent = 'Showing '+filtered.length+' of '+modelsCatalog.length+' models';
+
+    var totalCost = filtered.reduce(function(s,r){return s+(modelCostByName[r[0]] || 0);}, 0);
+    document.getElementById('modelsResultsCount').textContent = 'Showing '+filtered.length+' of '+modelTokens.length+' models';
+    document.getElementById('modelsResultsTotal').textContent = fmtMoney(totalCost);
+  }
+
+  // ========== features tab ==========
+  function renderFeatures(){
+    var nameFilter = document.getElementById('filterFeatureName').value;
+    var filtered = featureSpend.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){ return b[1]-a[1]; });
+
+    var tbody = document.querySelector('#table-features tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r[1], featureTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r[1];}, 0);
+    document.getElementById('featuresResultsCount').textContent = 'Showing '+filtered.length+' of '+featureSpend.length+' features';
+    document.getElementById('featuresResultsTotal').textContent = fmtMoney(total);
   }
 
   // ========== spend statement tab ==========
@@ -1167,7 +1187,6 @@
     fill('filterFeature', FEATURES);
     fill('filterModel', MODELS);
 
-    fill('filterTeamEnv', ['Production','Sandbox']);
     fill('filterTeamName', TEAMS);
 
     var studioTypes = Array.from(new Set(studioAssets.map(function(r){return r[1];})));
@@ -1178,9 +1197,8 @@
     var mlwbModels = Array.from(new Set(mlwbJobs.map(function(r){return r[1];})));
     fill('filterMlwbModel', mlwbModels);
 
-    var modelProviders = Array.from(new Set(modelsCatalog.map(function(r){return r[0];})));
-    fill('filterModelProvider', modelProviders);
-    fill('filterModelStatus', ['Active','Deprecated']);
+    fill('filterModelName', MODELS);
+    fill('filterFeatureName', FEATURES);
   }
 
   function withinDateFilter(dateStr, filterVal){
@@ -1231,7 +1249,6 @@
     var total = filtered.reduce(function(s,r){return s+r.cost;}, 0);
     document.getElementById('resultsCount').textContent = 'Showing '+filtered.length+' of '+enrichedRequests.length+' requests';
     document.getElementById('resultsTotal').textContent = fmtMoney(total);
-    document.getElementById('requestsFootTotal').textContent = fmtMoney(total);
 
     return filtered;
   }
@@ -1242,6 +1259,7 @@
   renderTeams();
   renderAssetUsage();
   renderModels();
+  renderFeatures();
   renderStatement();
   renderRequests();
 
@@ -1256,11 +1274,10 @@
     renderRequests();
   });
 
-  ['filterTeamEnv','filterTeamName'].forEach(function(id){
+  ['filterTeamName'].forEach(function(id){
     document.getElementById(id).addEventListener('change', renderTeams);
   });
   document.getElementById('clearTeamFilters').addEventListener('click', function(){
-    document.getElementById('filterTeamEnv').value = '';
     document.getElementById('filterTeamName').value = '';
     renderTeams();
   });
@@ -1281,13 +1298,20 @@
     renderAssetUsage();
   });
 
-  ['filterModelProvider','filterModelStatus'].forEach(function(id){
+  ['filterModelName'].forEach(function(id){
     document.getElementById(id).addEventListener('change', renderModels);
   });
   document.getElementById('clearModelFilters').addEventListener('click', function(){
-    document.getElementById('filterModelProvider').value = '';
-    document.getElementById('filterModelStatus').value = '';
+    document.getElementById('filterModelName').value = '';
     renderModels();
+  });
+
+  ['filterFeatureName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderFeatures);
+  });
+  document.getElementById('clearFeatureFilters').addEventListener('click', function(){
+    document.getElementById('filterFeatureName').value = '';
+    renderFeatures();
   });
 
   // tabs
