@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Token Credits: Iteration 1 mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --border:#DFE4EA;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+    --green-text:#1B6B4A;
+    --green-tint:#E6F5EE;
+    --amber-text:#8A5A00;
+    --amber-tint:#FFF2D9;
+    --red:#B23A38;
+    --red-tint:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--surface-alt);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--blue-dark);}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:32px 28px 80px;
+  }
+
+  /* ---------- header ---------- */
+  .crumb{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-bottom:10px;
+  }
+  .title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  h1{
+    font-size:26px;
+    font-weight:600;
+    margin:0 0 6px 0;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:14px;
+    max-width:680px;
+  }
+  .phase-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--blue-tint);
+    color:var(--blue-dark);
+    border:1px solid #C7D9FB;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:600;
+    white-space:nowrap;
+    margin-top:4px;
+  }
+  .phase-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+
+  /* ---------- scope note ---------- */
+  .scope-note{
+    margin-top:18px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 20px;
+  }
+  .scope-note-head{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .scope-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .scope-col h4{
+    margin:0 0 6px 0;
+    font-size:12.5px;
+    font-weight:600;
+  }
+  .scope-col.in h4{color:var(--green-text);}
+  .scope-col.out h4{color:var(--text-muted);}
+  .scope-list{
+    margin:0;
+    padding-left:18px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .scope-list li{padding-left:2px;}
+  .cap-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- setup strip ---------- */
+  .setup-strip{
+    margin-top:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+  }
+  .setup-strip .item b{color:var(--ink);font-weight:600;}
+
+  /* ---------- overview cards ---------- */
+  .block-heading{
+    font-size:16px;
+    font-weight:600;
+    margin:28px 0 2px;
+  }
+  .block-desc{
+    font-size:13px;
+    color:var(--text-secondary);
+    margin-bottom:14px;
+  }
+  .overview-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+    margin-top:16px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+  }
+  .card-label{
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .card-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:28px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .card-value .unit{
+    font-size:14px;
+    font-weight:500;
+    color:var(--text-secondary);
+    margin-left:6px;
+  }
+  .card-sub{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+  .card-sub b{color:var(--text-secondary);font-weight:600;}
+  .progress-track{
+    height:8px;
+    background:var(--surface-alt);
+    border-radius:5px;
+    margin-top:14px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--blue);
+    width:70%;
+    border-radius:5px 0 0 5px;
+  }
+  .trend-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .readonly-note{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--border);
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- donut charts ---------- */
+  .chart-card .card-label{margin-bottom:2px;}
+  .donut-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-top:12px;
+  }
+  .donut-svg-wrap{
+    position:relative;
+    flex-shrink:0;
+    width:96px;
+    height:96px;
+  }
+  .donut-svg-wrap svg{display:block;}
+  .donut-center{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .donut-center .val{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    line-height:1.2;
+  }
+  .donut-center .lbl{
+    font-size:9px;
+    color:var(--text-muted);
+    margin-top:1px;
+  }
+  .legend{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    flex:1;
+    min-width:0;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .legend-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .legend-label{
+    font-size:12px;
+    color:var(--ink);
+    flex:1;
+    min-width:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .legend-val{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-secondary);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .foot-note{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- section nav ---------- */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-top:28px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+    position:sticky;
+    top:0;
+    background:var(--surface-alt);
+    padding-top:6px;
+    z-index:5;
+  }
+  .tab-btn{
+    background:none;
+    border:none;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:12px 16px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{
+    color:var(--ink);
+    font-weight:600;
+    border-bottom-color:var(--blue);
+  }
+
+  .sections{margin-top:16px;}
+  .panel-section{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+    display:none;
+  }
+  .panel-section.active{display:block;}
+
+  .pane-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .pane-title{font-size:16px;font-weight:600;margin:0 0 4px 0;}
+  .pane-desc{font-size:13px;color:var(--text-secondary);max-width:620px;}
+
+  /* ---------- filter bar ---------- */
+  .filter-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .select-input, .search-input{
+    font-family:inherit;
+    font-size:13.5px;
+    padding:8px 12px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface-alt);
+    color:var(--ink);
+  }
+  .select-input{min-width:140px;}
+  .search-input{width:180px;}
+  .select-input:focus, .search-input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .clear-filters-btn{
+    background:none;
+    border:none;
+    color:var(--blue-dark);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    padding:0;
+  }
+  .spacer{flex:1;}
+  .export-btn{
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    padding:8px 14px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface);
+    color:var(--ink);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .export-btn:hover{background:var(--surface-alt);}
+  .export-btn svg{width:14px;height:14px;}
+
+  .results-strip{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .results-strip .total{font-family:'IBM Plex Mono', monospace;font-weight:600;color:var(--ink);}
+  .total-chip{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--blue-dark);
+    background:var(--blue-tint);
+    padding:3px 10px;
+    border-radius:6px;
+    margin-left:4px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  thead th{
+    text-align:left;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:9px 12px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  thead th.num-col, tbody td.num-col{text-align:right;}
+  tbody td{
+    padding:11px 12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  tbody tr:hover{background:var(--surface-alt);}
+  tbody tr:last-child td{border-bottom:none;}
+  .table-scroll{overflow-x:auto;}
+  tfoot td{
+    padding:10px 12px;
+    font-weight:700;
+    border-top:2px solid var(--ink);
+    background:var(--surface-alt);
+  }
+  tfoot td.num-col{font-family:'IBM Plex Mono', monospace;}
+
+  .badge{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .badge.muted{color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);}
+  .badge.new{color:var(--blue-dark);background:var(--blue-tint);}
+  .badge.unrecorded{color:var(--amber-text);background:var(--amber-tint);}
+
+  .bar-cell{display:flex;align-items:center;gap:8px;}
+  .bar-track{flex:1;height:6px;background:var(--surface-alt);border-radius:4px;overflow:hidden;min-width:60px;}
+  .bar-fill{height:100%;background:var(--blue);border-radius:4px;}
+  .share-val{font-family:'IBM Plex Mono', monospace;font-size:12.5px;color:var(--text-secondary);width:40px;text-align:right;}
+  .row-note{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
+
+  /* ---------- price table ---------- */
+  .version-pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--blue-dark);
+    background:var(--blue-tint);
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .price-callout{
+    margin-top:16px;
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+  }
+  .price-callout b{color:var(--ink);}
+
+  .page-footer{
+    margin-top:36px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (max-width: 900px){
+    .overview-grid{grid-template-columns:1fr 1fr;}
+    .scope-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width: 560px){
+    .overview-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="crumb">AI Settings &nbsp;/&nbsp; AI Token Credits</div>
+  <div class="title-row">
+    <div>
+      <h1>Monitor and control your AI usage</h1>
+    </div>
+    <div class="phase-tag"><span class="dot"></span>Iteration 1 · Spend visibility</div>
+  </div>
+
+  <!-- ================= OVERVIEW ================= -->
+  <div class="block-heading">AI Token Credit allowance — this contract year</div>
+  <div class="overview-grid">
+    <div class="card">
+      <div class="card-label">Consumed</div>
+      <div class="trend-row">
+        <div class="card-value num">$84,200<span class="unit">/ $120,000</span></div>
+      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <div class="card-sub">70% of allowance used · last 28 days: <b>$9,840</b> (+16% vs. prior 28 days)</div>
+      <div class="readonly-note">Hard cap $180,000 (150%) · overage billed only after an admin is notified past 100%. Shown for reference — setting these is Iteration 2.</div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="card-label">Spend by feature</div>
+      <div id="chart-feature-spend"></div>
+    </div>
+    <div class="card chart-card">
+      <div class="card-label">Spend by model</div>
+      <div id="chart-model-spend"></div>
+    </div>
+  </div>
+
+  <!-- ================= SECTION NAV ================= -->
+  <nav class="tabs" aria-label="Jump to section">
+    <button class="tab-btn active" data-tab="features">Features</button>
+    <button class="tab-btn" data-tab="models">Models</button>
+    <button class="tab-btn" data-tab="drilldown">Spend by request</button>
+    <button class="tab-btn" data-tab="assets">Asset usage</button>
+    <button class="tab-btn" data-tab="mlwb">MLWB usage</button>
+    <button class="tab-btn" data-tab="statement">Spend statement</button>
+  </nav>
+
+  <div class="sections">
+
+    <!-- ---- SECTION: Models ---- -->
+    <div class="panel-section" id="section-models">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Models</div>
+          <div class="pane-desc">Token consumption per model, ordered by volume — plus the cost that volume drove this period. Enabling or disabling a model happens elsewhere; this view is read-only usage data.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterModelName">
+          <option value="">Model: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearModelFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="modelsResultsCount">Showing 7 of 7 models</span>
+        <span>Filtered spend: <span class="total-chip" id="modelsResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-models">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th class="num-col">Tokens consumed this period</th>
+            <th class="num-col">Cost this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by cost. Pricing for active models lives in the draw-down price table on the Spend statement tab.</div>
+    </div>
+
+    <!-- ---- SECTION: Features ---- -->
+    <div class="panel-section active" id="section-features">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Features</div>
+          <div class="pane-desc">Consumption per feature, for visibility only — which capability is driving spend.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterFeatureName">
+          <option value="">Feature: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearFeatureFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="featuresResultsCount">Showing 10 of 10 features</span>
+        <span>Filtered spend: <span class="total-chip" id="featuresResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-features">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by spend. See Spend by request for the detailed, per-request breakdown behind these totals.</div>
+    </div>
+
+    <!-- ---- SECTION: Spend by request (drill-down) ---- -->
+    <div class="panel-section" id="section-drilldown">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Spend by request</div>
+          <div class="pane-desc">Every AI request, attributed to a feature and model — filter by any of them, or by date range, same as the internal LLMaaS dashboard.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterFeature">
+          <option value="">Feature: All</option>
+        </select>
+        <select class="select-input" id="filterModel">
+          <option value="">Model: All</option>
+        </select>
+        <select class="select-input" id="filterDate">
+          <option value="all">Date: All time</option>
+          <option value="7">Last 7 days</option>
+          <option value="28">Last 28 days</option>
+          <option value="sincePriceChange">Since Sep 1 price update</option>
+        </select>
+        <input type="text" class="search-input" id="requestSearch" placeholder="Search requests">
+        <button class="clear-filters-btn" id="clearFilters">Clear filters</button>
+        <div class="spacer"></div>
+        <button class="export-btn" id="exportRequests">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          Export view
+        </button>
+      </div>
+      <div class="results-strip">
+        <span id="resultsCount">Showing 26 of 26 requests</span>
+        <span>Filtered spend: <span class="total-chip" id="resultsTotal">$0.00</span></span>
+      </div>
+      <div class="table-scroll">
+      <table id="table-requests">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Feature</th>
+            <th>Model</th>
+            <th class="num-col">Tokens (prompt / completion)</th>
+            <th class="num-col">Cost</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      </div>
+      <div class="foot-note">Showing a sample of individual requests for illustration. The full ledger reconciles to the allowance totals above.</div>
+    </div>
+
+    <!-- ---- SECTION: Asset usage (Studio packages) ---- -->
+    <div class="panel-section" id="section-assets">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Asset usage</div>
+          <div class="pane-desc">Spend per Studio package — which asset is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterStudioType">
+          <option value="">Type: All</option>
+        </select>
+        <select class="select-input" id="filterStudioModel">
+          <option value="">Model: All</option>
+        </select>
+        <input type="text" class="search-input" id="studioSearch" placeholder="Search assets">
+        <button class="clear-filters-btn" id="clearStudioFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="studioResultsCount">Showing 7 of 7 assets</span>
+        <span>Filtered spend: <span class="total-chip" id="studioResultsTotal">$0.00</span></span>
+      </div>
+      <div class="table-scroll">
+      <table id="table-studio-assets">
+        <thead>
+          <tr>
+            <th>Asset</th>
+            <th>Type</th>
+            <th>Model used</th>
+            <th class="num-col">Spend this period</th>
+            <th>Last used</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      </div>
+      <div class="foot-note">Illustrative sample of assets. Totals here are a subset of the "Process Copilots" feature spend shown in Spend by request, broken out per asset for visibility.</div>
+    </div>
+
+    <!-- ---- SECTION: MLWB usage ---- -->
+    <div class="panel-section" id="section-mlwb">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">MLWB usage</div>
+          <div class="pane-desc">Spend per ML Workbench job — which job is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterMlwbModel">
+          <option value="">Model: All</option>
+        </select>
+        <input type="text" class="search-input" id="mlwbSearch" placeholder="Search jobs">
+        <button class="clear-filters-btn" id="clearMlwbFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="mlwbResultsCount">Showing 3 of 3 jobs</span>
+        <span>Filtered spend: <span class="total-chip" id="mlwbResultsTotal">$0.00</span></span>
+      </div>
+      <div class="table-scroll">
+      <table id="table-mlwb-jobs">
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Model used</th>
+            <th class="num-col">Spend this period</th>
+            <th>Last used</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      </div>
+      <div class="foot-note">Illustrative sample of jobs. Totals here are a subset of the "ML Workbench" feature spend shown in Spend by request, broken out per job for visibility.</div>
+    </div>
+
+    <!-- ---- SECTION: Spend statement ---- -->
+    <div class="panel-section" id="section-statement">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Spend statement</div>
+          <div class="pane-desc">A year of charges, locked to the price in effect when each request was made.</div>
+        </div>
+        <button class="export-btn" id="exportStatement">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          Export statement
+        </button>
+      </div>
+      <table id="table-statement">
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Price table version</th>
+            <th class="num-col">Requests</th>
+            <th class="num-col">Spend</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+
+      <div class="pane-head" style="margin-top:24px;">
+        <div>
+          <div class="pane-title" style="font-size:14px;">Draw-down price table</div>
+          <div class="pane-desc">Published on <a href="https://docs.celonis.com/ai-pricing" target="_blank" rel="noopener">docs.celonis.com</a>, where current and previous versions can be viewed. The version in effect at the time of a request is what gets billed — never restated.</div>
+        </div>
+        <span class="version-pill" id="currentVersionPill">Current: v2026.09</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Mockup for internal review · not connected to live data · all figures illustrative</span>
+    <span>AI Fast-Track · Outputs to Tokens · Iteration 1 · updated 2026-10-01</span>
+  </div>
+
+</div>
+
+<script>
+  // ========== reference data ==========
+  var FEATURES = ["Process Copilots","ML Workbench","AI Annotations","Action Flow","Celonis Assistant","Decision Intelligence","Agent","MCP Server Asset","Vector Store","Knowledge Vault"];
+  var MODELS = ["Claude 3.5 Sonnet","GPT-4o mini","GPT-4o","Claude 3.5 Haiku","Gemini 1.5 Pro","text-embedding-3-large","Not recorded"];
+
+  // price per 1,000,000 tokens, by table version
+  var PRICE_HISTORY = {
+    "v2026.08": {
+      effective: "2026-08-01",
+      prices: {
+        "Claude 3.5 Sonnet": {prompt:3.00, completion:15.00},
+        "GPT-4o mini": {prompt:0.20, completion:0.80},
+        "GPT-4o": {prompt:2.50, completion:10.00},
+        "Claude 3.5 Haiku": {prompt:0.80, completion:4.00},
+        "Gemini 1.5 Pro": {prompt:1.25, completion:5.00},
+        "text-embedding-3-large": {prompt:0.13, completion:0.13},
+        "Not recorded": {prompt:0, completion:0}
+      }
+    },
+    "v2026.09": {
+      effective: "2026-09-01",
+      prices: {
+        "Claude 3.5 Sonnet": {prompt:3.00, completion:15.00},
+        "GPT-4o mini": {prompt:0.15, completion:0.60},
+        "GPT-4o": {prompt:2.50, completion:10.00},
+        "Claude 3.5 Haiku": {prompt:0.80, completion:4.00},
+        "Gemini 1.5 Pro": {prompt:1.25, completion:5.00},
+        "text-embedding-3-large": {prompt:0.13, completion:0.13},
+        "Not recorded": {prompt:0, completion:0}
+      }
+    }
+  };
+  var REFERENCE_DATE = new Date("2026-09-30");
+
+  function versionFor(dateStr){
+    return dateStr >= "2026-09-01" ? "v2026.09" : "v2026.08";
+  }
+  function priceFor(model, dateStr){
+    var v = versionFor(dateStr);
+    return PRICE_HISTORY[v].prices[model] || {prompt:0, completion:0};
+  }
+  function costFor(model, dateStr, promptTokens, completionTokens){
+    var p = priceFor(model, dateStr);
+    return (promptTokens/1e6)*p.prompt + (completionTokens/1e6)*p.completion;
+  }
+  function fmtMoney(n){
+    return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function fmtK(n){
+    return (n/1000).toFixed(1) + 'K';
+  }
+  function fmtTok(n){
+    if(n>=1e6) return (n/1e6).toFixed(1)+'M tokens';
+    return (n/1e3).toFixed(1)+'K tokens';
+  }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function pct(n,total){ return total>0 ? (n/total*100).toFixed(1) : '0.0'; }
+
+  // ========== detail request rows ==========
+  // [date, team, user, feature, model, promptTokens, completionTokens]
+  var requestRows = [
+    ["2026-08-04","Production","A. Mendes","Process Copilots","Claude 3.5 Sonnet",182000,61000],
+    ["2026-08-06","Production","J. Oduya","ML Workbench","GPT-4o",240000,54000],
+    ["2026-08-08","Production 2","T. Falk","AI Annotations","GPT-4o mini",410000,88000],
+    ["2026-08-11","Standard Sandbox","L. Byrne","Decision Intelligence","Gemini 1.5 Pro",96000,21000],
+    ["2026-08-13","Production","K. Novak","Celonis Assistant","Claude 3.5 Haiku",128000,33000],
+    ["2026-08-15","Production 2","R. Haddad","Action Flow","GPT-4o mini",355000,72000],
+    ["2026-08-19","Production","P. Lindqvist","Agent","Claude 3.5 Sonnet",205000,88000],
+    ["2026-08-22","Premium Sandbox","E. Marsh","Vector Store","text-embedding-3-large",610000,0],
+    ["2026-08-27","Production","A. Mendes","MCP Server Asset","GPT-4o",174000,41000],
+    ["2026-08-29","Production 2","J. Oduya","Knowledge Vault","Not recorded",88000,19000],
+    ["2026-09-02","Production","T. Falk","Process Copilots","Claude 3.5 Sonnet",198000,67000],
+    ["2026-09-03","Production","L. Byrne","ML Workbench","GPT-4o",261000,58000],
+    ["2026-09-05","Production 2","K. Novak","AI Annotations","GPT-4o mini",430000,91000],
+    ["2026-09-08","Standard Sandbox","R. Haddad","Decision Intelligence","Gemini 1.5 Pro",101000,24000],
+    ["2026-09-09","Production","P. Lindqvist","Celonis Assistant","Claude 3.5 Haiku",135000,36000],
+    ["2026-09-11","Production 2","E. Marsh","Action Flow","GPT-4o mini",372000,79000],
+    ["2026-09-14","Production","A. Mendes","Agent","Claude 3.5 Sonnet",219000,94000],
+    ["2026-09-15","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",588000,0],
+    ["2026-09-17","Production","T. Falk","MCP Server Asset","GPT-4o",183000,44000],
+    ["2026-09-18","Production 2","L. Byrne","Knowledge Vault","Not recorded",94000,21000],
+    ["2026-09-20","Production","A. Mendes","Agent","Claude 3.5 Sonnet",450000,200000],
+    ["2026-09-21","Production","K. Novak","Process Copilots","GPT-4o mini",402000,86000],
+    ["2026-09-23","Standard Sandbox","R. Haddad","Decision Intelligence","Claude 3.5 Haiku",118000,31000],
+    ["2026-09-24","Production","P. Lindqvist","ML Workbench","Claude 3.5 Sonnet",226000,97000],
+    ["2026-09-26","Production 2","E. Marsh","AI Annotations","GPT-4o mini",388000,83000],
+    ["2026-09-28","Production","A. Mendes","Celonis Assistant","GPT-4o",171000,39000],
+    ["2026-09-29","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",552000,0]
+  ];
+
+  // ========== feature + model summary (headline totals) ==========
+  var featureSpend = [
+    ["Process Copilots",24100],
+    ["ML Workbench",17800],
+    ["AI Annotations",12300],
+    ["Action Flow",9900],
+    ["Celonis Assistant",8700],
+    ["Decision Intelligence",4600],
+    ["Agent",3200],
+    ["MCP Server Asset",2000],
+    ["Vector Store",1000],
+    ["Knowledge Vault",600]
+  ];
+  var featureTotal = featureSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var modelSpend = [
+    ["Claude 3.5 Sonnet",31200],
+    ["GPT-4o mini",19400],
+    ["GPT-4o",14100],
+    ["Claude 3.5 Haiku",9800],
+    ["Gemini 1.5 Pro",4200],
+    ["text-embedding-3-large",3900],
+    ["Not recorded",1600]
+  ];
+  var modelTotal = modelSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var modelTokens = [
+    ["Claude 3.5 Sonnet",8400000],
+    ["GPT-4o mini",48000000],
+    ["GPT-4o",2900000],
+    ["Claude 3.5 Haiku",9100000],
+    ["Gemini 1.5 Pro",2600000],
+    ["text-embedding-3-large",28000000],
+    ["Not recorded",850000]
+  ];
+  var modelTokensTotal = modelTokens.reduce(function(s,r){return s+r[1];},0);
+
+  var statementRows = [
+    ["Jul 2026","v2026.08",2460,21300.00],
+    ["Aug 2026","v2026.08",2810,24750.00],
+    ["Sep 2026 (through Sep 29)","v2026.09",2690,22650.00]
+  ];
+
+  // ========== asset usage (Studio packages + ML Workbench jobs) ==========
+  var studioAssets = [
+    ["Invoice Dispute Copilot","Studio Copilot","Claude 3.5 Sonnet",2480,"2026-09-28"],
+    ["Supplier Risk Assistant","Studio Copilot","GPT-4o",1920,"2026-09-27"],
+    ["PR Prioritization Agent","Studio Agent","GPT-4o mini",1340,"2026-09-25"],
+    ["Excess Stock Simulator","Studio Agent","Gemini 1.5 Pro",980,"2026-09-22"],
+    ["KPI Lineage Explainer","Studio Copilot","Claude 3.5 Sonnet",760,"2026-09-20"],
+    ["Material Reallocation Advisor","Studio Agent","Claude 3.5 Haiku",540,"2026-09-18"],
+    ["Backoffice Reconciliation Bot","Studio Copilot","GPT-4o mini",310,"2026-09-10"]
+  ];
+  var mlwbJobs = [
+    ["Demand Forecast Retrain","GPT-4o",1120,"2026-09-26"],
+    ["Anomaly Detection Pipeline","Claude 3.5 Haiku",640,"2026-09-23"],
+    ["Churn Scoring Job","GPT-4o mini",410,"2026-09-19"]
+  ];
+
+  // ========== charts ==========
+  var CHART_COLORS = ['#0A2E6B','#0F4FC4','#1464F4','#5B8FF9','#A9C6FB'];
+  var CHART_OTHER = '#C9D3DF';
+
+  function topNPlusOther(rows, idx, n){
+    var enriched = rows.map(function(r){ return {label:r[0], value:r[idx]}; });
+    enriched.sort(function(a,b){ return b.value - a.value; });
+    var top = enriched.slice(0, n);
+    var restSum = enriched.slice(n).reduce(function(s,e){ return s+e.value; }, 0);
+    if(restSum > 0){ top.push({label:'Other', value:restSum}); }
+    return top;
+  }
+
+  function renderDonut(containerId, segments, total){
+    var size = 96, cx = size/2, cy = size/2, sw = 14;
+    var r = cx - sw/2 - 1;
+    var C = 2*Math.PI*r;
+    var cumulative = 0;
+    var circles = segments.map(function(seg, i){
+      var color = seg.label === 'Other' ? CHART_OTHER : CHART_COLORS[i % CHART_COLORS.length];
+      var frac = total > 0 ? seg.value/total : 0;
+      var len = frac*C;
+      var dasharray = len.toFixed(2)+' '+(C-len).toFixed(2);
+      var dashoffset = (-cumulative).toFixed(2);
+      cumulative += len;
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+sw+'" stroke-dasharray="'+dasharray+'" stroke-dashoffset="'+dashoffset+'"/>';
+    }).join('');
+    var centerVal = '$'+fmt(Math.round(total));
+    var svgHtml = '<div class="donut-svg-wrap"><svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><g transform="rotate(-90 '+cx+' '+cy+')">'+circles+'</g></svg>'+
+      '<div class="donut-center"><span class="val">'+centerVal+'</span><span class="lbl">this period</span></div></div>';
+    var legendHtml = '<ul class="legend">'+segments.map(function(seg, i){
+      var color = seg.label === 'Other' ? CHART_OTHER : CHART_COLORS[i % CHART_COLORS.length];
+      var pctVal = pct(seg.value, total);
+      return '<li class="legend-item"><span class="legend-dot" style="background:'+color+'"></span><span class="legend-label">'+seg.label+'</span><span class="legend-val">$'+fmt(seg.value)+' &middot; '+pctVal+'%</span></li>';
+    }).join('')+'</ul>';
+    document.getElementById(containerId).innerHTML = '<div class="donut-row">'+svgHtml+legendHtml+'</div>';
+  }
+
+  function renderCharts(){
+    renderDonut('chart-feature-spend', topNPlusOther(featureSpend, 1, 5), featureTotal);
+    renderDonut('chart-model-spend', topNPlusOther(modelSpend, 1, 5), modelTotal);
+  }
+
+  // ========== asset usage tab ==========
+  function renderAssetUsage(){
+    var studioType = document.getElementById('filterStudioType').value;
+    var studioModel = document.getElementById('filterStudioModel').value;
+    var studioSearch = document.getElementById('studioSearch').value.trim().toLowerCase();
+    var filteredStudio = studioAssets.filter(function(r){
+      if(studioType && r[1] !== studioType) return false;
+      if(studioModel && r[2] !== studioModel) return false;
+      if(studioSearch){
+        var hay = (r[0]+' '+r[1]+' '+r[2]).toLowerCase();
+        if(hay.indexOf(studioSearch) === -1) return false;
+      }
+      return true;
+    });
+    var studioTbody = document.querySelector('#table-studio-assets tbody');
+    studioTbody.innerHTML = filteredStudio.map(function(r){
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td>'+r[1]+'</td>'+
+        '<td>'+r[2]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
+        '<td>'+r[4]+'</td>'+
+        '</tr>';
+    }).join('');
+    var studioTotal = filteredStudio.reduce(function(s,r){return s+r[3];}, 0);
+    document.getElementById('studioResultsCount').textContent = 'Showing '+filteredStudio.length+' of '+studioAssets.length+' assets';
+    document.getElementById('studioResultsTotal').textContent = fmtMoney(studioTotal);
+
+    var mlwbModel = document.getElementById('filterMlwbModel').value;
+    var mlwbSearch = document.getElementById('mlwbSearch').value.trim().toLowerCase();
+    var filteredMlwb = mlwbJobs.filter(function(r){
+      if(mlwbModel && r[1] !== mlwbModel) return false;
+      if(mlwbSearch){
+        var hay = (r[0]+' '+r[1]).toLowerCase();
+        if(hay.indexOf(mlwbSearch) === -1) return false;
+      }
+      return true;
+    });
+    var mlwbTbody = document.querySelector('#table-mlwb-jobs tbody');
+    mlwbTbody.innerHTML = filteredMlwb.map(function(r){
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td>'+r[1]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[2])+'</td>'+
+        '<td>'+r[3]+'</td>'+
+        '</tr>';
+    }).join('');
+    var mlwbTotal = filteredMlwb.reduce(function(s,r){return s+r[2];}, 0);
+    document.getElementById('mlwbResultsCount').textContent = 'Showing '+filteredMlwb.length+' of '+mlwbJobs.length+' jobs';
+    document.getElementById('mlwbResultsTotal').textContent = fmtMoney(mlwbTotal);
+  }
+
+  // ========== models tab ==========
+  var modelCostByName = {};
+  modelSpend.forEach(function(r){ modelCostByName[r[0]] = r[1]; });
+
+  function renderModels(){
+    var nameFilter = document.getElementById('filterModelName').value;
+    var filtered = modelTokens.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){
+      return (modelCostByName[b[0]]||0) - (modelCostByName[a[0]]||0);
+    });
+
+    var tbody = document.querySelector('#table-models tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var cost = modelCostByName[r[0]] || 0;
+      var share = pct(cost, modelTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtTok(r[1])+'</td>'+
+        '<td class="num-col num">'+fmtMoney(cost)+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var totalCost = filtered.reduce(function(s,r){return s+(modelCostByName[r[0]] || 0);}, 0);
+    document.getElementById('modelsResultsCount').textContent = 'Showing '+filtered.length+' of '+modelTokens.length+' models';
+    document.getElementById('modelsResultsTotal').textContent = fmtMoney(totalCost);
+  }
+
+  // ========== features tab ==========
+  function renderFeatures(){
+    var nameFilter = document.getElementById('filterFeatureName').value;
+    var filtered = featureSpend.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){ return b[1]-a[1]; });
+
+    var tbody = document.querySelector('#table-features tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r[1], featureTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r[1];}, 0);
+    document.getElementById('featuresResultsCount').textContent = 'Showing '+filtered.length+' of '+featureSpend.length+' features';
+    document.getElementById('featuresResultsTotal').textContent = fmtMoney(total);
+  }
+
+  // ========== spend statement tab ==========
+  function renderStatement(){
+    var tbody = document.querySelector('#table-statement tbody');
+    tbody.innerHTML = statementRows.map(function(r){
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td><span class="version-pill">'+r[1]+'</span></td>'+
+        '<td class="num-col num">'+fmt(r[2])+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
+        '</tr>';
+    }).join('');
+  }
+
+  // ========== drill-down request table ==========
+  var enrichedRequests = requestRows.map(function(r){
+    var cost = costFor(r[4], r[0], r[5], r[6]);
+    return {date:r[0], feature:r[3], model:r[4], promptTokens:r[5], completionTokens:r[6], cost:cost};
+  });
+
+  function populateFilterOptions(){
+    function fill(selectId, values){
+      var sel = document.getElementById(selectId);
+      values.forEach(function(v){
+        var opt = document.createElement('option');
+        opt.value = v; opt.textContent = v;
+        sel.appendChild(opt);
+      });
+    }
+    fill('filterFeature', FEATURES);
+    fill('filterModel', MODELS);
+
+    var studioTypes = Array.from(new Set(studioAssets.map(function(r){return r[1];})));
+    var studioModels = Array.from(new Set(studioAssets.map(function(r){return r[2];})));
+    fill('filterStudioType', studioTypes);
+    fill('filterStudioModel', studioModels);
+
+    var mlwbModels = Array.from(new Set(mlwbJobs.map(function(r){return r[1];})));
+    fill('filterMlwbModel', mlwbModels);
+
+    fill('filterModelName', MODELS);
+    fill('filterFeatureName', FEATURES);
+  }
+
+  function withinDateFilter(dateStr, filterVal){
+    if(filterVal === 'all' || !filterVal) return true;
+    if(filterVal === 'sincePriceChange') return dateStr >= '2026-09-01';
+    var days = parseInt(filterVal, 10);
+    var cutoff = new Date(REFERENCE_DATE);
+    cutoff.setDate(cutoff.getDate() - days);
+    var d = new Date(dateStr);
+    return d >= cutoff && d <= REFERENCE_DATE;
+  }
+
+  function renderRequests(){
+    var feature = document.getElementById('filterFeature').value;
+    var model = document.getElementById('filterModel').value;
+    var dateFilter = document.getElementById('filterDate').value;
+    var search = document.getElementById('requestSearch').value.trim().toLowerCase();
+
+    var filtered = enrichedRequests.filter(function(r){
+      if(feature && r.feature !== feature) return false;
+      if(model && r.model !== model) return false;
+      if(!withinDateFilter(r.date, dateFilter)) return false;
+      if(search){
+        var hay = (r.feature+' '+r.model+' '+r.date).toLowerCase();
+        if(hay.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+
+    var tbody = document.querySelector('#table-requests tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var modelHtml = r.model === "Not recorded" ? '<span class="badge unrecorded">Not recorded</span>' : r.model;
+      return '<tr>'+
+        '<td>'+r.date+'</td>'+
+        '<td>'+r.feature+'</td>'+
+        '<td>'+modelHtml+'</td>'+
+        '<td class="num-col num">'+fmtK(r.promptTokens)+' / '+fmtK(r.completionTokens)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.cost)+'</td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r.cost;}, 0);
+    document.getElementById('resultsCount').textContent = 'Showing '+filtered.length+' of '+enrichedRequests.length+' requests';
+    document.getElementById('resultsTotal').textContent = fmtMoney(total);
+
+    return filtered;
+  }
+
+  // ========== wiring ==========
+  populateFilterOptions();
+  renderCharts();
+  renderAssetUsage();
+  renderModels();
+  renderFeatures();
+  renderStatement();
+  renderRequests();
+
+  ['filterFeature','filterModel','filterDate','requestSearch'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', renderRequests);
+    document.getElementById(id).addEventListener('change', renderRequests);
+  });
+  document.getElementById('clearFilters').addEventListener('click', function(){
+    ['filterFeature','filterModel'].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('filterDate').value = 'all';
+    document.getElementById('requestSearch').value = '';
+    renderRequests();
+  });
+
+  ['filterStudioType','filterStudioModel','studioSearch','filterMlwbModel','mlwbSearch'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', renderAssetUsage);
+    document.getElementById(id).addEventListener('change', renderAssetUsage);
+  });
+  document.getElementById('clearStudioFilters').addEventListener('click', function(){
+    document.getElementById('filterStudioType').value = '';
+    document.getElementById('filterStudioModel').value = '';
+    document.getElementById('studioSearch').value = '';
+    renderAssetUsage();
+  });
+  document.getElementById('clearMlwbFilters').addEventListener('click', function(){
+    document.getElementById('filterMlwbModel').value = '';
+    document.getElementById('mlwbSearch').value = '';
+    renderAssetUsage();
+  });
+
+  ['filterModelName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderModels);
+  });
+  document.getElementById('clearModelFilters').addEventListener('click', function(){
+    document.getElementById('filterModelName').value = '';
+    renderModels();
+  });
+
+  ['filterFeatureName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderFeatures);
+  });
+  document.getElementById('clearFeatureFilters').addEventListener('click', function(){
+    document.getElementById('filterFeatureName').value = '';
+    renderFeatures();
+  });
+
+  // tabs
+  var navButtons = Array.from(document.querySelectorAll('.tab-btn'));
+  navButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      navButtons.forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel-section').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById('section-'+btn.dataset.tab);
+      if(target) target.classList.add('active');
+    });
+  });
+
+  // export: filtered request view
+  function downloadCsv(filename, rows){
+    var csv = rows.map(function(row){
+      return row.map(function(cell){
+        var text = String(cell).replace(/\s+/g,' ').trim();
+        return '"'+text.replace(/"/g,'""')+'"';
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], {type:'text/csv'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('exportRequests').addEventListener('click', function(){
+    var filtered = renderRequests();
+    var header = ['Date','Feature','Model','Prompt tokens','Completion tokens','Cost (USD)'];
+    var rows = [header].concat(filtered.map(function(r){
+      return [r.date, r.feature, r.model, r.promptTokens, r.completionTokens, r.cost.toFixed(2)];
+    }));
+    downloadCsv('ai-token-credits-requests.csv', rows);
+  });
+
+  document.getElementById('exportStatement').addEventListener('click', function(){
+    var header = ['Period','Price table version','Requests','Spend (USD)'];
+    var rows = [header].concat(statementRows.map(function(r){
+      return [r[0], r[1], r[2], r[3].toFixed(2)];
+    }));
+    downloadCsv('ai-token-credits-spend-statement.csv', rows);
+  });
+</script>
+</body>
+</html>
