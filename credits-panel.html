@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credits: visionary concept mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --border:#DFE4EA;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+    --green-text:#1B6B4A;
+    --green-tint:#E6F5EE;
+    --amber-text:#8A5A00;
+    --amber-tint:#FFF2D9;
+    --red:#B23A38;
+    --red-tint:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--surface-alt);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--blue-dark);}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:32px 28px 80px;
+  }
+
+  /* ---------- header ---------- */
+  .crumb{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-bottom:10px;
+  }
+  .title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  h1{
+    font-size:26px;
+    font-weight:600;
+    margin:0 0 6px 0;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:14px;
+    max-width:680px;
+  }
+  .phase-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--blue-tint);
+    color:var(--blue-dark);
+    border:1px solid #C7D9FB;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:600;
+    white-space:nowrap;
+    margin-top:4px;
+  }
+  .phase-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+
+  /* ---------- scope note ---------- */
+  .scope-note{
+    margin-top:18px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 20px;
+  }
+  .scope-note-head{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .scope-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .scope-col h4{
+    margin:0 0 6px 0;
+    font-size:12.5px;
+    font-weight:600;
+  }
+  .scope-col.in h4{color:var(--green-text);}
+  .scope-col.out h4{color:var(--text-muted);}
+  .scope-list{
+    margin:0;
+    padding-left:18px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .scope-list li{padding-left:2px;}
+  .cap-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- setup strip ---------- */
+  .setup-strip{
+    margin-top:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+  }
+  .setup-strip .item b{color:var(--ink);font-weight:600;}
+
+  /* ---------- overview cards ---------- */
+  .block-heading{
+    font-size:16px;
+    font-weight:600;
+    margin:28px 0 2px;
+  }
+  .block-desc{
+    font-size:13px;
+    color:var(--text-secondary);
+    margin-bottom:14px;
+  }
+  .overview-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+    margin-top:16px;
+  }
+  .overview-grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:4px 0 20px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+  }
+  .card-label{
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .card-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:28px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .card-value .unit{
+    font-size:14px;
+    font-weight:500;
+    color:var(--text-secondary);
+    margin-left:6px;
+  }
+  .card-sub{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+  .card-sub b{color:var(--text-secondary);font-weight:600;}
+  .progress-track{
+    height:8px;
+    background:var(--surface-alt);
+    border-radius:5px;
+    margin-top:14px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--blue);
+    width:70%;
+    border-radius:5px 0 0 5px;
+  }
+  .trend-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .readonly-note{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--border);
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- donut charts ---------- */
+  .chart-card .card-label{margin-bottom:2px;}
+  .donut-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-top:12px;
+  }
+  .donut-svg-wrap{
+    position:relative;
+    flex-shrink:0;
+    width:96px;
+    height:96px;
+  }
+  .donut-svg-wrap svg{display:block;}
+  .donut-center{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .donut-center .val{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    line-height:1.2;
+  }
+  .donut-center .lbl{
+    font-size:9px;
+    color:var(--text-muted);
+    margin-top:1px;
+  }
+  .legend{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    flex:1;
+    min-width:0;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .legend-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .legend-label{
+    font-size:12px;
+    color:var(--ink);
+    flex:1;
+    min-width:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .legend-val{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-secondary);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .foot-note{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- section nav ---------- */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-top:28px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+    position:sticky;
+    top:0;
+    background:var(--surface-alt);
+    padding-top:6px;
+    z-index:5;
+  }
+  .tab-btn{
+    background:none;
+    border:none;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:12px 16px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{
+    color:var(--ink);
+    font-weight:600;
+    border-bottom-color:var(--blue);
+  }
+
+  .sections{margin-top:16px;}
+  .panel-section{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+    display:none;
+  }
+  .panel-section.active{display:block;}
+
+  .pane-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .pane-title{font-size:16px;font-weight:600;margin:0 0 4px 0;}
+  .pane-desc{font-size:13px;color:var(--text-secondary);max-width:620px;}
+
+  /* ---------- inner subtabs (AI Tokens detail) ---------- */
+  .subtabs{
+    display:flex;
+    gap:4px;
+    margin-bottom:16px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+  }
+  .subtab-btn{
+    background:none;
+    border:none;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:8px 14px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .subtab-btn:hover{color:var(--ink);}
+  .subtab-btn.active{
+    color:var(--ink);
+    font-weight:600;
+    border-bottom-color:var(--blue);
+  }
+  .subpanel-section{display:none;padding-top:4px;}
+  .subpanel-section.active{display:block;}
+
+  /* ---------- filter bar ---------- */
+  .filter-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .select-input, .search-input{
+    font-family:inherit;
+    font-size:13.5px;
+    padding:8px 12px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface-alt);
+    color:var(--ink);
+  }
+  .select-input{min-width:140px;}
+  .search-input{width:180px;}
+  .select-input:focus, .search-input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .clear-filters-btn{
+    background:none;
+    border:none;
+    color:var(--blue-dark);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    padding:0;
+  }
+  .spacer{flex:1;}
+  .export-btn{
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    padding:8px 14px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface);
+    color:var(--ink);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .export-btn:hover{background:var(--surface-alt);}
+  .export-btn svg{width:14px;height:14px;}
+
+  .results-strip{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .results-strip .total{font-family:'IBM Plex Mono', monospace;font-weight:600;color:var(--ink);}
+  .total-chip{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--blue-dark);
+    background:var(--blue-tint);
+    padding:3px 10px;
+    border-radius:6px;
+    margin-left:4px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  thead th{
+    text-align:left;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:9px 12px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  thead th.num-col, tbody td.num-col{text-align:right;}
+  tbody td{
+    padding:11px 12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  tbody tr:hover{background:var(--surface-alt);}
+  tbody tr:last-child td{border-bottom:none;}
+  .table-scroll{overflow-x:auto;}
+  tfoot td{
+    padding:10px 12px;
+    font-weight:700;
+    border-top:2px solid var(--ink);
+    background:var(--surface-alt);
+  }
+  tfoot td.num-col{font-family:'IBM Plex Mono', monospace;}
+
+  .badge{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .badge.muted{color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);}
+  .badge.new{color:var(--blue-dark);background:var(--blue-tint);}
+  .badge.unrecorded{color:var(--amber-text);background:var(--amber-tint);}
+
+  .bar-cell{display:flex;align-items:center;gap:8px;}
+  .bar-track{flex:1;height:6px;background:var(--surface-alt);border-radius:4px;overflow:hidden;min-width:60px;}
+  .bar-fill{height:100%;background:var(--blue);border-radius:4px;}
+  .share-val{font-family:'IBM Plex Mono', monospace;font-size:12.5px;color:var(--text-secondary);width:40px;text-align:right;}
+  .row-note{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
+
+  /* ---------- stacked bars (By team) ---------- */
+  .stacked-bars{margin-bottom:14px;}
+  .stacked-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .stacked-bar-label{width:140px;flex-shrink:0;font-size:13px;color:var(--ink);}
+  .stacked-bar-track{flex:1;height:22px;border-radius:6px;overflow:hidden;display:flex;border:1px solid var(--border);}
+  .stacked-bar-seg{height:100%;}
+  .stacked-bar-total{width:90px;flex-shrink:0;text-align:right;font-family:'IBM Plex Mono', monospace;font-size:12.5px;color:var(--text-secondary);}
+  .legend-inline{display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+  .legend-inline .legend-item{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-secondary);}
+
+  /* ---------- limits & alerts ---------- */
+  .limits-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+    margin-top:4px;
+  }
+  .limit-card{
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .limit-card-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .limit-card-title{font-size:14px;font-weight:600;flex:1;}
+  .limit-label{display:block;font-size:12px;color:var(--text-secondary);margin-bottom:6px;}
+  .limit-input-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+  .limit-prefix{font-family:'IBM Plex Mono', monospace;color:var(--text-secondary);}
+  .limit-input{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    padding:7px 10px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface);
+    color:var(--ink);
+    width:120px;
+  }
+  .limit-input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .limit-usage-note{font-size:11.5px;color:var(--text-muted);margin-top:6px;margin-bottom:14px;}
+  .alert-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;}
+  .alert-row-label{font-weight:600;color:var(--ink);margin-right:2px;}
+  .alert-row label{display:flex;align-items:center;gap:4px;}
+  .limit-save-btn{width:100%;justify-content:center;}
+  .limit-saved-note{font-size:11.5px;color:var(--green-text);margin-top:8px;min-height:14px;}
+
+  /* ---------- price table ---------- */
+  .version-pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--blue-dark);
+    background:var(--blue-tint);
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .price-callout{
+    margin-top:16px;
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+  }
+  .price-callout b{color:var(--ink);}
+
+  .page-footer{
+    margin-top:36px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (max-width: 900px){
+    .overview-grid{grid-template-columns:1fr 1fr;}
+    .scope-grid{grid-template-columns:1fr;}
+    .limits-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width: 560px){
+    .overview-grid{grid-template-columns:1fr;}
+    .overview-grid-2{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="crumb">AI Settings &nbsp;/&nbsp; Credits</div>
+  <div class="title-row">
+    <div>
+      <h1>Monitor and control your AI credits</h1>
+    </div>
+  </div>
+
+  <!-- ================= OVERVIEW ================= -->
+  <div class="block-heading">Credits allowance — this contract year</div>
+  <div class="overview-grid">
+    <div class="card">
+      <div class="card-label">Consumed</div>
+      <div class="trend-row">
+        <div class="card-value num">$134,000<span class="unit">/ $200,000</span></div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:67%"></div></div>
+      <div class="card-sub">67% of allowance used · last 28 days: <b>$15,200</b> (+12% vs. prior 28 days)</div>
+      <div class="readonly-note">Hard cap $300,000 (150%) · overage billed only after an admin is notified past 100%. Per-category limits are explored in the Limits &amp; alerts tab below.</div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="card-label">Consumption by category</div>
+      <div id="chart-category-spend"></div>
+    </div>
+    <div class="card chart-card">
+      <div class="card-label">Consumption by team</div>
+      <div id="chart-team-spend"></div>
+    </div>
+  </div>
+
+  <!-- ================= SECTION NAV ================= -->
+  <nav class="tabs" aria-label="Jump to section">
+    <button class="tab-btn active" data-tab="teams">By team</button>
+    <button class="tab-btn" data-tab="aitokens">AI Tokens</button>
+    <button class="tab-btn" data-tab="storage">Storage</button>
+    <button class="tab-btn" data-tab="compute">Compute</button>
+    <button class="tab-btn" data-tab="limits">Limits &amp; alerts</button>
+  </nav>
+
+  <div class="sections">
+
+    <!-- ---- SECTION: By team ---- -->
+    <div class="panel-section active" id="section-teams">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">By team</div>
+          <div class="pane-desc">Credits consumed per team, broken out by category. Every team draws from the one shared Credits pool today — this view previews what per-team visibility and allocation could look like once teams are a supported concept on the platform.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterTeamName">
+          <option value="">Team: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearTeamFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="teamsResultsCount">Showing 4 of 4 teams</span>
+        <span>Filtered spend: <span class="total-chip" id="teamsResultsTotal">$0.00</span></span>
+      </div>
+      <div class="legend-inline" id="teamStackLegend"><!-- injected by JS --></div>
+      <div class="stacked-bars" id="teamStackedBars"><!-- rows injected by JS --></div>
+      <div class="table-scroll">
+      <table id="table-teams">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th class="num-col">AI Tokens</th>
+            <th class="num-col">Storage</th>
+            <th class="num-col">Compute</th>
+            <th class="num-col">Total spend</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      </div>
+      <div class="price-callout">
+        <b>Concept, not current product.</b> Celonis doesn't support per-team Credits allocation today — every team draws from one shared pool. This view illustrates what per-team visibility and limits could look like once that's supported.
+      </div>
+    </div>
+
+    <!-- ---- SECTION: AI Tokens (wraps the original Iteration 1 detail) ---- -->
+    <div class="panel-section" id="section-aitokens">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">AI Tokens</div>
+          <div class="pane-desc">The original Iteration 1 detail: usage and spend from AI model inference, broken down by feature, model, user, and individual request. Now one of three categories drawing from the shared Credits pool.</div>
+        </div>
+      </div>
+
+      <div class="overview-grid-2">
+        <div class="card chart-card">
+          <div class="card-label">Spend by feature</div>
+          <div id="chart-feature-spend"></div>
+        </div>
+        <div class="card chart-card">
+          <div class="card-label">Spend by model</div>
+          <div id="chart-model-spend"></div>
+        </div>
+      </div>
+
+      <nav class="subtabs" aria-label="AI Tokens detail">
+        <button class="subtab-btn active" data-subtab="features">Features</button>
+        <button class="subtab-btn" data-subtab="models">Models</button>
+        <button class="subtab-btn" data-subtab="users">Users</button>
+        <button class="subtab-btn" data-subtab="drilldown">Spend by request</button>
+        <button class="subtab-btn" data-subtab="assets">Asset usage</button>
+        <button class="subtab-btn" data-subtab="mlwb">MLWB usage</button>
+        <button class="subtab-btn" data-subtab="statement">Spend statement</button>
+      </nav>
+
+      <!-- ---- SUBSECTION: Features ---- -->
+      <div class="subpanel-section active" id="subsection-features">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Features</div>
+            <div class="pane-desc">Consumption per feature, for visibility only — which capability is driving AI Token spend.</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <select class="select-input" id="filterFeatureName">
+            <option value="">Feature: All</option>
+          </select>
+          <button class="clear-filters-btn" id="clearFeatureFilters">Clear filters</button>
+        </div>
+        <div class="results-strip">
+          <span id="featuresResultsCount">Showing 10 of 10 features</span>
+          <span>Filtered spend: <span class="total-chip" id="featuresResultsTotal">$0.00</span></span>
+        </div>
+        <table id="table-features">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="num-col">Spend this period</th>
+              <th class="num-col">Share of category</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+        <div class="foot-note">Sorted by spend. See Spend by request for the detailed, per-request breakdown behind these totals.</div>
+      </div>
+
+      <!-- ---- SUBSECTION: Models ---- -->
+      <div class="subpanel-section" id="subsection-models">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Models</div>
+            <div class="pane-desc">Token consumption per model, ordered by volume — plus the cost that volume drove this period. Enabling or disabling a model happens elsewhere; this view is read-only usage data.</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <select class="select-input" id="filterModelName">
+            <option value="">Model: All</option>
+          </select>
+          <button class="clear-filters-btn" id="clearModelFilters">Clear filters</button>
+        </div>
+        <div class="results-strip">
+          <span id="modelsResultsCount">Showing 7 of 7 models</span>
+          <span>Filtered spend: <span class="total-chip" id="modelsResultsTotal">$0.00</span></span>
+        </div>
+        <table id="table-models">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th class="num-col">Tokens consumed this period</th>
+              <th class="num-col">Cost this period</th>
+              <th class="num-col">Share of category</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+        <div class="foot-note">Sorted by cost. Pricing for active models lives in the draw-down price table on the Spend statement tab.</div>
+      </div>
+
+      <!-- ---- SUBSECTION: Users ---- -->
+      <div class="subpanel-section" id="subsection-users">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Users</div>
+            <div class="pane-desc">Consumption per user, for visibility only — sorted by spend, so a user drawing disproportionately from the category stands out.</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <select class="select-input" id="filterUserName">
+            <option value="">User: All</option>
+          </select>
+          <button class="clear-filters-btn" id="clearUserFilters">Clear filters</button>
+        </div>
+        <div class="results-strip">
+          <span id="usersResultsCount">Showing 8 of 8 users</span>
+          <span>Filtered spend: <span class="total-chip" id="usersResultsTotal">$0.00</span></span>
+        </div>
+        <table id="table-users">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th class="num-col">Spend this period</th>
+              <th class="num-col">Share of category</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+        <div class="foot-note">Sorted by spend. A single user taking a disproportionate share is often a runaway agent, a forgotten test job, or a workflow worth reviewing with that person.</div>
+      </div>
+
+      <!-- ---- SUBSECTION: Spend by request (drill-down) ---- -->
+      <div class="subpanel-section" id="subsection-drilldown">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Spend by request</div>
+            <div class="pane-desc">Every AI request, attributed to a team, user, feature, and model — filter by any of them, or by date range, same as the internal LLMaaS dashboard.</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <select class="select-input" id="filterTeam">
+            <option value="">Team: All</option>
+          </select>
+          <select class="select-input" id="filterUser">
+            <option value="">User: All</option>
+          </select>
+          <select class="select-input" id="filterFeature">
+            <option value="">Feature: All</option>
+          </select>
+          <select class="select-input" id="filterModel">
+            <option value="">Model: All</option>
+          </select>
+          <select class="select-input" id="filterDate">
+            <option value="all">Date: All time</option>
+            <option value="7">Last 7 days</option>
+            <option value="28">Last 28 days</option>
+            <option value="sincePriceChange">Since Sep 1 price update</option>
+          </select>
+          <input type="text" class="search-input" id="requestSearch" placeholder="Search requests">
+          <button class="clear-filters-btn" id="clearFilters">Clear filters</button>
+          <div class="spacer"></div>
+          <button class="export-btn" id="exportRequests">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+            Export view
+          </button>
+        </div>
+        <div class="results-strip">
+          <span id="resultsCount">Showing 26 of 26 requests</span>
+          <span>Filtered spend: <span class="total-chip" id="resultsTotal">$0.00</span></span>
+        </div>
+        <div class="table-scroll">
+        <table id="table-requests">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Team</th>
+              <th>User</th>
+              <th>Feature</th>
+              <th>Model</th>
+              <th class="num-col">Tokens (prompt / completion)</th>
+              <th class="num-col">Cost</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+        </div>
+        <div class="foot-note">Showing a sample of individual requests for illustration. The full ledger reconciles to the AI Tokens category total above.</div>
+      </div>
+
+      <!-- ---- SUBSECTION: Asset usage (Studio packages) ---- -->
+      <div class="subpanel-section" id="subsection-assets">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Asset usage</div>
+            <div class="pane-desc">Spend per Studio package — which asset is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is beyond this concept.</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <select class="select-input" id="filterStudioType">
+            <option value="">Type: All</option>
+          </select>
+          <select class="select-input" id="filterStudioModel">
+            <option value="">Model: All</option>
+          </select>
+          <input type="text" class="search-input" id="studioSearch" placeholder="Search assets">
+          <button class="clear-filters-btn" id="clearStudioFilters">Clear filters</button>
+        </div>
+        <div class="results-strip">
+          <span id="studioResultsCount">Showing 7 of 7 assets</span>
+          <span>Filtered spend: <span class="total-chip" id="studioResultsTotal">$0.00</span></span>
+        </div>
+        <div class="table-scroll">
+        <table id="table-studio-assets">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Type</th>
+              <th>Model used</th>
+              <th class="num-col">Spend this period</th>
+              <th>Last used</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+        </div>
+        <div class="foot-note">Illustrative sample of assets. Totals here are a subset of the "Process Copilots" feature spend shown in Spend by request, broken out per asset for visibility.</div>
+      </div>
+
+      <!-- ---- SUBSECTION: MLWB usage ---- -->
+      <div class="subpanel-section" id="subsection-mlwb">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">MLWB usage</div>
+            <div class="pane-desc">Spend per ML Workbench job — which job is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is beyond this concept.</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <select class="select-input" id="filterMlwbModel">
+            <option value="">Model: All</option>
+          </select>
+          <input type="text" class="search-input" id="mlwbSearch" placeholder="Search jobs">
+          <button class="clear-filters-btn" id="clearMlwbFilters">Clear filters</button>
+        </div>
+        <div class="results-strip">
+          <span id="mlwbResultsCount">Showing 3 of 3 jobs</span>
+          <span>Filtered spend: <span class="total-chip" id="mlwbResultsTotal">$0.00</span></span>
+        </div>
+        <div class="table-scroll">
+        <table id="table-mlwb-jobs">
+          <thead>
+            <tr>
+              <th>Job</th>
+              <th>Model used</th>
+              <th class="num-col">Spend this period</th>
+              <th>Last used</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+        </div>
+        <div class="foot-note">Illustrative sample of jobs. Totals here are a subset of the "ML Workbench" feature spend shown in Spend by request, broken out per job for visibility.</div>
+      </div>
+
+      <!-- ---- SUBSECTION: Spend statement ---- -->
+      <div class="subpanel-section" id="subsection-statement">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Spend statement</div>
+            <div class="pane-desc">A year of AI Tokens charges, locked to the price in effect when each request was made.</div>
+          </div>
+          <button class="export-btn" id="exportStatement">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+            Export statement
+          </button>
+        </div>
+        <table id="table-statement">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Price table version</th>
+              <th class="num-col">Requests</th>
+              <th class="num-col">Spend</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+
+        <div class="pane-head" style="margin-top:24px;">
+          <div>
+            <div class="pane-title" style="font-size:14px;">Draw-down price table</div>
+            <div class="pane-desc">Published on <a href="https://docs.celonis.com/ai-pricing" target="_blank" rel="noopener">docs.celonis.com</a>, where current and previous versions can be viewed. The version in effect at the time of a request is what gets billed — never restated.</div>
+          </div>
+          <span class="version-pill" id="currentVersionPill">Current: v2026.09</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ---- SECTION: Storage ---- -->
+    <div class="panel-section" id="section-storage">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Storage</div>
+          <div class="pane-desc">Credits consumed by data and artifact storage this period, by storage type. Visibility only — storage limits aren't configurable yet outside the illustrative Limits &amp; alerts tab.</div>
+        </div>
+      </div>
+      <table id="table-storage">
+        <thead>
+          <tr>
+            <th>Storage type</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of category</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+        <tfoot><tr><td>Total</td><td class="num-col" id="storageTotalCell">$0.00</td><td class="num-col"></td></tr></tfoot>
+      </table>
+      <div class="foot-note">Sorted by spend. Storage categories here are illustrative — the real taxonomy will depend on which storage surfaces get metered first.</div>
+    </div>
+
+    <!-- ---- SECTION: Compute ---- -->
+    <div class="panel-section" id="section-compute">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Compute</div>
+          <div class="pane-desc">Credits consumed by compute workloads this period, by workload type. Visibility only — compute limits aren't configurable yet outside the illustrative Limits &amp; alerts tab.</div>
+        </div>
+      </div>
+      <table id="table-compute">
+        <thead>
+          <tr>
+            <th>Workload type</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of category</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+        <tfoot><tr><td>Total</td><td class="num-col" id="computeTotalCell">$0.00</td><td class="num-col"></td></tr></tfoot>
+      </table>
+      <div class="foot-note">Sorted by spend. Compute categories here are illustrative — the real taxonomy will depend on which compute surfaces get metered first.</div>
+    </div>
+
+    <!-- ---- SECTION: Limits & alerts ---- -->
+    <div class="panel-section" id="section-limits">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Limits &amp; alerts</div>
+          <div class="pane-desc">Concept only — set a spend limit per category and choose when to get notified as usage approaches it. Nothing here is wired to real enforcement; it's here to test whether per-category limits and alerts are the right shape for Credits.</div>
+        </div>
+      </div>
+
+      <div class="limits-grid">
+
+        <div class="limit-card">
+          <div class="limit-card-head">
+            <span class="legend-dot" style="background:#1464F4"></span>
+            <div class="limit-card-title">AI Tokens</div>
+            <span class="badge muted">$84,200 spent this period</span>
+          </div>
+          <label class="limit-label" for="limitTokens">Monthly limit</label>
+          <div class="limit-input-row">
+            <span class="limit-prefix">$</span>
+            <input type="number" class="limit-input" id="limitTokens" value="100000" min="0" step="1000">
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="limitTokensBar"></div></div>
+          <div class="limit-usage-note" id="limitTokensNote"></div>
+          <div class="alert-row">
+            <span class="alert-row-label">Alert me at</span>
+            <label><input type="checkbox" checked data-threshold="50"> 50%</label>
+            <label><input type="checkbox" checked data-threshold="80"> 80%</label>
+            <label><input type="checkbox" checked data-threshold="100"> 100%</label>
+            <label><input type="checkbox" data-threshold="150"> 150%</label>
+          </div>
+          <button class="export-btn limit-save-btn" data-category="tokens">Save limit</button>
+          <div class="limit-saved-note" id="limitTokensSaved"></div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-card-head">
+            <span class="legend-dot" style="background:#1B6B4A"></span>
+            <div class="limit-card-title">Storage</div>
+            <span class="badge muted">$31,500 spent this period</span>
+          </div>
+          <label class="limit-label" for="limitStorage">Monthly limit</label>
+          <div class="limit-input-row">
+            <span class="limit-prefix">$</span>
+            <input type="number" class="limit-input" id="limitStorage" value="40000" min="0" step="1000">
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="limitStorageBar"></div></div>
+          <div class="limit-usage-note" id="limitStorageNote"></div>
+          <div class="alert-row">
+            <span class="alert-row-label">Alert me at</span>
+            <label><input type="checkbox" checked data-threshold="50"> 50%</label>
+            <label><input type="checkbox" checked data-threshold="80"> 80%</label>
+            <label><input type="checkbox" checked data-threshold="100"> 100%</label>
+            <label><input type="checkbox" data-threshold="150"> 150%</label>
+          </div>
+          <button class="export-btn limit-save-btn" data-category="storage">Save limit</button>
+          <div class="limit-saved-note" id="limitStorageSaved"></div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-card-head">
+            <span class="legend-dot" style="background:#8A5A00"></span>
+            <div class="limit-card-title">Compute</div>
+            <span class="badge muted">$18,300 spent this period</span>
+          </div>
+          <label class="limit-label" for="limitCompute">Monthly limit</label>
+          <div class="limit-input-row">
+            <span class="limit-prefix">$</span>
+            <input type="number" class="limit-input" id="limitCompute" value="25000" min="0" step="1000">
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="limitComputeBar"></div></div>
+          <div class="limit-usage-note" id="limitComputeNote"></div>
+          <div class="alert-row">
+            <span class="alert-row-label">Alert me at</span>
+            <label><input type="checkbox" checked data-threshold="50"> 50%</label>
+            <label><input type="checkbox" checked data-threshold="80"> 80%</label>
+            <label><input type="checkbox" checked data-threshold="100"> 100%</label>
+            <label><input type="checkbox" data-threshold="150"> 150%</label>
+          </div>
+          <button class="export-btn limit-save-btn" data-category="compute">Save limit</button>
+          <div class="limit-saved-note" id="limitComputeSaved"></div>
+        </div>
+
+      </div>
+
+      <div class="price-callout">
+        <b>What's not here yet:</b> per-team or per-user limits, hard-stop vs. soft-warn behavior, and where alerts get delivered (email, Slack, in-app). This tab is meant to validate the shape of "configure a limit and get warned," not the full mechanism.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Mockup for internal review · not connected to live data · all figures illustrative</span>
+    <span>AI Fast-Track · Outputs to Credits · Visionary concept · updated 2026-10-02</span>
+  </div>
+
+</div>
+
+<script>
+  // ========== reference data ==========
+  var TEAMS = ["Production","Production 2","Standard Sandbox","Premium Sandbox"];
+  var TEAM_ENV = {"Production":"Production","Production 2":"Production","Standard Sandbox":"Sandbox","Premium Sandbox":"Sandbox"};
+  var USERS = ["A. Mendes","J. Oduya","T. Falk","L. Byrne","K. Novak","R. Haddad","P. Lindqvist","E. Marsh"];
+  var FEATURES = ["Process Copilots","ML Workbench","AI Annotations","Action Flow","Celonis Assistant","Decision Intelligence","Agent","MCP Server Asset","Vector Store","Knowledge Vault"];
+  var MODELS = ["Claude 3.5 Sonnet","GPT-4o mini","GPT-4o","Claude 3.5 Haiku","Gemini 1.5 Pro","text-embedding-3-large","Not recorded"];
+
+  // price per 1,000,000 tokens, by table version
+  var PRICE_HISTORY = {
+    "v2026.08": {
+      effective: "2026-08-01",
+      prices: {
+        "Claude 3.5 Sonnet": {prompt:3.00, completion:15.00},
+        "GPT-4o mini": {prompt:0.20, completion:0.80},
+        "GPT-4o": {prompt:2.50, completion:10.00},
+        "Claude 3.5 Haiku": {prompt:0.80, completion:4.00},
+        "Gemini 1.5 Pro": {prompt:1.25, completion:5.00},
+        "text-embedding-3-large": {prompt:0.13, completion:0.13},
+        "Not recorded": {prompt:0, completion:0}
+      }
+    },
+    "v2026.09": {
+      effective: "2026-09-01",
+      prices: {
+        "Claude 3.5 Sonnet": {prompt:3.00, completion:15.00},
+        "GPT-4o mini": {prompt:0.15, completion:0.60},
+        "GPT-4o": {prompt:2.50, completion:10.00},
+        "Claude 3.5 Haiku": {prompt:0.80, completion:4.00},
+        "Gemini 1.5 Pro": {prompt:1.25, completion:5.00},
+        "text-embedding-3-large": {prompt:0.13, completion:0.13},
+        "Not recorded": {prompt:0, completion:0}
+      }
+    }
+  };
+  var REFERENCE_DATE = new Date("2026-09-30");
+
+  function versionFor(dateStr){
+    return dateStr >= "2026-09-01" ? "v2026.09" : "v2026.08";
+  }
+  function priceFor(model, dateStr){
+    var v = versionFor(dateStr);
+    return PRICE_HISTORY[v].prices[model] || {prompt:0, completion:0};
+  }
+  function costFor(model, dateStr, promptTokens, completionTokens){
+    var p = priceFor(model, dateStr);
+    return (promptTokens/1e6)*p.prompt + (completionTokens/1e6)*p.completion;
+  }
+  function fmtMoney(n){
+    return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function fmtK(n){
+    return (n/1000).toFixed(1) + 'K';
+  }
+  function fmtTok(n){
+    if(n>=1e6) return (n/1e6).toFixed(1)+'M tokens';
+    return (n/1e3).toFixed(1)+'K tokens';
+  }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function pct(n,total){ return total>0 ? (n/total*100).toFixed(1) : '0.0'; }
+
+  // ========== detail request rows (AI Tokens category) ==========
+  // [date, team, user, feature, model, promptTokens, completionTokens]
+  var requestRows = [
+    ["2026-08-04","Production","A. Mendes","Process Copilots","Claude 3.5 Sonnet",182000,61000],
+    ["2026-08-06","Production","J. Oduya","ML Workbench","GPT-4o",240000,54000],
+    ["2026-08-08","Production 2","T. Falk","AI Annotations","GPT-4o mini",410000,88000],
+    ["2026-08-11","Standard Sandbox","L. Byrne","Decision Intelligence","Gemini 1.5 Pro",96000,21000],
+    ["2026-08-13","Production","K. Novak","Celonis Assistant","Claude 3.5 Haiku",128000,33000],
+    ["2026-08-15","Production 2","R. Haddad","Action Flow","GPT-4o mini",355000,72000],
+    ["2026-08-19","Production","P. Lindqvist","Agent","Claude 3.5 Sonnet",205000,88000],
+    ["2026-08-22","Premium Sandbox","E. Marsh","Vector Store","text-embedding-3-large",610000,0],
+    ["2026-08-27","Production","A. Mendes","MCP Server Asset","GPT-4o",174000,41000],
+    ["2026-08-29","Production 2","J. Oduya","Knowledge Vault","Not recorded",88000,19000],
+    ["2026-09-02","Production","T. Falk","Process Copilots","Claude 3.5 Sonnet",198000,67000],
+    ["2026-09-03","Production","L. Byrne","ML Workbench","GPT-4o",261000,58000],
+    ["2026-09-05","Production 2","K. Novak","AI Annotations","GPT-4o mini",430000,91000],
+    ["2026-09-08","Standard Sandbox","R. Haddad","Decision Intelligence","Gemini 1.5 Pro",101000,24000],
+    ["2026-09-09","Production","P. Lindqvist","Celonis Assistant","Claude 3.5 Haiku",135000,36000],
+    ["2026-09-11","Production 2","E. Marsh","Action Flow","GPT-4o mini",372000,79000],
+    ["2026-09-14","Production","A. Mendes","Agent","Claude 3.5 Sonnet",219000,94000],
+    ["2026-09-15","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",588000,0],
+    ["2026-09-17","Production","T. Falk","MCP Server Asset","GPT-4o",183000,44000],
+    ["2026-09-18","Production 2","L. Byrne","Knowledge Vault","Not recorded",94000,21000],
+    ["2026-09-20","Production","A. Mendes","Agent","Claude 3.5 Sonnet",450000,200000],
+    ["2026-09-21","Production","K. Novak","Process Copilots","GPT-4o mini",402000,86000],
+    ["2026-09-23","Standard Sandbox","R. Haddad","Decision Intelligence","Claude 3.5 Haiku",118000,31000],
+    ["2026-09-24","Production","P. Lindqvist","ML Workbench","Claude 3.5 Sonnet",226000,97000],
+    ["2026-09-26","Production 2","E. Marsh","AI Annotations","GPT-4o mini",388000,83000],
+    ["2026-09-28","Production","A. Mendes","Celonis Assistant","GPT-4o",171000,39000],
+    ["2026-09-29","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",552000,0]
+  ];
+
+  // ========== feature + model + user summary (AI Tokens category headline totals) ==========
+  var featureSpend = [
+    ["Process Copilots",24100],
+    ["ML Workbench",17800],
+    ["AI Annotations",12300],
+    ["Action Flow",9900],
+    ["Celonis Assistant",8700],
+    ["Decision Intelligence",4600],
+    ["Agent",3200],
+    ["MCP Server Asset",2000],
+    ["Vector Store",1000],
+    ["Knowledge Vault",600]
+  ];
+  var featureTotal = featureSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var modelSpend = [
+    ["Claude 3.5 Sonnet",31200],
+    ["GPT-4o mini",19400],
+    ["GPT-4o",14100],
+    ["Claude 3.5 Haiku",9800],
+    ["Gemini 1.5 Pro",4200],
+    ["text-embedding-3-large",3900],
+    ["Not recorded",1600]
+  ];
+  var modelTotal = modelSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var userSpend = [
+    ["A. Mendes",28400],
+    ["P. Lindqvist",12300],
+    ["T. Falk",9800],
+    ["J. Oduya",8900],
+    ["L. Byrne",7600],
+    ["K. Novak",6700],
+    ["R. Haddad",5900],
+    ["E. Marsh",4600]
+  ];
+  var userTotal = userSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var modelTokens = [
+    ["Claude 3.5 Sonnet",8400000],
+    ["GPT-4o mini",48000000],
+    ["GPT-4o",2900000],
+    ["Claude 3.5 Haiku",9100000],
+    ["Gemini 1.5 Pro",2600000],
+    ["text-embedding-3-large",28000000],
+    ["Not recorded",850000]
+  ];
+  var modelTokensTotal = modelTokens.reduce(function(s,r){return s+r[1];},0);
+
+  var statementRows = [
+    ["Jul 2026","v2026.08",2460,21300.00],
+    ["Aug 2026","v2026.08",2810,24750.00],
+    ["Sep 2026 (through Sep 29)","v2026.09",2690,22650.00]
+  ];
+
+  // ========== asset usage (Studio packages + ML Workbench jobs) ==========
+  var studioAssets = [
+    ["Invoice Dispute Copilot","Studio Copilot","Claude 3.5 Sonnet",2480,"2026-09-28"],
+    ["Supplier Risk Assistant","Studio Copilot","GPT-4o",1920,"2026-09-27"],
+    ["PR Prioritization Agent","Studio Agent","GPT-4o mini",1340,"2026-09-25"],
+    ["Excess Stock Simulator","Studio Agent","Gemini 1.5 Pro",980,"2026-09-22"],
+    ["KPI Lineage Explainer","Studio Copilot","Claude 3.5 Sonnet",760,"2026-09-20"],
+    ["Material Reallocation Advisor","Studio Agent","Claude 3.5 Haiku",540,"2026-09-18"],
+    ["Backoffice Reconciliation Bot","Studio Copilot","GPT-4o mini",310,"2026-09-10"]
+  ];
+  var mlwbJobs = [
+    ["Demand Forecast Retrain","GPT-4o",1120,"2026-09-26"],
+    ["Anomaly Detection Pipeline","Claude 3.5 Haiku",640,"2026-09-23"],
+    ["Churn Scoring Job","GPT-4o mini",410,"2026-09-19"]
+  ];
+
+  // ========== Storage + Compute categories ==========
+  var storageSpend = [
+    ["Data Pool storage",14200],
+    ["Vector Store indexes",7300],
+    ["Document repository (RAG sources)",5600],
+    ["Backup snapshots",2800],
+    ["Model fine-tune artifacts",1600]
+  ];
+  var storageTotal = storageSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var computeSpend = [
+    ["ML Workbench training jobs",7900],
+    ["Agent orchestration runtime",5100],
+    ["Batch inference jobs",3200],
+    ["Embedding generation",2100]
+  ];
+  var computeTotal = computeSpend.reduce(function(s,r){return s+r[1];},0);
+
+  // ========== Credits categories (AI Tokens / Storage / Compute) ==========
+  var CATEGORY_KEYS = ['tokens','storage','compute'];
+  var CATEGORY_LABELS = {tokens:'AI Tokens', storage:'Storage', compute:'Compute'};
+  var CATEGORY_COLORS = {tokens:'#1464F4', storage:'#1B6B4A', compute:'#8A5A00'};
+  var CATEGORY_TOTAL = {tokens: featureTotal, storage: storageTotal, compute: computeTotal};
+  var CATEGORY_GRAND_TOTAL = CATEGORY_TOTAL.tokens + CATEGORY_TOTAL.storage + CATEGORY_TOTAL.compute;
+
+  // ========== per-team x per-category breakdown ==========
+  var TEAM_CATEGORY_SPEND = [
+    {team:"Production", tokens:58900, storage:19200, compute:12100},
+    {team:"Production 2", tokens:18300, storage:8400, compute:4200},
+    {team:"Standard Sandbox", tokens:5100, storage:2800, compute:1500},
+    {team:"Premium Sandbox", tokens:1900, storage:1100, compute:500}
+  ];
+  var GRAND_TOTAL = TEAM_CATEGORY_SPEND.reduce(function(s,r){return s+r.tokens+r.storage+r.compute;},0);
+
+  // ========== charts ==========
+  var CHART_COLORS = ['#0A2E6B','#0F4FC4','#1464F4','#5B8FF9','#A9C6FB'];
+  var CHART_OTHER = '#C9D3DF';
+
+  function topNPlusOther(rows, idx, n){
+    var enriched = rows.map(function(r){ return {label:r[0], value:r[idx]}; });
+    enriched.sort(function(a,b){ return b.value - a.value; });
+    var top = enriched.slice(0, n);
+    var restSum = enriched.slice(n).reduce(function(s,e){ return s+e.value; }, 0);
+    if(restSum > 0){ top.push({label:'Other', value:restSum}); }
+    return top;
+  }
+
+  function renderDonut(containerId, segments, total, colorFn){
+    var size = 96, cx = size/2, cy = size/2, sw = 14;
+    var r = cx - sw/2 - 1;
+    var C = 2*Math.PI*r;
+    var colorForFn = colorFn || function(seg, i){ return seg.label === 'Other' ? CHART_OTHER : CHART_COLORS[i % CHART_COLORS.length]; };
+    var cumulative = 0;
+    var circles = segments.map(function(seg, i){
+      var color = colorForFn(seg, i);
+      var frac = total > 0 ? seg.value/total : 0;
+      var len = frac*C;
+      var dasharray = len.toFixed(2)+' '+(C-len).toFixed(2);
+      var dashoffset = (-cumulative).toFixed(2);
+      cumulative += len;
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+sw+'" stroke-dasharray="'+dasharray+'" stroke-dashoffset="'+dashoffset+'"/>';
+    }).join('');
+    var centerVal = '$'+fmt(Math.round(total));
+    var svgHtml = '<div class="donut-svg-wrap"><svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><g transform="rotate(-90 '+cx+' '+cy+')">'+circles+'</g></svg>'+
+      '<div class="donut-center"><span class="val">'+centerVal+'</span><span class="lbl">this period</span></div></div>';
+    var legendHtml = '<ul class="legend">'+segments.map(function(seg, i){
+      var color = colorForFn(seg, i);
+      var pctVal = pct(seg.value, total);
+      return '<li class="legend-item"><span class="legend-dot" style="background:'+color+'"></span><span class="legend-label">'+seg.label+'</span><span class="legend-val">$'+fmt(seg.value)+' &middot; '+pctVal+'%</span></li>';
+    }).join('')+'</ul>';
+    document.getElementById(containerId).innerHTML = '<div class="donut-row">'+svgHtml+legendHtml+'</div>';
+  }
+
+  function renderCharts(){
+    var categorySegments = CATEGORY_KEYS.map(function(key){
+      return {label:CATEGORY_LABELS[key], value:CATEGORY_TOTAL[key], key:key};
+    });
+    renderDonut('chart-category-spend', categorySegments, CATEGORY_GRAND_TOTAL, function(seg){ return CATEGORY_COLORS[seg.key]; });
+
+    var teamSegments = TEAM_CATEGORY_SPEND.map(function(r){
+      return {label:r.team, value:r.tokens+r.storage+r.compute};
+    }).sort(function(a,b){ return b.value-a.value; });
+    renderDonut('chart-team-spend', teamSegments, GRAND_TOTAL);
+
+    renderDonut('chart-feature-spend', topNPlusOther(featureSpend, 1, 5), featureTotal);
+    renderDonut('chart-model-spend', topNPlusOther(modelSpend, 1, 5), modelTotal);
+  }
+
+  // ========== By team tab ==========
+  function renderTeamStackLegend(){
+    document.getElementById('teamStackLegend').innerHTML = CATEGORY_KEYS.map(function(key){
+      return '<span class="legend-item"><span class="legend-dot" style="background:'+CATEGORY_COLORS[key]+'"></span>'+CATEGORY_LABELS[key]+'</span>';
+    }).join('');
+  }
+
+  function renderTeamStack(rows){
+    var container = document.getElementById('teamStackedBars');
+    container.innerHTML = rows.map(function(r){
+      var total = r.tokens+r.storage+r.compute;
+      var segs = CATEGORY_KEYS.map(function(key){
+        var val = r[key];
+        var segPct = total>0 ? (val/total*100) : 0;
+        return '<div class="stacked-bar-seg" style="width:'+segPct.toFixed(1)+'%;background:'+CATEGORY_COLORS[key]+'" title="'+CATEGORY_LABELS[key]+': '+fmtMoney(val)+' ('+segPct.toFixed(1)+'%)"></div>';
+      }).join('');
+      return '<div class="stacked-bar-row">'+
+        '<div class="stacked-bar-label">'+r.team+'</div>'+
+        '<div class="stacked-bar-track">'+segs+'</div>'+
+        '<div class="stacked-bar-total num">'+fmtMoney(total)+'</div>'+
+        '</div>';
+    }).join('');
+  }
+
+  function renderTeams(){
+    var nameFilter = document.getElementById('filterTeamName').value;
+    var filtered = TEAM_CATEGORY_SPEND.filter(function(r){
+      if(nameFilter && r.team !== nameFilter) return false;
+      return true;
+    }).map(function(r){
+      return {team:r.team, tokens:r.tokens, storage:r.storage, compute:r.compute, total:r.tokens+r.storage+r.compute};
+    }).sort(function(a,b){ return b.total-a.total; });
+
+    renderTeamStackLegend();
+    renderTeamStack(filtered);
+
+    var tbody = document.querySelector('#table-teams tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r.total, GRAND_TOTAL);
+      return '<tr>'+
+        '<td>'+r.team+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.tokens)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.storage)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.compute)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.total)+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r.total;}, 0);
+    document.getElementById('teamsResultsCount').textContent = 'Showing '+filtered.length+' of '+TEAM_CATEGORY_SPEND.length+' teams';
+    document.getElementById('teamsResultsTotal').textContent = fmtMoney(total);
+  }
+
+  // ========== asset usage tab ==========
+  function renderAssetUsage(){
+    var studioType = document.getElementById('filterStudioType').value;
+    var studioModel = document.getElementById('filterStudioModel').value;
+    var studioSearch = document.getElementById('studioSearch').value.trim().toLowerCase();
+    var filteredStudio = studioAssets.filter(function(r){
+      if(studioType && r[1] !== studioType) return false;
+      if(studioModel && r[2] !== studioModel) return false;
+      if(studioSearch){
+        var hay = (r[0]+' '+r[1]+' '+r[2]).toLowerCase();
+        if(hay.indexOf(studioSearch) === -1) return false;
+      }
+      return true;
+    });
+    var studioTbody = document.querySelector('#table-studio-assets tbody');
+    studioTbody.innerHTML = filteredStudio.map(function(r){
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td>'+r[1]+'</td>'+
+        '<td>'+r[2]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
+        '<td>'+r[4]+'</td>'+
+        '</tr>';
+    }).join('');
+    var studioTotal = filteredStudio.reduce(function(s,r){return s+r[3];}, 0);
+    document.getElementById('studioResultsCount').textContent = 'Showing '+filteredStudio.length+' of '+studioAssets.length+' assets';
+    document.getElementById('studioResultsTotal').textContent = fmtMoney(studioTotal);
+
+    var mlwbModel = document.getElementById('filterMlwbModel').value;
+    var mlwbSearch = document.getElementById('mlwbSearch').value.trim().toLowerCase();
+    var filteredMlwb = mlwbJobs.filter(function(r){
+      if(mlwbModel && r[1] !== mlwbModel) return false;
+      if(mlwbSearch){
+        var hay = (r[0]+' '+r[1]).toLowerCase();
+        if(hay.indexOf(mlwbSearch) === -1) return false;
+      }
+      return true;
+    });
+    var mlwbTbody = document.querySelector('#table-mlwb-jobs tbody');
+    mlwbTbody.innerHTML = filteredMlwb.map(function(r){
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td>'+r[1]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[2])+'</td>'+
+        '<td>'+r[3]+'</td>'+
+        '</tr>';
+    }).join('');
+    var mlwbTotal = filteredMlwb.reduce(function(s,r){return s+r[2];}, 0);
+    document.getElementById('mlwbResultsCount').textContent = 'Showing '+filteredMlwb.length+' of '+mlwbJobs.length+' jobs';
+    document.getElementById('mlwbResultsTotal').textContent = fmtMoney(mlwbTotal);
+  }
+
+  // ========== models tab ==========
+  var modelCostByName = {};
+  modelSpend.forEach(function(r){ modelCostByName[r[0]] = r[1]; });
+
+  function renderModels(){
+    var nameFilter = document.getElementById('filterModelName').value;
+    var filtered = modelTokens.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){
+      return (modelCostByName[b[0]]||0) - (modelCostByName[a[0]]||0);
+    });
+
+    var tbody = document.querySelector('#table-models tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var cost = modelCostByName[r[0]] || 0;
+      var share = pct(cost, modelTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtTok(r[1])+'</td>'+
+        '<td class="num-col num">'+fmtMoney(cost)+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var totalCost = filtered.reduce(function(s,r){return s+(modelCostByName[r[0]] || 0);}, 0);
+    document.getElementById('modelsResultsCount').textContent = 'Showing '+filtered.length+' of '+modelTokens.length+' models';
+    document.getElementById('modelsResultsTotal').textContent = fmtMoney(totalCost);
+  }
+
+  // ========== features tab ==========
+  function renderFeatures(){
+    var nameFilter = document.getElementById('filterFeatureName').value;
+    var filtered = featureSpend.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){ return b[1]-a[1]; });
+
+    var tbody = document.querySelector('#table-features tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r[1], featureTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r[1];}, 0);
+    document.getElementById('featuresResultsCount').textContent = 'Showing '+filtered.length+' of '+featureSpend.length+' features';
+    document.getElementById('featuresResultsTotal').textContent = fmtMoney(total);
+  }
+
+  // ========== users tab ==========
+  function renderUsers(){
+    var nameFilter = document.getElementById('filterUserName').value;
+    var filtered = userSpend.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){ return b[1]-a[1]; });
+
+    var tbody = document.querySelector('#table-users tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r[1], userTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r[1];}, 0);
+    document.getElementById('usersResultsCount').textContent = 'Showing '+filtered.length+' of '+userSpend.length+' users';
+    document.getElementById('usersResultsTotal').textContent = fmtMoney(total);
+  }
+
+  // ========== spend statement tab ==========
+  function renderStatement(){
+    var tbody = document.querySelector('#table-statement tbody');
+    tbody.innerHTML = statementRows.map(function(r){
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td><span class="version-pill">'+r[1]+'</span></td>'+
+        '<td class="num-col num">'+fmt(r[2])+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
+        '</tr>';
+    }).join('');
+  }
+
+  // ========== Storage tab ==========
+  function renderStorage(){
+    var tbody = document.querySelector('#table-storage tbody');
+    var sorted = storageSpend.slice().sort(function(a,b){return b[1]-a[1];});
+    tbody.innerHTML = sorted.map(function(r){
+      var share = pct(r[1], storageTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+    document.getElementById('storageTotalCell').textContent = fmtMoney(storageTotal);
+  }
+
+  // ========== Compute tab ==========
+  function renderCompute(){
+    var tbody = document.querySelector('#table-compute tbody');
+    var sorted = computeSpend.slice().sort(function(a,b){return b[1]-a[1];});
+    tbody.innerHTML = sorted.map(function(r){
+      var share = pct(r[1], computeTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+    document.getElementById('computeTotalCell').textContent = fmtMoney(computeTotal);
+  }
+
+  // ========== Limits & alerts tab ==========
+  var LIMIT_SPEND = {tokens: featureTotal, storage: storageTotal, compute: computeTotal};
+  var LIMIT_IDS = {tokens:'limitTokens', storage:'limitStorage', compute:'limitCompute'};
+
+  function updateLimitBar(key){
+    var input = document.getElementById(LIMIT_IDS[key]);
+    var limit = parseFloat(input.value) || 0;
+    var spend = LIMIT_SPEND[key];
+    var usedPct = limit>0 ? Math.min(100, (spend/limit*100)) : 0;
+    document.getElementById(LIMIT_IDS[key]+'Bar').style.width = usedPct.toFixed(0)+'%';
+    var note = document.getElementById(LIMIT_IDS[key]+'Note');
+    if(limit<=0){ note.textContent = 'Set a limit above $0 to see projected usage.'; return; }
+    var pctOfLimit = (spend/limit*100).toFixed(0);
+    note.textContent = fmtMoney(spend)+' spent so far is '+pctOfLimit+'% of this limit.';
+  }
+
+  function initLimits(){
+    Object.keys(LIMIT_IDS).forEach(function(key){
+      updateLimitBar(key);
+      document.getElementById(LIMIT_IDS[key]).addEventListener('input', function(){ updateLimitBar(key); });
+    });
+    document.querySelectorAll('.limit-save-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var key = btn.dataset.category;
+        var noteEl = document.getElementById(LIMIT_IDS[key]+'Saved');
+        noteEl.textContent = 'Saved (concept only — not persisted).';
+        setTimeout(function(){ noteEl.textContent = ''; }, 2500);
+      });
+    });
+  }
+
+  // ========== drill-down request table ==========
+  var enrichedRequests = requestRows.map(function(r){
+    var cost = costFor(r[4], r[0], r[5], r[6]);
+    return {date:r[0], team:r[1], user:r[2], feature:r[3], model:r[4], promptTokens:r[5], completionTokens:r[6], cost:cost};
+  });
+
+  function populateFilterOptions(){
+    function fill(selectId, values){
+      var sel = document.getElementById(selectId);
+      values.forEach(function(v){
+        var opt = document.createElement('option');
+        opt.value = v; opt.textContent = v;
+        sel.appendChild(opt);
+      });
+    }
+    fill('filterTeam', TEAMS);
+    fill('filterUser', USERS);
+    fill('filterFeature', FEATURES);
+    fill('filterModel', MODELS);
+
+    fill('filterTeamName', TEAMS);
+
+    var studioTypes = Array.from(new Set(studioAssets.map(function(r){return r[1];})));
+    var studioModels = Array.from(new Set(studioAssets.map(function(r){return r[2];})));
+    fill('filterStudioType', studioTypes);
+    fill('filterStudioModel', studioModels);
+
+    var mlwbModels = Array.from(new Set(mlwbJobs.map(function(r){return r[1];})));
+    fill('filterMlwbModel', mlwbModels);
+
+    fill('filterModelName', MODELS);
+    fill('filterFeatureName', FEATURES);
+    fill('filterUserName', USERS);
+  }
+
+  function withinDateFilter(dateStr, filterVal){
+    if(filterVal === 'all' || !filterVal) return true;
+    if(filterVal === 'sincePriceChange') return dateStr >= '2026-09-01';
+    var days = parseInt(filterVal, 10);
+    var cutoff = new Date(REFERENCE_DATE);
+    cutoff.setDate(cutoff.getDate() - days);
+    var d = new Date(dateStr);
+    return d >= cutoff && d <= REFERENCE_DATE;
+  }
+
+  function renderRequests(){
+    var team = document.getElementById('filterTeam').value;
+    var user = document.getElementById('filterUser').value;
+    var feature = document.getElementById('filterFeature').value;
+    var model = document.getElementById('filterModel').value;
+    var dateFilter = document.getElementById('filterDate').value;
+    var search = document.getElementById('requestSearch').value.trim().toLowerCase();
+
+    var filtered = enrichedRequests.filter(function(r){
+      if(team && r.team !== team) return false;
+      if(user && r.user !== user) return false;
+      if(feature && r.feature !== feature) return false;
+      if(model && r.model !== model) return false;
+      if(!withinDateFilter(r.date, dateFilter)) return false;
+      if(search){
+        var hay = (r.team+' '+r.user+' '+r.feature+' '+r.model+' '+r.date).toLowerCase();
+        if(hay.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+
+    var tbody = document.querySelector('#table-requests tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var modelHtml = r.model === "Not recorded" ? '<span class="badge unrecorded">Not recorded</span>' : r.model;
+      return '<tr>'+
+        '<td>'+r.date+'</td>'+
+        '<td>'+r.team+'</td>'+
+        '<td>'+r.user+'</td>'+
+        '<td>'+r.feature+'</td>'+
+        '<td>'+modelHtml+'</td>'+
+        '<td class="num-col num">'+fmtK(r.promptTokens)+' / '+fmtK(r.completionTokens)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.cost)+'</td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r.cost;}, 0);
+    document.getElementById('resultsCount').textContent = 'Showing '+filtered.length+' of '+enrichedRequests.length+' requests';
+    document.getElementById('resultsTotal').textContent = fmtMoney(total);
+
+    return filtered;
+  }
+
+  // ========== wiring ==========
+  populateFilterOptions();
+  renderCharts();
+  renderTeams();
+  renderUsers();
+  renderAssetUsage();
+  renderModels();
+  renderFeatures();
+  renderStatement();
+  renderRequests();
+  renderStorage();
+  renderCompute();
+  initLimits();
+
+  ['filterTeam','filterUser','filterFeature','filterModel','filterDate','requestSearch'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', renderRequests);
+    document.getElementById(id).addEventListener('change', renderRequests);
+  });
+  document.getElementById('clearFilters').addEventListener('click', function(){
+    ['filterTeam','filterUser','filterFeature','filterModel'].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('filterDate').value = 'all';
+    document.getElementById('requestSearch').value = '';
+    renderRequests();
+  });
+
+  ['filterTeamName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderTeams);
+  });
+  document.getElementById('clearTeamFilters').addEventListener('click', function(){
+    document.getElementById('filterTeamName').value = '';
+    renderTeams();
+  });
+
+  ['filterStudioType','filterStudioModel','studioSearch','filterMlwbModel','mlwbSearch'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', renderAssetUsage);
+    document.getElementById(id).addEventListener('change', renderAssetUsage);
+  });
+  document.getElementById('clearStudioFilters').addEventListener('click', function(){
+    document.getElementById('filterStudioType').value = '';
+    document.getElementById('filterStudioModel').value = '';
+    document.getElementById('studioSearch').value = '';
+    renderAssetUsage();
+  });
+  document.getElementById('clearMlwbFilters').addEventListener('click', function(){
+    document.getElementById('filterMlwbModel').value = '';
+    document.getElementById('mlwbSearch').value = '';
+    renderAssetUsage();
+  });
+
+  ['filterModelName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderModels);
+  });
+  document.getElementById('clearModelFilters').addEventListener('click', function(){
+    document.getElementById('filterModelName').value = '';
+    renderModels();
+  });
+
+  ['filterFeatureName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderFeatures);
+  });
+  document.getElementById('clearFeatureFilters').addEventListener('click', function(){
+    document.getElementById('filterFeatureName').value = '';
+    renderFeatures();
+  });
+
+  ['filterUserName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderUsers);
+  });
+  document.getElementById('clearUserFilters').addEventListener('click', function(){
+    document.getElementById('filterUserName').value = '';
+    renderUsers();
+  });
+
+  // top-level tabs
+  var navButtons = Array.from(document.querySelectorAll('.tab-btn'));
+  navButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      navButtons.forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel-section').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById('section-'+btn.dataset.tab);
+      if(target) target.classList.add('active');
+    });
+  });
+
+  // AI Tokens inner subtabs
+  var subTabButtons = Array.from(document.querySelectorAll('.subtab-btn'));
+  subTabButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      subTabButtons.forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.subpanel-section').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById('subsection-'+btn.dataset.subtab);
+      if(target) target.classList.add('active');
+    });
+  });
+
+  // export: filtered request view
+  function downloadCsv(filename, rows){
+    var csv = rows.map(function(row){
+      return row.map(function(cell){
+        var text = String(cell).replace(/\s+/g,' ').trim();
+        return '"'+text.replace(/"/g,'""')+'"';
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], {type:'text/csv'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('exportRequests').addEventListener('click', function(){
+    var filtered = renderRequests();
+    var header = ['Date','Team','User','Feature','Model','Prompt tokens','Completion tokens','Cost (USD)'];
+    var rows = [header].concat(filtered.map(function(r){
+      return [r.date, r.team, r.user, r.feature, r.model, r.promptTokens, r.completionTokens, r.cost.toFixed(2)];
+    }));
+    downloadCsv('ai-token-credits-requests.csv', rows);
+  });
+
+  document.getElementById('exportStatement').addEventListener('click', function(){
+    var header = ['Period','Price table version','Requests','Spend (USD)'];
+    var rows = [header].concat(statementRows.map(function(r){
+      return [r[0], r[1], r[2], r[3].toFixed(2)];
+    }));
+    downloadCsv('ai-token-credits-spend-statement.csv', rows);
+  });
+</script>
+</body>
+</html>
