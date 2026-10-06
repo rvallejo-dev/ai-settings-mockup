@@ -45,11 +45,6 @@
   }
 
   /* ---------- header ---------- */
-  .crumb{
-    font-size:12.5px;
-    color:var(--text-muted);
-    margin-bottom:10px;
-  }
   .title-row{
     display:flex;
     align-items:center;
@@ -63,27 +58,24 @@
     margin:0 0 6px 0;
     letter-spacing:-0.01em;
   }
+  .disable-ai-btn{
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:var(--red);
+    color:#fff;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .disable-ai-btn:hover{background:#96302E;}
   .subtitle{
     color:var(--text-secondary);
     font-size:14px;
     max-width:680px;
   }
-  .phase-tag{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    background:var(--blue-tint);
-    color:var(--blue-dark);
-    border:1px solid #C7D9FB;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:12.5px;
-    font-weight:600;
-    white-space:nowrap;
-    margin-top:4px;
-  }
-  .phase-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);}
-
   /* ---------- scope note ---------- */
   .scope-note{
     margin-top:18px;
@@ -125,6 +117,56 @@
     font-size:11px;
     color:var(--text-muted);
   }
+
+  /* ---------- team alert banner ---------- */
+  .alert-banner{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:10px;
+    border:1px solid transparent;
+  }
+  .alert-banner.info{background:var(--blue-tint);border-color:rgba(20,100,244,0.18);}
+  .alert-banner.warning{background:var(--amber-tint);border-color:rgba(138,90,0,0.18);}
+  .alert-banner.critical{background:var(--red-tint);border-color:rgba(178,58,56,0.2);}
+  .alert-icon{
+    flex:none;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:700;
+    font-style:italic;
+    font-family:'IBM Plex Sans', sans-serif;
+    margin-top:1px;
+    color:#fff;
+  }
+  .alert-banner.info .alert-icon{background:var(--blue);}
+  .alert-banner.warning .alert-icon{background:var(--amber-text);}
+  .alert-banner.critical .alert-icon{background:var(--red);}
+  .alert-body{flex:1;}
+  .alert-title{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+  .alert-banner.info .alert-title{color:var(--blue-dark);}
+  .alert-banner.warning .alert-title{color:var(--amber-text);}
+  .alert-banner.critical .alert-title{color:var(--red);}
+  .alert-sub{font-size:12.5px;color:var(--text-secondary);}
+  .alert-dismiss{
+    flex:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:17px;
+    line-height:1;
+    color:var(--text-muted);
+    padding:2px 4px;
+    border-radius:4px;
+  }
+  .alert-dismiss:hover{color:var(--ink);}
 
   /* ---------- setup strip ---------- */
   .setup-strip{
@@ -207,13 +249,6 @@
     justify-content:space-between;
     gap:12px;
   }
-  .readonly-note{
-    margin-top:12px;
-    padding-top:12px;
-    border-top:1px dashed var(--border);
-    font-size:11.5px;
-    color:var(--text-muted);
-  }
 
   /* ---------- donut charts ---------- */
   .chart-card .card-label{margin-bottom:2px;}
@@ -294,6 +329,134 @@
     color:var(--text-muted);
   }
 
+  /* ---------- main section nav (top-level: Providers / Consumption) ---------- */
+  .main-tabs{
+    display:flex;
+    gap:4px;
+    margin-top:28px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+  }
+  .main-panel-section{display:none;}
+  .main-panel-section.active{display:block;}
+  .static-panel{
+    margin-top:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+  }
+
+  /* ---------- providers list ---------- */
+  .providers-list{margin-top:20px;}
+  .provider-group{border-top:1px solid var(--border);}
+  .provider-group:first-child{border-top:none;}
+  .provider-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 0;
+  }
+  .provider-toggle{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    padding:0;
+  }
+  .provider-toggle .chevron{
+    display:inline-block;
+    font-size:11px;
+    color:var(--text-muted);
+    transition:transform .15s ease;
+  }
+  .provider-group.expanded .provider-toggle .chevron{transform:rotate(90deg);}
+  .provider-name{font-size:14.5px;font-weight:600;color:var(--ink);}
+  .add-model-btn{
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:7px 14px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .add-model-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .provider-body{display:none;padding:0 0 18px 0;}
+  .provider-group.expanded .provider-body{display:block;}
+
+  .model-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .model-table thead th{
+    text-align:left;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    padding:0 12px 10px 12px;
+    border-bottom:1px solid var(--border);
+  }
+  .model-table thead th:last-child, .model-table td:last-child{text-align:right;}
+  .model-table tbody td{padding:12px;color:var(--ink);border-bottom:1px solid var(--border);}
+  .model-table tbody tr:last-child td{border-bottom:none;}
+  .hosted-tag{
+    display:inline-block;
+    font-size:12px;
+    color:var(--text-secondary);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 10px;
+  }
+  .switch-cell{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+  .switch{
+    position:relative;
+    width:34px;
+    height:18px;
+    border-radius:999px;
+    background:var(--border);
+    border:none;
+    cursor:pointer;
+    flex-shrink:0;
+    padding:0;
+    transition:background .15s ease;
+  }
+  .switch::after{
+    content:'';
+    position:absolute;
+    top:2px;
+    left:2px;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);
+    transition:transform .15s ease;
+  }
+  .switch.on{background:var(--blue);}
+  .switch.on::after{transform:translateX(16px);}
+  .switch-label{font-size:13px;color:var(--text-secondary);}
+  .icon-btn{
+    width:28px;
+    height:28px;
+    border-radius:7px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text-secondary);
+    font-size:13px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .icon-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .cell-muted{color:var(--text-muted);}
+
   /* ---------- section nav ---------- */
   .tabs{
     display:flex;
@@ -307,7 +470,7 @@
     padding-top:6px;
     z-index:5;
   }
-  .tab-btn{
+  .tab-btn, .main-tab-btn{
     background:none;
     border:none;
     font-family:inherit;
@@ -319,8 +482,8 @@
     border-bottom:2px solid transparent;
     white-space:nowrap;
   }
-  .tab-btn:hover{color:var(--ink);}
-  .tab-btn.active{
+  .tab-btn:hover, .main-tab-btn:hover{color:var(--ink);}
+  .tab-btn.active, .main-tab-btn.active{
     color:var(--ink);
     font-weight:600;
     border-bottom-color:var(--blue);
@@ -509,16 +672,15 @@
 <body>
 <div class="shell">
 
-  <div class="crumb">AI Settings &nbsp;/&nbsp; AI Token Credits</div>
   <div class="title-row">
     <div>
-      <h1>Monitor and control your AI usage</h1>
+      <h1>AI Settings</h1>
+      <p class="subtitle">Control GenAI product usage across Celonis. Configure models &amp; applications and track their consumption. <a href="https://docs.celonis.com/en/ai-settings.html">Read more on how we use AI.</a></p>
     </div>
-    <div class="phase-tag"><span class="dot"></span>Iteration 1 · Spend visibility</div>
+    <button class="disable-ai-btn">Disable AI Services</button>
   </div>
 
-  <!-- ================= OVERVIEW ================= -->
-  <div class="block-heading">AI Token Credit allowance — this contract year</div>
+  <!-- ================= OVERVIEW (always visible) ================= -->
   <div class="overview-grid">
     <div class="card">
       <div class="card-label">Consumed</div>
@@ -526,8 +688,7 @@
         <div class="card-value num">$84,200<span class="unit">/ $120,000</span></div>
       </div>
       <div class="progress-track"><div class="progress-fill"></div></div>
-      <div class="card-sub">70% of allowance used · last 28 days: <b>$9,840</b> (+16% vs. prior 28 days)</div>
-      <div class="readonly-note">Hard cap $180,000 (150%) · overage billed only after an admin is notified past 100%. Shown for reference — setting these is Iteration 2.</div>
+      <div class="card-sub">Token spend / year</div>
     </div>
 
     <div class="card chart-card">
@@ -540,14 +701,238 @@
     </div>
   </div>
 
+  <!-- ================= TEAM CONSUMPTION ALERT (illustrative — Iteration 1 scope: 1 threshold shown) ================= -->
+  <div class="alert-banner info" id="teamAlertBanner">
+    <div class="alert-icon">i</div>
+    <div class="alert-body">
+      <div class="alert-title">Procurement team has reached 51% of its AI spend allowance</div>
+      <div class="alert-sub">Team admins notified by email and in-platform · Next alert at 80%</div>
+    </div>
+    <button class="alert-dismiss" id="teamAlertDismiss" aria-label="Dismiss alert">&times;</button>
+  </div>
+
+  <!-- ================= MAIN SECTION NAV ================= -->
+  <nav class="main-tabs" aria-label="AI Settings sections">
+    <button class="main-tab-btn active" data-main-tab="providers">AI Service Providers</button>
+    <button class="main-tab-btn" data-main-tab="consumption">Consumption</button>
+  </nav>
+
+  <!-- ================= MAIN SECTION: AI Service Providers ================= -->
+  <div class="main-panel-section active" id="main-section-providers">
+    <div class="static-panel">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">AI Service Providers</div>
+          <div class="pane-desc">Add the LLM providers available to your tenant, then enable or disable individual models for use across Celonis products.</div>
+        </div>
+      </div>
+
+      <div class="providers-list">
+
+        <div class="provider-group" data-provider="anthropic">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">Anthropic (Messages compliant API)</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Claude Opus 4.5 (Anthropic)</td>
+                  <td>claude-opus-4-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Claude Sonnet 4.5 (Anthropic)</td>
+                  <td>claude-sonnet-4-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Claude Haiku 4.5 (Anthropic)</td>
+                  <td>claude-haiku-4-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group" data-provider="aws-bedrock">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">AWS Bedrock</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Llama 3.3 70B (AWS Bedrock)</td>
+                  <td>llama-3.3-70b</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Mistral Large (AWS Bedrock)</td>
+                  <td>mistral-large</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group expanded" data-provider="azure-openai">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">Azure OpenAI</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>DeepSeek V4.1 Flash (Azure AI Foundry)</td>
+                  <td>deepseek-v4.1-flash</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 4.1 (Azure OpenAI)</td>
+                  <td>gpt-4.1</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 5 Mini (Azure OpenAI)</td>
+                  <td>gpt-5-mini</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>o3 Mini (Azure OpenAI)</td>
+                  <td>o3-mini</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 6 Luna (Azure OpenAI)</td>
+                  <td>gpt-6-luna</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 5 (Azure OpenAI)</td>
+                  <td>gpt-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 6 Sol (Azure OpenAI)</td>
+                  <td>gpt-6-sol</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group" data-provider="openai">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">OpenAI</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>GPT 5.1 (OpenAI)</td>
+                  <td>gpt-5.1</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>o4 Mini (OpenAI)</td>
+                  <td>o4-mini</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group" data-provider="google-vertex">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">Google Vertex AI</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Gemini 2.5 Pro (Vertex AI)</td>
+                  <td>gemini-2.5-pro</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Gemini 2.5 Flash (Vertex AI)</td>
+                  <td>gemini-2.5-flash</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SECTION: Consumption ================= -->
+  <div class="main-panel-section" id="main-section-consumption">
+
   <!-- ================= SECTION NAV ================= -->
   <nav class="tabs" aria-label="Jump to section">
     <button class="tab-btn active" data-tab="features">Features</button>
     <button class="tab-btn" data-tab="models">Models</button>
-    <button class="tab-btn" data-tab="drilldown">Spend by request</button>
     <button class="tab-btn" data-tab="assets">Asset usage</button>
     <button class="tab-btn" data-tab="mlwb">MLWB usage</button>
-    <button class="tab-btn" data-tab="statement">Spend statement</button>
   </nav>
 
   <div class="sections">
@@ -581,7 +966,7 @@
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
       </table>
-      <div class="foot-note">Sorted by cost. Pricing for active models lives in the draw-down price table on the Spend statement tab.</div>
+      <div class="foot-note">Sorted by cost.</div>
     </div>
 
     <!-- ---- SECTION: Features ---- -->
@@ -612,57 +997,7 @@
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
       </table>
-      <div class="foot-note">Sorted by spend. See Spend by request for the detailed, per-request breakdown behind these totals.</div>
-    </div>
-
-    <!-- ---- SECTION: Spend by request (drill-down) ---- -->
-    <div class="panel-section" id="section-drilldown">
-      <div class="pane-head">
-        <div>
-          <div class="pane-title">Spend by request</div>
-          <div class="pane-desc">Every AI request, attributed to a feature and model — filter by any of them, or by date range, same as the internal LLMaaS dashboard.</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <select class="select-input" id="filterFeature">
-          <option value="">Feature: All</option>
-        </select>
-        <select class="select-input" id="filterModel">
-          <option value="">Model: All</option>
-        </select>
-        <select class="select-input" id="filterDate">
-          <option value="all">Date: All time</option>
-          <option value="7">Last 7 days</option>
-          <option value="28">Last 28 days</option>
-          <option value="sincePriceChange">Since Sep 1 price update</option>
-        </select>
-        <input type="text" class="search-input" id="requestSearch" placeholder="Search requests">
-        <button class="clear-filters-btn" id="clearFilters">Clear filters</button>
-        <div class="spacer"></div>
-        <button class="export-btn" id="exportRequests">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-          Export view
-        </button>
-      </div>
-      <div class="results-strip">
-        <span id="resultsCount">Showing 26 of 26 requests</span>
-        <span>Filtered spend: <span class="total-chip" id="resultsTotal">$0.00</span></span>
-      </div>
-      <div class="table-scroll">
-      <table id="table-requests">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Feature</th>
-            <th>Model</th>
-            <th class="num-col">Tokens (prompt / completion)</th>
-            <th class="num-col">Cost</th>
-          </tr>
-        </thead>
-        <tbody><!-- rows injected by JS --></tbody>
-      </table>
-      </div>
-      <div class="foot-note">Showing a sample of individual requests for illustration. The full ledger reconciles to the allowance totals above.</div>
+      <div class="foot-note">Sorted by spend.</div>
     </div>
 
     <!-- ---- SECTION: Asset usage (Studio packages) ---- -->
@@ -670,7 +1005,7 @@
       <div class="pane-head">
         <div>
           <div class="pane-title">Asset usage</div>
-          <div class="pane-desc">Spend per Studio package — which asset is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
+          <div class="pane-desc">Per-asset breakdown of what's consuming your AI spend allowance — which model it's using, how much it's spent, and whether it's active. Set a consumption limit per asset, or disable it entirely.</div>
         </div>
       </div>
       <div class="filter-bar">
@@ -684,24 +1019,27 @@
         <button class="clear-filters-btn" id="clearStudioFilters">Clear filters</button>
       </div>
       <div class="results-strip">
-        <span id="studioResultsCount">Showing 7 of 7 assets</span>
+        <span id="studioResultsCount">Showing 8 of 8 assets</span>
         <span>Filtered spend: <span class="total-chip" id="studioResultsTotal">$0.00</span></span>
       </div>
       <div class="table-scroll">
       <table id="table-studio-assets">
         <thead>
           <tr>
-            <th>Asset</th>
-            <th>Type</th>
-            <th>Model used</th>
-            <th class="num-col">Spend this period</th>
+            <th>AI asset</th>
+            <th>Asset Type</th>
+            <th>AI model</th>
             <th>Last used</th>
+            <th class="num-col">Spend this period</th>
+            <th>Consumption limit</th>
+            <th></th>
+            <th class="num-col">Active</th>
           </tr>
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
       </table>
       </div>
-      <div class="foot-note">Illustrative sample of assets. Totals here are a subset of the "Process Copilots" feature spend shown in Spend by request, broken out per asset for visibility.</div>
+      <div class="foot-note">Illustrative sample of assets for this contract year. Figures are illustrative spend, broken out per asset for visibility.</div>
     </div>
 
     <!-- ---- SECTION: MLWB usage ---- -->
@@ -709,70 +1047,43 @@
       <div class="pane-head">
         <div>
           <div class="pane-title">MLWB usage</div>
-          <div class="pane-desc">Spend per ML Workbench job — which job is spending what, and on which model. Read-only: setting a per-asset limit or an enable/disable toggle is Iteration 2 (see scope note above).</div>
+          <div class="pane-desc">Per-workbench-configuration breakdown of what's consuming your AI spend allowance — which model it's using, how much it's spent, and whether it's active. Set a consumption limit per configuration, or disable it entirely.</div>
         </div>
       </div>
       <div class="filter-bar">
         <select class="select-input" id="filterMlwbModel">
           <option value="">Model: All</option>
         </select>
-        <input type="text" class="search-input" id="mlwbSearch" placeholder="Search jobs">
+        <input type="text" class="search-input" id="mlwbSearch" placeholder="Search workbench configurations">
         <button class="clear-filters-btn" id="clearMlwbFilters">Clear filters</button>
       </div>
       <div class="results-strip">
-        <span id="mlwbResultsCount">Showing 3 of 3 jobs</span>
+        <span id="mlwbResultsCount">Showing 13 of 13 configurations</span>
         <span>Filtered spend: <span class="total-chip" id="mlwbResultsTotal">$0.00</span></span>
       </div>
       <div class="table-scroll">
       <table id="table-mlwb-jobs">
         <thead>
           <tr>
-            <th>Job</th>
-            <th>Model used</th>
-            <th class="num-col">Spend this period</th>
+            <th>Workbench Configuration</th>
+            <th>AI model</th>
             <th>Last used</th>
+            <th class="num-col">Spend this period</th>
+            <th>Consumption limit</th>
+            <th></th>
+            <th class="num-col">Active</th>
           </tr>
         </thead>
         <tbody><!-- rows injected by JS --></tbody>
       </table>
       </div>
-      <div class="foot-note">Illustrative sample of jobs. Totals here are a subset of the "ML Workbench" feature spend shown in Spend by request, broken out per job for visibility.</div>
-    </div>
-
-    <!-- ---- SECTION: Spend statement ---- -->
-    <div class="panel-section" id="section-statement">
-      <div class="pane-head">
-        <div>
-          <div class="pane-title">Spend statement</div>
-          <div class="pane-desc">A year of charges, locked to the price in effect when each request was made.</div>
-        </div>
-        <button class="export-btn" id="exportStatement">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-          Export statement
-        </button>
-      </div>
-      <table id="table-statement">
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>Price table version</th>
-            <th class="num-col">Requests</th>
-            <th class="num-col">Spend</th>
-          </tr>
-        </thead>
-        <tbody><!-- rows injected by JS --></tbody>
-      </table>
-
-      <div class="pane-head" style="margin-top:24px;">
-        <div>
-          <div class="pane-title" style="font-size:14px;">Draw-down price table</div>
-          <div class="pane-desc">Published on <a href="https://docs.celonis.com/ai-pricing" target="_blank" rel="noopener">docs.celonis.com</a>, where current and previous versions can be viewed. The version in effect at the time of a request is what gets billed — never restated.</div>
-        </div>
-        <span class="version-pill" id="currentVersionPill">Current: v2026.09</span>
-      </div>
+      <div class="foot-note">Illustrative sample of workbench configurations for this contract year. Figures are illustrative spend, broken out per configuration for visibility.</div>
     </div>
 
   </div>
+
+  </div>
+  <!-- /main-section-consumption -->
 
   <div class="page-footer">
     <span>Mockup for internal review · not connected to live data · all figures illustrative</span>
@@ -786,46 +1097,6 @@
   var FEATURES = ["Process Copilots","ML Workbench","AI Annotations","Action Flow","Celonis Assistant","Decision Intelligence","Agent","MCP Server Asset","Vector Store","Knowledge Vault"];
   var MODELS = ["Claude 3.5 Sonnet","GPT-4o mini","GPT-4o","Claude 3.5 Haiku","Gemini 1.5 Pro","text-embedding-3-large","Not recorded"];
 
-  // price per 1,000,000 tokens, by table version
-  var PRICE_HISTORY = {
-    "v2026.08": {
-      effective: "2026-08-01",
-      prices: {
-        "Claude 3.5 Sonnet": {prompt:3.00, completion:15.00},
-        "GPT-4o mini": {prompt:0.20, completion:0.80},
-        "GPT-4o": {prompt:2.50, completion:10.00},
-        "Claude 3.5 Haiku": {prompt:0.80, completion:4.00},
-        "Gemini 1.5 Pro": {prompt:1.25, completion:5.00},
-        "text-embedding-3-large": {prompt:0.13, completion:0.13},
-        "Not recorded": {prompt:0, completion:0}
-      }
-    },
-    "v2026.09": {
-      effective: "2026-09-01",
-      prices: {
-        "Claude 3.5 Sonnet": {prompt:3.00, completion:15.00},
-        "GPT-4o mini": {prompt:0.15, completion:0.60},
-        "GPT-4o": {prompt:2.50, completion:10.00},
-        "Claude 3.5 Haiku": {prompt:0.80, completion:4.00},
-        "Gemini 1.5 Pro": {prompt:1.25, completion:5.00},
-        "text-embedding-3-large": {prompt:0.13, completion:0.13},
-        "Not recorded": {prompt:0, completion:0}
-      }
-    }
-  };
-  var REFERENCE_DATE = new Date("2026-09-30");
-
-  function versionFor(dateStr){
-    return dateStr >= "2026-09-01" ? "v2026.09" : "v2026.08";
-  }
-  function priceFor(model, dateStr){
-    var v = versionFor(dateStr);
-    return PRICE_HISTORY[v].prices[model] || {prompt:0, completion:0};
-  }
-  function costFor(model, dateStr, promptTokens, completionTokens){
-    var p = priceFor(model, dateStr);
-    return (promptTokens/1e6)*p.prompt + (completionTokens/1e6)*p.completion;
-  }
   function fmtMoney(n){
     return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
   }
@@ -838,38 +1109,6 @@
   }
   function fmt(n){ return n.toLocaleString('en-US'); }
   function pct(n,total){ return total>0 ? (n/total*100).toFixed(1) : '0.0'; }
-
-  // ========== detail request rows ==========
-  // [date, team, user, feature, model, promptTokens, completionTokens]
-  var requestRows = [
-    ["2026-08-04","Production","A. Mendes","Process Copilots","Claude 3.5 Sonnet",182000,61000],
-    ["2026-08-06","Production","J. Oduya","ML Workbench","GPT-4o",240000,54000],
-    ["2026-08-08","Production 2","T. Falk","AI Annotations","GPT-4o mini",410000,88000],
-    ["2026-08-11","Standard Sandbox","L. Byrne","Decision Intelligence","Gemini 1.5 Pro",96000,21000],
-    ["2026-08-13","Production","K. Novak","Celonis Assistant","Claude 3.5 Haiku",128000,33000],
-    ["2026-08-15","Production 2","R. Haddad","Action Flow","GPT-4o mini",355000,72000],
-    ["2026-08-19","Production","P. Lindqvist","Agent","Claude 3.5 Sonnet",205000,88000],
-    ["2026-08-22","Premium Sandbox","E. Marsh","Vector Store","text-embedding-3-large",610000,0],
-    ["2026-08-27","Production","A. Mendes","MCP Server Asset","GPT-4o",174000,41000],
-    ["2026-08-29","Production 2","J. Oduya","Knowledge Vault","Not recorded",88000,19000],
-    ["2026-09-02","Production","T. Falk","Process Copilots","Claude 3.5 Sonnet",198000,67000],
-    ["2026-09-03","Production","L. Byrne","ML Workbench","GPT-4o",261000,58000],
-    ["2026-09-05","Production 2","K. Novak","AI Annotations","GPT-4o mini",430000,91000],
-    ["2026-09-08","Standard Sandbox","R. Haddad","Decision Intelligence","Gemini 1.5 Pro",101000,24000],
-    ["2026-09-09","Production","P. Lindqvist","Celonis Assistant","Claude 3.5 Haiku",135000,36000],
-    ["2026-09-11","Production 2","E. Marsh","Action Flow","GPT-4o mini",372000,79000],
-    ["2026-09-14","Production","A. Mendes","Agent","Claude 3.5 Sonnet",219000,94000],
-    ["2026-09-15","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",588000,0],
-    ["2026-09-17","Production","T. Falk","MCP Server Asset","GPT-4o",183000,44000],
-    ["2026-09-18","Production 2","L. Byrne","Knowledge Vault","Not recorded",94000,21000],
-    ["2026-09-20","Production","A. Mendes","Agent","Claude 3.5 Sonnet",450000,200000],
-    ["2026-09-21","Production","K. Novak","Process Copilots","GPT-4o mini",402000,86000],
-    ["2026-09-23","Standard Sandbox","R. Haddad","Decision Intelligence","Claude 3.5 Haiku",118000,31000],
-    ["2026-09-24","Production","P. Lindqvist","ML Workbench","Claude 3.5 Sonnet",226000,97000],
-    ["2026-09-26","Production 2","E. Marsh","AI Annotations","GPT-4o mini",388000,83000],
-    ["2026-09-28","Production","A. Mendes","Celonis Assistant","GPT-4o",171000,39000],
-    ["2026-09-29","Premium Sandbox","J. Oduya","Vector Store","text-embedding-3-large",552000,0]
-  ];
 
   // ========== feature + model summary (headline totals) ==========
   var featureSpend = [
@@ -908,26 +1147,33 @@
   ];
   var modelTokensTotal = modelTokens.reduce(function(s,r){return s+r[1];},0);
 
-  var statementRows = [
-    ["Jul 2026","v2026.08",2460,21300.00],
-    ["Aug 2026","v2026.08",2810,24750.00],
-    ["Sep 2026 (through Sep 29)","v2026.09",2690,22650.00]
-  ];
-
   // ========== asset usage (Studio packages + ML Workbench jobs) ==========
+  // fields: [name, assetType, aiModel (null = n/a), lastUsed, spend (null = n/a), consumptionLimit (null = not set), active]
   var studioAssets = [
-    ["Invoice Dispute Copilot","Studio Copilot","Claude 3.5 Sonnet",2480,"2026-09-28"],
-    ["Supplier Risk Assistant","Studio Copilot","GPT-4o",1920,"2026-09-27"],
-    ["PR Prioritization Agent","Studio Agent","GPT-4o mini",1340,"2026-09-25"],
-    ["Excess Stock Simulator","Studio Agent","Gemini 1.5 Pro",980,"2026-09-22"],
-    ["KPI Lineage Explainer","Studio Copilot","Claude 3.5 Sonnet",760,"2026-09-20"],
-    ["Material Reallocation Advisor","Studio Agent","Claude 3.5 Haiku",540,"2026-09-18"],
-    ["Backoffice Reconciliation Bot","Studio Copilot","GPT-4o mini",310,"2026-09-10"]
+    ["MCP Tool Gateway","MCP Server Asset",null,"Sep 9, 2026 13:47",null,null,true],
+    ["Invoice Dispute Copilot","Process Copilots","Claude 3.5 Sonnet","Sep 28, 2026 09:14",2480,null,true],
+    ["Supplier Risk Assistant","Process Copilots","GPT-4o","Sep 27, 2026 16:02",1920,null,true],
+    ["PR Prioritization Agent","Agent","GPT-4o mini","Sep 25, 2026 11:45",1340,"$2,000",true],
+    ["Excess Stock Simulator","Agent","Gemini 1.5 Pro","Sep 22, 2026 08:30",980,null,false],
+    ["KPI Lineage Explainer","Decision Intelligence","Claude 3.5 Sonnet","Sep 20, 2026 14:11",760,null,true],
+    ["Material Reallocation Advisor","Agent","Claude 3.5 Haiku","Sep 18, 2026 10:05",540,"$1,000",true],
+    ["Backoffice Reconciliation Bot","Process Copilots","GPT-4o mini","Sep 10, 2026 07:52",310,null,false]
   ];
+  // fields: [name, aiModel (null = n/a), lastUsed (null = never), spend (null = n/a), consumptionLimit (null = not set), active]
   var mlwbJobs = [
-    ["Demand Forecast Retrain","GPT-4o",1120,"2026-09-26"],
-    ["Anomaly Detection Pipeline","Claude 3.5 Haiku",640,"2026-09-23"],
-    ["Churn Scoring Job","GPT-4o mini",410,"2026-09-19"]
+    ["pycelonis-llm (Workbench)",null,"Sep 9, 2026 11:17",1053,null,true],
+    ["test with spark scopes (Workbench)",null,"Sep 1, 2026 14:03",7,null,true],
+    ["Claude Code Test (Workbench)",null,"Jul 29, 2026 13:16",39,null,true],
+    ["mo-apollo-2 (Workbench)",null,"Jul 28, 2026 09:29",22,null,true],
+    ["mo-apollo-3 (Workbench)",null,"Jun 9, 2026 09:04",null,null,true],
+    ["regular-workbench (Workbench)",null,"Jun 2, 2026 09:43",2,null,true],
+    ["Teo's Function Lib (Workbench)",null,null,null,null,true],
+    ["test_client (Workbench)",null,null,null,null,true],
+    ["demo_bench (Workbench)",null,null,null,null,true],
+    ["test empty script (Workbench)",null,null,null,null,true],
+    ["FchettouhUnstructuredData (Workbench)",null,null,null,null,true],
+    ["MCP Demo (Workbench)",null,null,null,null,true],
+    ["Test (Workbench)",null,null,null,null,true]
   ];
 
   // ========== charts ==========
@@ -982,22 +1228,26 @@
       if(studioType && r[1] !== studioType) return false;
       if(studioModel && r[2] !== studioModel) return false;
       if(studioSearch){
-        var hay = (r[0]+' '+r[1]+' '+r[2]).toLowerCase();
+        var hay = (r[0]+' '+r[1]+' '+(r[2]||'')).toLowerCase();
         if(hay.indexOf(studioSearch) === -1) return false;
       }
       return true;
     });
     var studioTbody = document.querySelector('#table-studio-assets tbody');
     studioTbody.innerHTML = filteredStudio.map(function(r){
+      var name=r[0], assetType=r[1], aiModel=r[2], lastUsed=r[3], spend=r[4], limit=r[5], active=r[6];
       return '<tr>'+
-        '<td>'+r[0]+'</td>'+
-        '<td>'+r[1]+'</td>'+
-        '<td>'+r[2]+'</td>'+
-        '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
-        '<td>'+r[4]+'</td>'+
+        '<td>'+name+'</td>'+
+        '<td>'+assetType+'</td>'+
+        '<td'+(aiModel?'':' class="cell-muted"')+'>'+(aiModel||'—')+'</td>'+
+        '<td class="cell-muted">'+lastUsed+'</td>'+
+        '<td class="num-col num">'+(spend!==null?fmtMoney(spend):'<span class="cell-muted">—</span>')+'</td>'+
+        '<td'+(limit?'':' class="cell-muted"')+'>'+(limit||'—')+'</td>'+
+        '<td class="num-col"><button class="icon-btn" title="Consumption settings" aria-label="Consumption settings">⚙</button></td>'+
+        '<td class="num-col"><div class="switch-cell"><button class="switch'+(active?' on':'')+'" aria-pressed="'+(active?'true':'false')+'"></button><span class="switch-label">Enable</span></div></td>'+
         '</tr>';
     }).join('');
-    var studioTotal = filteredStudio.reduce(function(s,r){return s+r[3];}, 0);
+    var studioTotal = filteredStudio.reduce(function(s,r){return s+(r[4]||0);}, 0);
     document.getElementById('studioResultsCount').textContent = 'Showing '+filteredStudio.length+' of '+studioAssets.length+' assets';
     document.getElementById('studioResultsTotal').textContent = fmtMoney(studioTotal);
 
@@ -1006,22 +1256,26 @@
     var filteredMlwb = mlwbJobs.filter(function(r){
       if(mlwbModel && r[1] !== mlwbModel) return false;
       if(mlwbSearch){
-        var hay = (r[0]+' '+r[1]).toLowerCase();
+        var hay = (r[0]+' '+(r[1]||'')).toLowerCase();
         if(hay.indexOf(mlwbSearch) === -1) return false;
       }
       return true;
     });
     var mlwbTbody = document.querySelector('#table-mlwb-jobs tbody');
     mlwbTbody.innerHTML = filteredMlwb.map(function(r){
+      var name=r[0], aiModel=r[1], lastUsed=r[2], spend=r[3], limit=r[4], active=r[5];
       return '<tr>'+
-        '<td>'+r[0]+'</td>'+
-        '<td>'+r[1]+'</td>'+
-        '<td class="num-col num">'+fmtMoney(r[2])+'</td>'+
-        '<td>'+r[3]+'</td>'+
+        '<td>'+name+'</td>'+
+        '<td'+(aiModel?'':' class="cell-muted"')+'>'+(aiModel||'—')+'</td>'+
+        '<td'+(lastUsed?'':' class="cell-muted"')+'>'+(lastUsed||'—')+'</td>'+
+        '<td class="num-col num">'+(spend!==null?fmtMoney(spend):'<span class="cell-muted">—</span>')+'</td>'+
+        '<td'+(limit?'':' class="cell-muted"')+'>'+(limit||'—')+'</td>'+
+        '<td class="num-col"><button class="icon-btn" title="Consumption settings" aria-label="Consumption settings">⚙</button></td>'+
+        '<td class="num-col"><div class="switch-cell"><button class="switch'+(active?' on':'')+'" aria-pressed="'+(active?'true':'false')+'"></button><span class="switch-label">Enable</span></div></td>'+
         '</tr>';
     }).join('');
-    var mlwbTotal = filteredMlwb.reduce(function(s,r){return s+r[2];}, 0);
-    document.getElementById('mlwbResultsCount').textContent = 'Showing '+filteredMlwb.length+' of '+mlwbJobs.length+' jobs';
+    var mlwbTotal = filteredMlwb.reduce(function(s,r){return s+(r[3]||0);}, 0);
+    document.getElementById('mlwbResultsCount').textContent = 'Showing '+filteredMlwb.length+' of '+mlwbJobs.length+' configurations';
     document.getElementById('mlwbResultsTotal').textContent = fmtMoney(mlwbTotal);
   }
 
@@ -1078,25 +1332,6 @@
     document.getElementById('featuresResultsTotal').textContent = fmtMoney(total);
   }
 
-  // ========== spend statement tab ==========
-  function renderStatement(){
-    var tbody = document.querySelector('#table-statement tbody');
-    tbody.innerHTML = statementRows.map(function(r){
-      return '<tr>'+
-        '<td>'+r[0]+'</td>'+
-        '<td><span class="version-pill">'+r[1]+'</span></td>'+
-        '<td class="num-col num">'+fmt(r[2])+'</td>'+
-        '<td class="num-col num">'+fmtMoney(r[3])+'</td>'+
-        '</tr>';
-    }).join('');
-  }
-
-  // ========== drill-down request table ==========
-  var enrichedRequests = requestRows.map(function(r){
-    var cost = costFor(r[4], r[0], r[5], r[6]);
-    return {date:r[0], feature:r[3], model:r[4], promptTokens:r[5], completionTokens:r[6], cost:cost};
-  });
-
   function populateFilterOptions(){
     function fill(selectId, values){
       var sel = document.getElementById(selectId);
@@ -1106,65 +1341,16 @@
         sel.appendChild(opt);
       });
     }
-    fill('filterFeature', FEATURES);
-    fill('filterModel', MODELS);
-
     var studioTypes = Array.from(new Set(studioAssets.map(function(r){return r[1];})));
-    var studioModels = Array.from(new Set(studioAssets.map(function(r){return r[2];})));
+    var studioModels = Array.from(new Set(studioAssets.map(function(r){return r[2];}).filter(Boolean)));
     fill('filterStudioType', studioTypes);
     fill('filterStudioModel', studioModels);
 
-    var mlwbModels = Array.from(new Set(mlwbJobs.map(function(r){return r[1];})));
+    var mlwbModels = Array.from(new Set(mlwbJobs.map(function(r){return r[1];}).filter(Boolean)));
     fill('filterMlwbModel', mlwbModels);
 
     fill('filterModelName', MODELS);
     fill('filterFeatureName', FEATURES);
-  }
-
-  function withinDateFilter(dateStr, filterVal){
-    if(filterVal === 'all' || !filterVal) return true;
-    if(filterVal === 'sincePriceChange') return dateStr >= '2026-09-01';
-    var days = parseInt(filterVal, 10);
-    var cutoff = new Date(REFERENCE_DATE);
-    cutoff.setDate(cutoff.getDate() - days);
-    var d = new Date(dateStr);
-    return d >= cutoff && d <= REFERENCE_DATE;
-  }
-
-  function renderRequests(){
-    var feature = document.getElementById('filterFeature').value;
-    var model = document.getElementById('filterModel').value;
-    var dateFilter = document.getElementById('filterDate').value;
-    var search = document.getElementById('requestSearch').value.trim().toLowerCase();
-
-    var filtered = enrichedRequests.filter(function(r){
-      if(feature && r.feature !== feature) return false;
-      if(model && r.model !== model) return false;
-      if(!withinDateFilter(r.date, dateFilter)) return false;
-      if(search){
-        var hay = (r.feature+' '+r.model+' '+r.date).toLowerCase();
-        if(hay.indexOf(search) === -1) return false;
-      }
-      return true;
-    });
-
-    var tbody = document.querySelector('#table-requests tbody');
-    tbody.innerHTML = filtered.map(function(r){
-      var modelHtml = r.model === "Not recorded" ? '<span class="badge unrecorded">Not recorded</span>' : r.model;
-      return '<tr>'+
-        '<td>'+r.date+'</td>'+
-        '<td>'+r.feature+'</td>'+
-        '<td>'+modelHtml+'</td>'+
-        '<td class="num-col num">'+fmtK(r.promptTokens)+' / '+fmtK(r.completionTokens)+'</td>'+
-        '<td class="num-col num">'+fmtMoney(r.cost)+'</td>'+
-        '</tr>';
-    }).join('');
-
-    var total = filtered.reduce(function(s,r){return s+r.cost;}, 0);
-    document.getElementById('resultsCount').textContent = 'Showing '+filtered.length+' of '+enrichedRequests.length+' requests';
-    document.getElementById('resultsTotal').textContent = fmtMoney(total);
-
-    return filtered;
   }
 
   // ========== wiring ==========
@@ -1173,19 +1359,6 @@
   renderAssetUsage();
   renderModels();
   renderFeatures();
-  renderStatement();
-  renderRequests();
-
-  ['filterFeature','filterModel','filterDate','requestSearch'].forEach(function(id){
-    document.getElementById(id).addEventListener('input', renderRequests);
-    document.getElementById(id).addEventListener('change', renderRequests);
-  });
-  document.getElementById('clearFilters').addEventListener('click', function(){
-    ['filterFeature','filterModel'].forEach(function(id){ document.getElementById(id).value=''; });
-    document.getElementById('filterDate').value = 'all';
-    document.getElementById('requestSearch').value = '';
-    renderRequests();
-  });
 
   ['filterStudioType','filterStudioModel','studioSearch','filterMlwbModel','mlwbSearch'].forEach(function(id){
     document.getElementById(id).addEventListener('input', renderAssetUsage);
@@ -1219,6 +1392,45 @@
     renderFeatures();
   });
 
+  // provider groups: expand / collapse
+  document.querySelectorAll('.provider-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.provider-group').classList.toggle('expanded');
+    });
+  });
+
+  // enable / disable switches (event delegation so this survives dynamic re-renders, e.g. Asset usage filtering)
+  document.addEventListener('click', function(e){
+    var sw = e.target.closest('.switch');
+    if(!sw) return;
+    e.stopPropagation();
+    sw.classList.toggle('on');
+    sw.setAttribute('aria-pressed', sw.classList.contains('on'));
+  });
+
+  // team consumption alert banner — dismiss
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('#teamAlertDismiss')) return;
+    document.getElementById('teamAlertBanner').style.display = 'none';
+  });
+
+  // "+ Add Model" is a placeholder in this iteration — just stop it bubbling into the expand toggle
+  document.querySelectorAll('.add-model-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){ e.stopPropagation(); });
+  });
+
+  // main section tabs (AI Service Providers / Consumption)
+  var mainNavButtons = Array.from(document.querySelectorAll('.main-tab-btn'));
+  mainNavButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      mainNavButtons.forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.main-panel-section').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById('main-section-'+btn.dataset.mainTab);
+      if(target) target.classList.add('active');
+    });
+  });
+
   // tabs
   var navButtons = Array.from(document.querySelectorAll('.tab-btn'));
   navButtons.forEach(function(btn){
@@ -1231,38 +1443,7 @@
     });
   });
 
-  // export: filtered request view
-  function downloadCsv(filename, rows){
-    var csv = rows.map(function(row){
-      return row.map(function(cell){
-        var text = String(cell).replace(/\s+/g,' ').trim();
-        return '"'+text.replace(/"/g,'""')+'"';
-      }).join(',');
-    }).join('\n');
-    var blob = new Blob([csv], {type:'text/csv'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url; a.download = filename;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
 
-  document.getElementById('exportRequests').addEventListener('click', function(){
-    var filtered = renderRequests();
-    var header = ['Date','Feature','Model','Prompt tokens','Completion tokens','Cost (USD)'];
-    var rows = [header].concat(filtered.map(function(r){
-      return [r.date, r.feature, r.model, r.promptTokens, r.completionTokens, r.cost.toFixed(2)];
-    }));
-    downloadCsv('ai-token-credits-requests.csv', rows);
-  });
-
-  document.getElementById('exportStatement').addEventListener('click', function(){
-    var header = ['Period','Price table version','Requests','Spend (USD)'];
-    var rows = [header].concat(statementRows.map(function(r){
-      return [r[0], r[1], r[2], r[3].toFixed(2)];
-    }));
-    downloadCsv('ai-token-credits-spend-statement.csv', rows);
-  });
 </script>
 </body>
 </html>
