@@ -688,7 +688,7 @@
         <div class="card-value num">$84,200<span class="unit">/ $120,000</span></div>
       </div>
       <div class="progress-track"><div class="progress-fill"></div></div>
-      <div class="card-sub">Token spend / year</div>
+      <div class="card-sub">Token spend / year · Contract ends <b>Dec 31, 2026</b></div>
     </div>
 
     <div class="card chart-card">
@@ -959,7 +959,6 @@
         <thead>
           <tr>
             <th>Model</th>
-            <th class="num-col">Tokens consumed this period</th>
             <th class="num-col">Cost this period</th>
             <th class="num-col">Share of pool</th>
           </tr>
@@ -1298,7 +1297,6 @@
       var share = pct(cost, modelTotal);
       return '<tr>'+
         '<td>'+r[0]+'</td>'+
-        '<td class="num-col num">'+fmtTok(r[1])+'</td>'+
         '<td class="num-col num">'+fmtMoney(cost)+'</td>'+
         '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
         '</tr>';
