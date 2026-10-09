@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Token Credits: Iteration 1 mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --border:#DFE4EA;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+    --green-text:#1B6B4A;
+    --green-tint:#E6F5EE;
+    --amber-text:#8A5A00;
+    --amber-tint:#FFF2D9;
+    --red:#B23A38;
+    --red-tint:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--surface-alt);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--blue-dark);}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:32px 28px 80px;
+  }
+
+  /* ---------- header ---------- */
+  .title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  h1{
+    font-size:26px;
+    font-weight:600;
+    margin:0 0 6px 0;
+    letter-spacing:-0.01em;
+  }
+  .disable-ai-btn{
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:var(--red);
+    color:#fff;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .disable-ai-btn:hover{background:#96302E;}
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:14px;
+    max-width:680px;
+  }
+  /* ---------- scope note ---------- */
+  .scope-note{
+    margin-top:18px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 20px;
+  }
+  .scope-note-head{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .scope-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .scope-col h4{
+    margin:0 0 6px 0;
+    font-size:12.5px;
+    font-weight:600;
+  }
+  .scope-col.in h4{color:var(--green-text);}
+  .scope-col.out h4{color:var(--text-muted);}
+  .scope-list{
+    margin:0;
+    padding-left:18px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .scope-list li{padding-left:2px;}
+  .cap-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- team alert banner ---------- */
+  .alert-banner{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:10px;
+    border:1px solid transparent;
+  }
+  .alert-banner.info{background:var(--blue-tint);border-color:rgba(20,100,244,0.18);}
+  .alert-banner.warning{background:var(--amber-tint);border-color:rgba(138,90,0,0.18);}
+  .alert-banner.critical{background:var(--red-tint);border-color:rgba(178,58,56,0.2);}
+  .alert-icon{
+    flex:none;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:700;
+    font-style:italic;
+    font-family:'IBM Plex Sans', sans-serif;
+    margin-top:1px;
+    color:#fff;
+  }
+  .alert-banner.info .alert-icon{background:var(--blue);}
+  .alert-banner.warning .alert-icon{background:var(--amber-text);}
+  .alert-banner.critical .alert-icon{background:var(--red);}
+  .alert-body{flex:1;}
+  .alert-title{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+  .alert-banner.info .alert-title{color:var(--blue-dark);}
+  .alert-banner.warning .alert-title{color:var(--amber-text);}
+  .alert-banner.critical .alert-title{color:var(--red);}
+  .alert-sub{font-size:12.5px;color:var(--text-secondary);}
+  .alert-dismiss{
+    flex:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:17px;
+    line-height:1;
+    color:var(--text-muted);
+    padding:2px 4px;
+    border-radius:4px;
+  }
+  .alert-dismiss:hover{color:var(--ink);}
+
+  /* ---------- setup strip ---------- */
+  .setup-strip{
+    margin-top:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+  }
+  .setup-strip .item b{color:var(--ink);font-weight:600;}
+
+  /* ---------- overview cards ---------- */
+  .block-heading{
+    font-size:16px;
+    font-weight:600;
+    margin:28px 0 2px;
+  }
+  .block-desc{
+    font-size:13px;
+    color:var(--text-secondary);
+    margin-bottom:14px;
+  }
+  .overview-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+    margin-top:16px;
+  }
+  .overview-grid.overview-grid-single{
+    grid-template-columns:1fr;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+  }
+  .card-label{
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .card-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:28px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .card-value .unit{
+    font-size:14px;
+    font-weight:500;
+    color:var(--text-secondary);
+    margin-left:6px;
+  }
+  .card-sub{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+  .card-sub b{color:var(--text-secondary);font-weight:600;}
+  .progress-track{
+    height:8px;
+    background:var(--surface-alt);
+    border-radius:5px;
+    margin-top:14px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--blue);
+    width:70%;
+    border-radius:5px 0 0 5px;
+  }
+  .trend-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  /* ---------- donut charts ---------- */
+  .chart-card .card-label{margin-bottom:2px;}
+  .donut-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-top:12px;
+  }
+  .donut-svg-wrap{
+    position:relative;
+    flex-shrink:0;
+    width:96px;
+    height:96px;
+  }
+  .donut-svg-wrap svg{display:block;}
+  .donut-center{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .donut-center .val{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    line-height:1.2;
+  }
+  .donut-center .lbl{
+    font-size:9px;
+    color:var(--text-muted);
+    margin-top:1px;
+  }
+  .legend{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    flex:1;
+    min-width:0;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .legend-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .legend-label{
+    font-size:12px;
+    color:var(--ink);
+    flex:1;
+    min-width:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .legend-val{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-secondary);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .foot-note{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- main section nav (top-level: Providers / Consumption) ---------- */
+  .main-tabs{
+    display:flex;
+    gap:4px;
+    margin-top:28px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+  }
+  .main-panel-section{display:none;}
+  .main-panel-section.active{display:block;}
+  .static-panel{
+    margin-top:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+  }
+
+  /* ---------- providers list ---------- */
+  .providers-list{margin-top:20px;}
+  .provider-group{border-top:1px solid var(--border);}
+  .provider-group:first-child{border-top:none;}
+  .provider-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 0;
+  }
+  .provider-toggle{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    padding:0;
+  }
+  .provider-toggle .chevron{
+    display:inline-block;
+    font-size:11px;
+    color:var(--text-muted);
+    transition:transform .15s ease;
+  }
+  .provider-group.expanded .provider-toggle .chevron{transform:rotate(90deg);}
+  .provider-name{font-size:14.5px;font-weight:600;color:var(--ink);}
+  .add-model-btn{
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:7px 14px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .add-model-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .provider-body{display:none;padding:0 0 18px 0;}
+  .provider-group.expanded .provider-body{display:block;}
+
+  .model-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .model-table thead th{
+    text-align:left;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    padding:0 12px 10px 12px;
+    border-bottom:1px solid var(--border);
+  }
+  .model-table thead th:last-child, .model-table td:last-child{text-align:right;}
+  .model-table tbody td{padding:12px;color:var(--ink);border-bottom:1px solid var(--border);}
+  .model-table tbody tr:last-child td{border-bottom:none;}
+  .hosted-tag{
+    display:inline-block;
+    font-size:12px;
+    color:var(--text-secondary);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 10px;
+  }
+  .switch-cell{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+  .switch{
+    position:relative;
+    width:34px;
+    height:18px;
+    border-radius:999px;
+    background:var(--border);
+    border:none;
+    cursor:pointer;
+    flex-shrink:0;
+    padding:0;
+    transition:background .15s ease;
+  }
+  .switch::after{
+    content:'';
+    position:absolute;
+    top:2px;
+    left:2px;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);
+    transition:transform .15s ease;
+  }
+  .switch.on{background:var(--blue);}
+  .switch.on::after{transform:translateX(16px);}
+  .switch-label{font-size:13px;color:var(--text-secondary);}
+  .icon-btn{
+    width:28px;
+    height:28px;
+    border-radius:7px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text-secondary);
+    font-size:13px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .icon-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .cell-muted{color:var(--text-muted);}
+
+  /* ---------- section nav ---------- */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-top:28px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+    position:sticky;
+    top:0;
+    background:var(--surface-alt);
+    padding-top:6px;
+    z-index:5;
+  }
+  .tab-btn, .main-tab-btn{
+    background:none;
+    border:none;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:12px 16px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .tab-btn:hover, .main-tab-btn:hover{color:var(--ink);}
+  .tab-btn.active, .main-tab-btn.active{
+    color:var(--ink);
+    font-weight:600;
+    border-bottom-color:var(--blue);
+  }
+
+  .sections{margin-top:16px;}
+  .panel-section{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+    display:none;
+  }
+  .panel-section.active{display:block;}
+
+  .pane-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .pane-title{font-size:16px;font-weight:600;margin:0 0 4px 0;}
+  .pane-desc{font-size:13px;color:var(--text-secondary);max-width:620px;}
+
+  /* ---------- filter bar ---------- */
+  .filter-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .select-input, .search-input{
+    font-family:inherit;
+    font-size:13.5px;
+    padding:8px 12px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface-alt);
+    color:var(--ink);
+  }
+  .select-input{min-width:140px;}
+  .search-input{width:180px;}
+  .select-input:focus, .search-input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .clear-filters-btn{
+    background:none;
+    border:none;
+    color:var(--blue-dark);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    padding:0;
+  }
+  .spacer{flex:1;}
+  .export-btn{
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    padding:8px 14px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--surface);
+    color:var(--ink);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .export-btn:hover{background:var(--surface-alt);}
+  .export-btn svg{width:14px;height:14px;}
+
+  .results-strip{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .results-strip .total{font-family:'IBM Plex Mono', monospace;font-weight:600;color:var(--ink);}
+  .total-chip{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--blue-dark);
+    background:var(--blue-tint);
+    padding:3px 10px;
+    border-radius:6px;
+    margin-left:4px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  thead th{
+    text-align:left;
+    font-weight:500;
+    color:var(--text-secondary);
+    padding:9px 12px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  thead th.num-col, tbody td.num-col{text-align:right;}
+  tbody td{
+    padding:11px 12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  tbody tr:hover{background:var(--surface-alt);}
+  tbody tr:last-child td{border-bottom:none;}
+  .table-scroll{overflow-x:auto;}
+  tfoot td{
+    padding:10px 12px;
+    font-weight:700;
+    border-top:2px solid var(--ink);
+    background:var(--surface-alt);
+  }
+  tfoot td.num-col{font-family:'IBM Plex Mono', monospace;}
+
+  .badge{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .badge.muted{color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);}
+  .badge.new{color:var(--blue-dark);background:var(--blue-tint);}
+  .badge.unrecorded{color:var(--amber-text);background:var(--amber-tint);}
+
+  .bar-cell{display:flex;align-items:center;gap:8px;}
+  .bar-track{flex:1;height:6px;background:var(--surface-alt);border-radius:4px;overflow:hidden;min-width:60px;}
+  .bar-fill{height:100%;background:var(--blue);border-radius:4px;}
+  .share-val{font-family:'IBM Plex Mono', monospace;font-size:12.5px;color:var(--text-secondary);width:40px;text-align:right;}
+  .row-note{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
+
+  /* ---------- price table ---------- */
+  .version-pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--blue-dark);
+    background:var(--blue-tint);
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .price-callout{
+    margin-top:16px;
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+  }
+  .price-callout b{color:var(--ink);}
+
+  .page-footer{
+    margin-top:36px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (max-width: 900px){
+    .overview-grid{grid-template-columns:1fr 1fr;}
+    .scope-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width: 560px){
+    .overview-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="title-row">
+    <div>
+      <h1>AI Settings (Team: BMW Production-1)</h1>
+      <p class="subtitle">Control GenAI product usage across Celonis. Configure models &amp; applications and track their consumption. <a href="https://docs.celonis.com/en/ai-settings.html">Read more on how we use AI.</a></p>
+    </div>
+    <button class="disable-ai-btn">Disable AI Services</button>
+  </div>
+
+  <!-- ================= OVERVIEW (always visible) ================= -->
+  <div class="overview-grid overview-grid-single">
+    <div class="card">
+      <div class="card-label">Consumed</div>
+      <div class="trend-row">
+        <div class="card-value num">$84,200<span class="unit">/ $120,000</span></div>
+      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <div class="card-sub">Token spend / year · Contract ends <b>Dec 31, 2026</b></div>
+    </div>
+  </div>
+
+  <!-- ================= TEAM CONSUMPTION ALERT (illustrative — Iteration 1 scope: 1 threshold shown) ================= -->
+  <div class="alert-banner info" id="teamAlertBanner">
+    <div class="alert-icon">i</div>
+    <div class="alert-body">
+      <div class="alert-title">BMW Production-1 has reached 51% of its AI spend allowance</div>
+      <div class="alert-sub">Team admins notified by email and in-platform · Next alert at 80%</div>
+    </div>
+    <button class="alert-dismiss" id="teamAlertDismiss" aria-label="Dismiss alert">&times;</button>
+  </div>
+
+  <!-- ================= MAIN SECTION NAV ================= -->
+  <nav class="main-tabs" aria-label="AI Settings sections">
+    <button class="main-tab-btn active" data-main-tab="providers">AI Service Providers</button>
+    <!-- Features and Models tabs hidden for now, keep markup below for later re-use -->
+    <button class="main-tab-btn" data-main-tab="assets">Asset usage</button>
+    <button class="main-tab-btn" data-main-tab="mlwb">MLWB usage</button>
+  </nav>
+
+  <!-- ================= MAIN SECTION: AI Service Providers ================= -->
+  <div class="main-panel-section active" id="main-section-providers">
+    <div class="static-panel">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">AI Service Providers</div>
+          <div class="pane-desc">Add the LLM providers available to your tenant, then enable or disable individual models for use across Celonis products.</div>
+        </div>
+      </div>
+
+      <div class="providers-list">
+
+        <div class="provider-group" data-provider="anthropic">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">Anthropic (Messages compliant API)</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Claude Opus 4.5 (Anthropic)</td>
+                  <td>claude-opus-4-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Claude Sonnet 4.5 (Anthropic)</td>
+                  <td>claude-sonnet-4-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Claude Haiku 4.5 (Anthropic)</td>
+                  <td>claude-haiku-4-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group" data-provider="aws-bedrock">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">AWS Bedrock</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Llama 3.3 70B (AWS Bedrock)</td>
+                  <td>llama-3.3-70b</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Mistral Large (AWS Bedrock)</td>
+                  <td>mistral-large</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group expanded" data-provider="azure-openai">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">Azure OpenAI</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>DeepSeek V4.1 Flash (Azure AI Foundry)</td>
+                  <td>deepseek-v4.1-flash</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 4.1 (Azure OpenAI)</td>
+                  <td>gpt-4.1</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 5 Mini (Azure OpenAI)</td>
+                  <td>gpt-5-mini</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch on" type="button" aria-pressed="true"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>o3 Mini (Azure OpenAI)</td>
+                  <td>o3-mini</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 6 Luna (Azure OpenAI)</td>
+                  <td>gpt-6-luna</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 5 (Azure OpenAI)</td>
+                  <td>gpt-5</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>GPT 6 Sol (Azure OpenAI)</td>
+                  <td>gpt-6-sol</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group" data-provider="openai">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">OpenAI</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>GPT 5.1 (OpenAI)</td>
+                  <td>gpt-5.1</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>o4 Mini (OpenAI)</td>
+                  <td>o4-mini</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="provider-group" data-provider="google-vertex">
+          <div class="provider-header">
+            <button class="provider-toggle" type="button">
+              <span class="chevron">▸</span>
+              <span class="provider-name">Google Vertex AI</span>
+            </button>
+            <button class="add-model-btn" type="button">+ Add Model</button>
+          </div>
+          <div class="provider-body">
+            <table class="model-table">
+              <thead>
+                <tr><th>Display Name</th><th>Model Name</th><th>Hosted By</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Gemini 2.5 Pro (Vertex AI)</td>
+                  <td>gemini-2.5-pro</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+                <tr>
+                  <td>Gemini 2.5 Flash (Vertex AI)</td>
+                  <td>gemini-2.5-flash</td>
+                  <td><span class="hosted-tag">Celonis</span></td>
+                  <td><div class="switch-cell"><button class="switch" type="button" aria-pressed="false"></button><span class="switch-label">Enable</span></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SECTION: Models ================= -->
+  <div class="main-panel-section" id="main-section-models">
+    <div class="panel-section active" id="section-models">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Models</div>
+          <div class="pane-desc">Token consumption per model, ordered by volume — plus the cost that volume drove this period. Enabling or disabling a model happens elsewhere; this view is read-only usage data.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterModelName">
+          <option value="">Model: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearModelFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="modelsResultsCount">Showing 7 of 7 models</span>
+        <span>Filtered spend: <span class="total-chip" id="modelsResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-models">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th class="num-col">Cost this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by cost.</div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SECTION: Features ================= -->
+  <div class="main-panel-section" id="main-section-features">
+    <div class="panel-section active" id="section-features">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Features</div>
+          <div class="pane-desc">Consumption per feature, for visibility only — which capability is driving spend.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterFeatureName">
+          <option value="">Feature: All</option>
+        </select>
+        <button class="clear-filters-btn" id="clearFeatureFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="featuresResultsCount">Showing 10 of 10 features</span>
+        <span>Filtered spend: <span class="total-chip" id="featuresResultsTotal">$0.00</span></span>
+      </div>
+      <table id="table-features">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of pool</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      <div class="foot-note">Sorted by spend.</div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SECTION: Asset usage (Studio packages) ================= -->
+  <div class="main-panel-section" id="main-section-assets">
+    <div class="panel-section active" id="section-assets">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Asset usage</div>
+          <div class="pane-desc">Per-asset breakdown of what's consuming your AI spend allowance — which model it's using, how much it's spent, and whether it's active. Set a consumption limit per asset, or disable it entirely.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterStudioType">
+          <option value="">Type: All</option>
+        </select>
+        <select class="select-input" id="filterStudioModel">
+          <option value="">Model: All</option>
+        </select>
+        <input type="text" class="search-input" id="studioSearch" placeholder="Search assets">
+        <button class="clear-filters-btn" id="clearStudioFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="studioResultsCount">Showing 8 of 8 assets</span>
+        <span>Filtered spend: <span class="total-chip" id="studioResultsTotal">$0.00</span></span>
+      </div>
+      <div class="table-scroll">
+      <table id="table-studio-assets">
+        <thead>
+          <tr>
+            <th>AI asset</th>
+            <th>Asset Type</th>
+            <th>AI model</th>
+            <th>Last used</th>
+            <th class="num-col">Spend this period</th>
+            <th>Consumption limit</th>
+            <th></th>
+            <th class="num-col">Active</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      </div>
+      <div class="foot-note">Illustrative sample of assets for this contract year. Figures are illustrative spend, broken out per asset for visibility.</div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN SECTION: MLWB usage ================= -->
+  <div class="main-panel-section" id="main-section-mlwb">
+    <div class="panel-section active" id="section-mlwb">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">MLWB usage</div>
+          <div class="pane-desc">Per-workbench-configuration breakdown of what's consuming your AI spend allowance — which model it's using, how much it's spent, and whether it's active. Set a consumption limit per configuration, or disable it entirely.</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-input" id="filterMlwbModel">
+          <option value="">Model: All</option>
+        </select>
+        <input type="text" class="search-input" id="mlwbSearch" placeholder="Search workbench configurations">
+        <button class="clear-filters-btn" id="clearMlwbFilters">Clear filters</button>
+      </div>
+      <div class="results-strip">
+        <span id="mlwbResultsCount">Showing 13 of 13 configurations</span>
+        <span>Filtered spend: <span class="total-chip" id="mlwbResultsTotal">$0.00</span></span>
+      </div>
+      <div class="table-scroll">
+      <table id="table-mlwb-jobs">
+        <thead>
+          <tr>
+            <th>Workbench Configuration</th>
+            <th>AI model</th>
+            <th>Last used</th>
+            <th class="num-col">Spend this period</th>
+            <th>Consumption limit</th>
+            <th></th>
+            <th class="num-col">Active</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+      </table>
+      </div>
+      <div class="foot-note">Illustrative sample of workbench configurations for this contract year. Figures are illustrative spend, broken out per configuration for visibility.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Mockup for internal review · not connected to live data · all figures illustrative</span>
+    <span>AI Fast-Track · Outputs to Tokens · Iteration 1 · updated 2026-10-01</span>
+  </div>
+
+</div>
+
+<script>
+  // ========== reference data ==========
+  var FEATURES = ["Process Copilots","ML Workbench","AI Annotations","Action Flow","Celonis Assistant","Decision Intelligence","Agent","MCP Server Asset","Vector Store","Knowledge Vault"];
+  var MODELS = ["Claude 3.5 Sonnet","GPT-4o mini","GPT-4o","Claude 3.5 Haiku","Gemini 1.5 Pro","text-embedding-3-large","Not recorded"];
+
+  function fmtMoney(n){
+    return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function fmtK(n){
+    return (n/1000).toFixed(1) + 'K';
+  }
+  function fmtTok(n){
+    if(n>=1e6) return (n/1e6).toFixed(1)+'M tokens';
+    return (n/1e3).toFixed(1)+'K tokens';
+  }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function pct(n,total){ return total>0 ? (n/total*100).toFixed(1) : '0.0'; }
+
+  // ========== feature + model summary (headline totals) ==========
+  var featureSpend = [
+    ["Process Copilots",24100],
+    ["ML Workbench",17800],
+    ["AI Annotations",12300],
+    ["Action Flow",9900],
+    ["Celonis Assistant",8700],
+    ["Decision Intelligence",4600],
+    ["Agent",3200],
+    ["MCP Server Asset",2000],
+    ["Vector Store",1000],
+    ["Knowledge Vault",600]
+  ];
+  var featureTotal = featureSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var modelSpend = [
+    ["Claude 3.5 Sonnet",31200],
+    ["GPT-4o mini",19400],
+    ["GPT-4o",14100],
+    ["Claude 3.5 Haiku",9800],
+    ["Gemini 1.5 Pro",4200],
+    ["text-embedding-3-large",3900],
+    ["Not recorded",1600]
+  ];
+  var modelTotal = modelSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var modelTokens = [
+    ["Claude 3.5 Sonnet",8400000],
+    ["GPT-4o mini",48000000],
+    ["GPT-4o",2900000],
+    ["Claude 3.5 Haiku",9100000],
+    ["Gemini 1.5 Pro",2600000],
+    ["text-embedding-3-large",28000000],
+    ["Not recorded",850000]
+  ];
+  var modelTokensTotal = modelTokens.reduce(function(s,r){return s+r[1];},0);
+
+  // ========== asset usage (Studio packages + ML Workbench jobs) ==========
+  // fields: [name, assetType, aiModel (null = n/a), lastUsed, spend (null = n/a), consumptionLimit (null = not set), active]
+  var studioAssets = [
+    ["MCP Tool Gateway","MCP Server Asset",null,"Sep 9, 2026 13:47",null,null,true],
+    ["Invoice Dispute Copilot","Process Copilots","Claude 3.5 Sonnet","Sep 28, 2026 09:14",2480,null,true],
+    ["Supplier Risk Assistant","Process Copilots","GPT-4o","Sep 27, 2026 16:02",1920,null,true],
+    ["PR Prioritization Agent","Agent","GPT-4o mini","Sep 25, 2026 11:45",1340,"$2,000",true],
+    ["Excess Stock Simulator","Agent","Gemini 1.5 Pro","Sep 22, 2026 08:30",980,null,false],
+    ["KPI Lineage Explainer","Decision Intelligence","Claude 3.5 Sonnet","Sep 20, 2026 14:11",760,null,true],
+    ["Material Reallocation Advisor","Agent","Claude 3.5 Haiku","Sep 18, 2026 10:05",540,"$1,000",true],
+    ["Backoffice Reconciliation Bot","Process Copilots","GPT-4o mini","Sep 10, 2026 07:52",310,null,false]
+  ];
+  // fields: [name, aiModel (null = n/a), lastUsed (null = never), spend (null = n/a), consumptionLimit (null = not set), active]
+  var mlwbJobs = [
+    ["pycelonis-llm (Workbench)",null,"Sep 9, 2026 11:17",1053,null,true],
+    ["test with spark scopes (Workbench)",null,"Sep 1, 2026 14:03",7,null,true],
+    ["Claude Code Test (Workbench)",null,"Jul 29, 2026 13:16",39,null,true],
+    ["mo-apollo-2 (Workbench)",null,"Jul 28, 2026 09:29",22,null,true],
+    ["mo-apollo-3 (Workbench)",null,"Jun 9, 2026 09:04",null,null,true],
+    ["regular-workbench (Workbench)",null,"Jun 2, 2026 09:43",2,null,true],
+    ["Teo's Function Lib (Workbench)",null,null,null,null,true],
+    ["test_client (Workbench)",null,null,null,null,true],
+    ["demo_bench (Workbench)",null,null,null,null,true],
+    ["test empty script (Workbench)",null,null,null,null,true],
+    ["FchettouhUnstructuredData (Workbench)",null,null,null,null,true],
+    ["MCP Demo (Workbench)",null,null,null,null,true],
+    ["Test (Workbench)",null,null,null,null,true]
+  ];
+
+  // ========== charts ==========
+  var CHART_COLORS = ['#0A2E6B','#0F4FC4','#1464F4','#5B8FF9','#A9C6FB'];
+  var CHART_OTHER = '#C9D3DF';
+
+  function topNPlusOther(rows, idx, n){
+    var enriched = rows.map(function(r){ return {label:r[0], value:r[idx]}; });
+    enriched.sort(function(a,b){ return b.value - a.value; });
+    var top = enriched.slice(0, n);
+    var restSum = enriched.slice(n).reduce(function(s,e){ return s+e.value; }, 0);
+    if(restSum > 0){ top.push({label:'Other', value:restSum}); }
+    return top;
+  }
+
+  function renderDonut(containerId, segments, total){
+    var size = 96, cx = size/2, cy = size/2, sw = 14;
+    var r = cx - sw/2 - 1;
+    var C = 2*Math.PI*r;
+    var cumulative = 0;
+    var circles = segments.map(function(seg, i){
+      var color = seg.label === 'Other' ? CHART_OTHER : CHART_COLORS[i % CHART_COLORS.length];
+      var frac = total > 0 ? seg.value/total : 0;
+      var len = frac*C;
+      var dasharray = len.toFixed(2)+' '+(C-len).toFixed(2);
+      var dashoffset = (-cumulative).toFixed(2);
+      cumulative += len;
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+sw+'" stroke-dasharray="'+dasharray+'" stroke-dashoffset="'+dashoffset+'"/>';
+    }).join('');
+    var centerVal = '$'+fmt(Math.round(total));
+    var svgHtml = '<div class="donut-svg-wrap"><svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><g transform="rotate(-90 '+cx+' '+cy+')">'+circles+'</g></svg>'+
+      '<div class="donut-center"><span class="val">'+centerVal+'</span><span class="lbl">this period</span></div></div>';
+    var legendHtml = '<ul class="legend">'+segments.map(function(seg, i){
+      var color = seg.label === 'Other' ? CHART_OTHER : CHART_COLORS[i % CHART_COLORS.length];
+      var pctVal = pct(seg.value, total);
+      return '<li class="legend-item"><span class="legend-dot" style="background:'+color+'"></span><span class="legend-label">'+seg.label+'</span><span class="legend-val">$'+fmt(seg.value)+' &middot; '+pctVal+'%</span></li>';
+    }).join('')+'</ul>';
+    document.getElementById(containerId).innerHTML = '<div class="donut-row">'+svgHtml+legendHtml+'</div>';
+  }
+
+  function renderCharts(){
+    renderDonut('chart-feature-spend', topNPlusOther(featureSpend, 1, 5), featureTotal);
+    renderDonut('chart-model-spend', topNPlusOther(modelSpend, 1, 5), modelTotal);
+  }
+
+  // ========== asset usage tab ==========
+  function renderAssetUsage(){
+    var studioType = document.getElementById('filterStudioType').value;
+    var studioModel = document.getElementById('filterStudioModel').value;
+    var studioSearch = document.getElementById('studioSearch').value.trim().toLowerCase();
+    var filteredStudio = studioAssets.filter(function(r){
+      if(studioType && r[1] !== studioType) return false;
+      if(studioModel && r[2] !== studioModel) return false;
+      if(studioSearch){
+        var hay = (r[0]+' '+r[1]+' '+(r[2]||'')).toLowerCase();
+        if(hay.indexOf(studioSearch) === -1) return false;
+      }
+      return true;
+    });
+    var studioTbody = document.querySelector('#table-studio-assets tbody');
+    studioTbody.innerHTML = filteredStudio.map(function(r){
+      var name=r[0], assetType=r[1], aiModel=r[2], lastUsed=r[3], spend=r[4], limit=r[5], active=r[6];
+      return '<tr>'+
+        '<td>'+name+'</td>'+
+        '<td>'+assetType+'</td>'+
+        '<td'+(aiModel?'':' class="cell-muted"')+'>'+(aiModel||'—')+'</td>'+
+        '<td class="cell-muted">'+lastUsed+'</td>'+
+        '<td class="num-col num">'+(spend!==null?fmtMoney(spend):'<span class="cell-muted">—</span>')+'</td>'+
+        '<td'+(limit?'':' class="cell-muted"')+'>'+(limit||'—')+'</td>'+
+        '<td class="num-col"><button class="icon-btn" title="Consumption settings" aria-label="Consumption settings">⚙</button></td>'+
+        '<td class="num-col"><div class="switch-cell"><button class="switch'+(active?' on':'')+'" aria-pressed="'+(active?'true':'false')+'"></button><span class="switch-label">Enable</span></div></td>'+
+        '</tr>';
+    }).join('');
+    var studioTotal = filteredStudio.reduce(function(s,r){return s+(r[4]||0);}, 0);
+    document.getElementById('studioResultsCount').textContent = 'Showing '+filteredStudio.length+' of '+studioAssets.length+' assets';
+    document.getElementById('studioResultsTotal').textContent = fmtMoney(studioTotal);
+
+    var mlwbModel = document.getElementById('filterMlwbModel').value;
+    var mlwbSearch = document.getElementById('mlwbSearch').value.trim().toLowerCase();
+    var filteredMlwb = mlwbJobs.filter(function(r){
+      if(mlwbModel && r[1] !== mlwbModel) return false;
+      if(mlwbSearch){
+        var hay = (r[0]+' '+(r[1]||'')).toLowerCase();
+        if(hay.indexOf(mlwbSearch) === -1) return false;
+      }
+      return true;
+    });
+    var mlwbTbody = document.querySelector('#table-mlwb-jobs tbody');
+    mlwbTbody.innerHTML = filteredMlwb.map(function(r){
+      var name=r[0], aiModel=r[1], lastUsed=r[2], spend=r[3], limit=r[4], active=r[5];
+      return '<tr>'+
+        '<td>'+name+'</td>'+
+        '<td'+(aiModel?'':' class="cell-muted"')+'>'+(aiModel||'—')+'</td>'+
+        '<td'+(lastUsed?'':' class="cell-muted"')+'>'+(lastUsed||'—')+'</td>'+
+        '<td class="num-col num">'+(spend!==null?fmtMoney(spend):'<span class="cell-muted">—</span>')+'</td>'+
+        '<td'+(limit?'':' class="cell-muted"')+'>'+(limit||'—')+'</td>'+
+        '<td class="num-col"><button class="icon-btn" title="Consumption settings" aria-label="Consumption settings">⚙</button></td>'+
+        '<td class="num-col"><div class="switch-cell"><button class="switch'+(active?' on':'')+'" aria-pressed="'+(active?'true':'false')+'"></button><span class="switch-label">Enable</span></div></td>'+
+        '</tr>';
+    }).join('');
+    var mlwbTotal = filteredMlwb.reduce(function(s,r){return s+(r[3]||0);}, 0);
+    document.getElementById('mlwbResultsCount').textContent = 'Showing '+filteredMlwb.length+' of '+mlwbJobs.length+' configurations';
+    document.getElementById('mlwbResultsTotal').textContent = fmtMoney(mlwbTotal);
+  }
+
+  // ========== models tab ==========
+  var modelCostByName = {};
+  modelSpend.forEach(function(r){ modelCostByName[r[0]] = r[1]; });
+
+  function renderModels(){
+    var nameFilter = document.getElementById('filterModelName').value;
+    var filtered = modelTokens.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){
+      return (modelCostByName[b[0]]||0) - (modelCostByName[a[0]]||0);
+    });
+
+    var tbody = document.querySelector('#table-models tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var cost = modelCostByName[r[0]] || 0;
+      var share = pct(cost, modelTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(cost)+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var totalCost = filtered.reduce(function(s,r){return s+(modelCostByName[r[0]] || 0);}, 0);
+    document.getElementById('modelsResultsCount').textContent = 'Showing '+filtered.length+' of '+modelTokens.length+' models';
+    document.getElementById('modelsResultsTotal').textContent = fmtMoney(totalCost);
+  }
+
+  // ========== features tab ==========
+  function renderFeatures(){
+    var nameFilter = document.getElementById('filterFeatureName').value;
+    var filtered = featureSpend.filter(function(r){
+      if(nameFilter && r[0] !== nameFilter) return false;
+      return true;
+    }).slice().sort(function(a,b){ return b[1]-a[1]; });
+
+    var tbody = document.querySelector('#table-features tbody');
+    tbody.innerHTML = filtered.map(function(r){
+      var share = pct(r[1], featureTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+
+    var total = filtered.reduce(function(s,r){return s+r[1];}, 0);
+    document.getElementById('featuresResultsCount').textContent = 'Showing '+filtered.length+' of '+featureSpend.length+' features';
+    document.getElementById('featuresResultsTotal').textContent = fmtMoney(total);
+  }
+
+  function populateFilterOptions(){
+    function fill(selectId, values){
+      var sel = document.getElementById(selectId);
+      values.forEach(function(v){
+        var opt = document.createElement('option');
+        opt.value = v; opt.textContent = v;
+        sel.appendChild(opt);
+      });
+    }
+    var studioTypes = Array.from(new Set(studioAssets.map(function(r){return r[1];})));
+    var studioModels = Array.from(new Set(studioAssets.map(function(r){return r[2];}).filter(Boolean)));
+    fill('filterStudioType', studioTypes);
+    fill('filterStudioModel', studioModels);
+
+    var mlwbModels = Array.from(new Set(mlwbJobs.map(function(r){return r[1];}).filter(Boolean)));
+    fill('filterMlwbModel', mlwbModels);
+
+    fill('filterModelName', MODELS);
+    fill('filterFeatureName', FEATURES);
+  }
+
+  // ========== wiring ==========
+  populateFilterOptions();
+  renderAssetUsage();
+  renderModels();
+  renderFeatures();
+
+  ['filterStudioType','filterStudioModel','studioSearch','filterMlwbModel','mlwbSearch'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', renderAssetUsage);
+    document.getElementById(id).addEventListener('change', renderAssetUsage);
+  });
+  document.getElementById('clearStudioFilters').addEventListener('click', function(){
+    document.getElementById('filterStudioType').value = '';
+    document.getElementById('filterStudioModel').value = '';
+    document.getElementById('studioSearch').value = '';
+    renderAssetUsage();
+  });
+  document.getElementById('clearMlwbFilters').addEventListener('click', function(){
+    document.getElementById('filterMlwbModel').value = '';
+    document.getElementById('mlwbSearch').value = '';
+    renderAssetUsage();
+  });
+
+  ['filterModelName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderModels);
+  });
+  document.getElementById('clearModelFilters').addEventListener('click', function(){
+    document.getElementById('filterModelName').value = '';
+    renderModels();
+  });
+
+  ['filterFeatureName'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderFeatures);
+  });
+  document.getElementById('clearFeatureFilters').addEventListener('click', function(){
+    document.getElementById('filterFeatureName').value = '';
+    renderFeatures();
+  });
+
+  // provider groups: expand / collapse
+  document.querySelectorAll('.provider-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.provider-group').classList.toggle('expanded');
+    });
+  });
+
+  // enable / disable switches (event delegation so this survives dynamic re-renders, e.g. Asset usage filtering)
+  document.addEventListener('click', function(e){
+    var sw = e.target.closest('.switch');
+    if(!sw) return;
+    e.stopPropagation();
+    sw.classList.toggle('on');
+    sw.setAttribute('aria-pressed', sw.classList.contains('on'));
+  });
+
+  // team consumption alert banner — dismiss
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('#teamAlertDismiss')) return;
+    document.getElementById('teamAlertBanner').style.display = 'none';
+  });
+
+  // "+ Add Model" is a placeholder in this iteration — just stop it bubbling into the expand toggle
+  document.querySelectorAll('.add-model-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){ e.stopPropagation(); });
+  });
+
+  // main section tabs (AI Service Providers / Features / Models / Asset usage / MLWB usage)
+  var mainNavButtons = Array.from(document.querySelectorAll('.main-tab-btn'));
+  mainNavButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      mainNavButtons.forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.main-panel-section').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById('main-section-'+btn.dataset.mainTab);
+      if(target) target.classList.add('active');
+    });
+  });
+
+
+</script>
+</body>
+</html>
