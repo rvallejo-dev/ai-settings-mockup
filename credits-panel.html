@@ -600,7 +600,6 @@
   </div>
 
   <!-- ================= OVERVIEW ================= -->
-  <div class="block-heading">Credits allowance — this contract year</div>
   <div class="overview-grid">
     <div class="card">
       <div class="card-label">Consumed</div>
@@ -609,7 +608,6 @@
       </div>
       <div class="progress-track"><div class="progress-fill" style="width:67%"></div></div>
       <div class="card-sub">67% of allowance used · last 28 days: <b>$15,200</b> (+12% vs. prior 28 days)</div>
-      <div class="readonly-note">Hard cap $300,000 (150%) · overage billed only after an admin is notified past 100%. Per-category limits are explored in the Limits &amp; alerts tab below.</div>
     </div>
 
     <div class="card chart-card">
@@ -628,6 +626,8 @@
     <button class="tab-btn" data-tab="aitokens">AI Tokens</button>
     <button class="tab-btn" data-tab="storage">Storage</button>
     <button class="tab-btn" data-tab="compute">Compute</button>
+    <button class="tab-btn" data-tab="traffic">Data Transfer</button>
+    <button class="tab-btn" data-tab="other">Other Services</button>
     <button class="tab-btn" data-tab="limits">Limits &amp; alerts</button>
   </nav>
 
@@ -661,6 +661,8 @@
             <th class="num-col">AI Tokens</th>
             <th class="num-col">Storage</th>
             <th class="num-col">Compute</th>
+            <th class="num-col">Data Transfer</th>
+            <th class="num-col">Other Services</th>
             <th class="num-col">Total spend</th>
             <th class="num-col">Share of pool</th>
           </tr>
@@ -678,7 +680,7 @@
       <div class="pane-head">
         <div>
           <div class="pane-title">AI Tokens</div>
-          <div class="pane-desc">The original Iteration 1 detail: usage and spend from AI model inference, broken down by feature, model, user, and individual request. Now one of three categories drawing from the shared Credits pool.</div>
+          <div class="pane-desc">The original Iteration 1 detail: usage and spend from AI model inference, broken down by feature, model, user, and individual request. Now one of five categories drawing from the shared Credits pool.</div>
         </div>
       </div>
 
@@ -1008,6 +1010,50 @@
       <div class="foot-note">Sorted by spend. Compute categories here are illustrative — the real taxonomy will depend on which compute surfaces get metered first.</div>
     </div>
 
+    <!-- ---- SECTION: Data Transfer ---- -->
+    <div class="panel-section" id="section-traffic">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Data Transfer</div>
+          <div class="pane-desc">Credits consumed by data movement this period, including Zero-Copy shares to partner platforms (e.g. Fabric), by transfer type. Visibility only — this lane has no metering in production yet.</div>
+        </div>
+      </div>
+      <table id="table-traffic">
+        <thead>
+          <tr>
+            <th>Transfer type</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of category</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+        <tfoot><tr><td>Total</td><td class="num-col" id="trafficTotalCell">$0.00</td><td class="num-col"></td></tr></tfoot>
+      </table>
+      <div class="foot-note">Sorted by spend. Transfer categories here are illustrative — Zero-Copy and cross-region sync are the two highest-volume candidates today.</div>
+    </div>
+
+    <!-- ---- SECTION: Other Services ---- -->
+    <div class="panel-section" id="section-other">
+      <div class="pane-head">
+        <div>
+          <div class="pane-title">Other Services</div>
+          <div class="pane-desc">Credits consumed by services outside AI/Storage/Compute/Data Transfer, such as Task Mining and core Process Mining (CPM), by service. Visibility only — this lane has no metering in production yet.</div>
+        </div>
+      </div>
+      <table id="table-other">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th class="num-col">Spend this period</th>
+            <th class="num-col">Share of category</th>
+          </tr>
+        </thead>
+        <tbody><!-- rows injected by JS --></tbody>
+        <tfoot><tr><td>Total</td><td class="num-col" id="otherTotalCell">$0.00</td><td class="num-col"></td></tr></tfoot>
+      </table>
+      <div class="foot-note">Sorted by spend. Service list here is illustrative — the real scope depends on which "other services" end up priced into the Credits pool vs. billed separately.</div>
+    </div>
+
     <!-- ---- SECTION: Limits & alerts ---- -->
     <div class="panel-section" id="section-limits">
       <div class="pane-head">
@@ -1089,6 +1135,54 @@
           </div>
           <button class="export-btn limit-save-btn" data-category="compute">Save limit</button>
           <div class="limit-saved-note" id="limitComputeSaved"></div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-card-head">
+            <span class="legend-dot" style="background:#D4862A"></span>
+            <div class="limit-card-title">Data Transfer</div>
+            <span class="badge muted">$15,800 spent this period</span>
+          </div>
+          <label class="limit-label" for="limitTraffic">Monthly limit</label>
+          <div class="limit-input-row">
+            <span class="limit-prefix">$</span>
+            <input type="number" class="limit-input" id="limitTraffic" value="20000" min="0" step="1000">
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="limitTrafficBar"></div></div>
+          <div class="limit-usage-note" id="limitTrafficNote"></div>
+          <div class="alert-row">
+            <span class="alert-row-label">Alert me at</span>
+            <label><input type="checkbox" checked data-threshold="50"> 50%</label>
+            <label><input type="checkbox" checked data-threshold="80"> 80%</label>
+            <label><input type="checkbox" checked data-threshold="100"> 100%</label>
+            <label><input type="checkbox" data-threshold="150"> 150%</label>
+          </div>
+          <button class="export-btn limit-save-btn" data-category="traffic">Save limit</button>
+          <div class="limit-saved-note" id="limitTrafficSaved"></div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-card-head">
+            <span class="legend-dot" style="background:#C23B6E"></span>
+            <div class="limit-card-title">Other Services</div>
+            <span class="badge muted">$14,000 spent this period</span>
+          </div>
+          <label class="limit-label" for="limitOther">Monthly limit</label>
+          <div class="limit-input-row">
+            <span class="limit-prefix">$</span>
+            <input type="number" class="limit-input" id="limitOther" value="20000" min="0" step="1000">
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="limitOtherBar"></div></div>
+          <div class="limit-usage-note" id="limitOtherNote"></div>
+          <div class="alert-row">
+            <span class="alert-row-label">Alert me at</span>
+            <label><input type="checkbox" checked data-threshold="50"> 50%</label>
+            <label><input type="checkbox" checked data-threshold="80"> 80%</label>
+            <label><input type="checkbox" checked data-threshold="100"> 100%</label>
+            <label><input type="checkbox" data-threshold="150"> 150%</label>
+          </div>
+          <button class="export-btn limit-save-btn" data-category="other">Save limit</button>
+          <div class="limit-saved-note" id="limitOtherSaved"></div>
         </div>
 
       </div>
@@ -1271,7 +1365,7 @@
     ["Churn Scoring Job","GPT-4o mini",410,"2026-09-19"]
   ];
 
-  // ========== Storage + Compute categories ==========
+  // ========== Storage + Compute + Data Transfer + Other Services categories ==========
   var storageSpend = [
     ["Data Pool storage",14200],
     ["Vector Store indexes",7300],
@@ -1289,21 +1383,39 @@
   ];
   var computeTotal = computeSpend.reduce(function(s,r){return s+r[1];},0);
 
-  // ========== Credits categories (AI Tokens / Storage / Compute) ==========
-  var CATEGORY_KEYS = ['tokens','storage','compute'];
-  var CATEGORY_LABELS = {tokens:'AI Tokens', storage:'Storage', compute:'Compute'};
-  var CATEGORY_COLORS = {tokens:'#1464F4', storage:'#0E9594', compute:'#7B61FF'};
-  var CATEGORY_TOTAL = {tokens: featureTotal, storage: storageTotal, compute: computeTotal};
-  var CATEGORY_GRAND_TOTAL = CATEGORY_TOTAL.tokens + CATEGORY_TOTAL.storage + CATEGORY_TOTAL.compute;
+  var trafficSpend = [
+    ["Zero-Copy data share (Fabric/Snowflake)",9600],
+    ["Cross-region data sync",3100],
+    ["API egress",1900],
+    ["Connector ingestion transfer",1200]
+  ];
+  var trafficTotal = trafficSpend.reduce(function(s,r){return s+r[1];},0);
+
+  var otherSpend = [
+    ["Task Mining",6800],
+    ["CPM (Celonis Process Mining core)",4200],
+    ["Action Engine executions",1900],
+    ["Process Automation runs",1100]
+  ];
+  var otherTotal = otherSpend.reduce(function(s,r){return s+r[1];},0);
+
+  // ========== Credits categories (AI Tokens / Storage / Compute / Data Transfer / Other Services) ==========
+  var CATEGORY_KEYS = ['tokens','storage','compute','traffic','other'];
+  var CATEGORY_LABELS = {tokens:'AI Tokens', storage:'Storage', compute:'Compute', traffic:'Data Transfer', other:'Other Services'};
+  var CATEGORY_COLORS = {tokens:'#1464F4', storage:'#0E9594', compute:'#7B61FF', traffic:'#D4862A', other:'#C23B6E'};
+  var CATEGORY_TOTAL = {tokens: featureTotal, storage: storageTotal, compute: computeTotal, traffic: trafficTotal, other: otherTotal};
+  var CATEGORY_GRAND_TOTAL = CATEGORY_KEYS.reduce(function(s,key){return s+CATEGORY_TOTAL[key];},0);
 
   // ========== per-team x per-category breakdown ==========
   var TEAM_CATEGORY_SPEND = [
-    {team:"Production", tokens:58900, storage:19200, compute:12100},
-    {team:"Production 2", tokens:18300, storage:8400, compute:4200},
-    {team:"Standard Sandbox", tokens:5100, storage:2800, compute:1500},
-    {team:"Premium Sandbox", tokens:1900, storage:1100, compute:500}
+    {team:"Production", tokens:58900, storage:19200, compute:12100, traffic:9800, other:8600},
+    {team:"Production 2", tokens:18300, storage:8400, compute:4200, traffic:3900, other:3600},
+    {team:"Standard Sandbox", tokens:5100, storage:2800, compute:1500, traffic:1400, other:1200},
+    {team:"Premium Sandbox", tokens:1900, storage:1100, compute:500, traffic:700, other:600}
   ];
-  var GRAND_TOTAL = TEAM_CATEGORY_SPEND.reduce(function(s,r){return s+r.tokens+r.storage+r.compute;},0);
+  var GRAND_TOTAL = TEAM_CATEGORY_SPEND.reduce(function(s,r){
+    return s + CATEGORY_KEYS.reduce(function(s2,key){ return s2 + (r[key]||0); }, 0);
+  },0);
 
   // ========== charts ==========
   var CHART_COLORS = ['#0A2E6B','#0F4FC4','#1464F4','#5B8FF9','#A9C6FB'];
@@ -1351,7 +1463,8 @@
     renderDonut('chart-category-spend', categorySegments, CATEGORY_GRAND_TOTAL, function(seg){ return CATEGORY_COLORS[seg.key]; });
 
     var teamSegments = TEAM_CATEGORY_SPEND.map(function(r){
-      return {label:r.team, value:r.tokens+r.storage+r.compute};
+      var total = CATEGORY_KEYS.reduce(function(s,key){ return s + (r[key]||0); }, 0);
+      return {label:r.team, value:total};
     }).sort(function(a,b){ return b.value-a.value; });
     renderDonut('chart-team-spend', teamSegments, GRAND_TOTAL);
 
@@ -1389,7 +1502,8 @@
       if(nameFilter && r.team !== nameFilter) return false;
       return true;
     }).map(function(r){
-      return {team:r.team, tokens:r.tokens, storage:r.storage, compute:r.compute, total:r.tokens+r.storage+r.compute};
+      var total = CATEGORY_KEYS.reduce(function(s,key){ return s + (r[key]||0); }, 0);
+      return {team:r.team, tokens:r.tokens, storage:r.storage, compute:r.compute, traffic:r.traffic, other:r.other, total:total};
     }).sort(function(a,b){ return b.total-a.total; });
 
     renderTeamStackLegend();
@@ -1403,6 +1517,8 @@
         '<td class="num-col num">'+fmtMoney(r.tokens)+'</td>'+
         '<td class="num-col num">'+fmtMoney(r.storage)+'</td>'+
         '<td class="num-col num">'+fmtMoney(r.compute)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.traffic)+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r.other)+'</td>'+
         '<td class="num-col num">'+fmtMoney(r.total)+'</td>'+
         '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
         '</tr>';
@@ -1584,9 +1700,39 @@
     document.getElementById('computeTotalCell').textContent = fmtMoney(computeTotal);
   }
 
+  // ========== Data Transfer tab ==========
+  function renderTraffic(){
+    var tbody = document.querySelector('#table-traffic tbody');
+    var sorted = trafficSpend.slice().sort(function(a,b){return b[1]-a[1];});
+    tbody.innerHTML = sorted.map(function(r){
+      var share = pct(r[1], trafficTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+    document.getElementById('trafficTotalCell').textContent = fmtMoney(trafficTotal);
+  }
+
+  // ========== Other Services tab ==========
+  function renderOther(){
+    var tbody = document.querySelector('#table-other tbody');
+    var sorted = otherSpend.slice().sort(function(a,b){return b[1]-a[1];});
+    tbody.innerHTML = sorted.map(function(r){
+      var share = pct(r[1], otherTotal);
+      return '<tr>'+
+        '<td>'+r[0]+'</td>'+
+        '<td class="num-col num">'+fmtMoney(r[1])+'</td>'+
+        '<td class="num-col"><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:'+share+'%"></div></div><span class="share-val">'+share+'%</span></div></td>'+
+        '</tr>';
+    }).join('');
+    document.getElementById('otherTotalCell').textContent = fmtMoney(otherTotal);
+  }
+
   // ========== Limits & alerts tab ==========
-  var LIMIT_SPEND = {tokens: featureTotal, storage: storageTotal, compute: computeTotal};
-  var LIMIT_IDS = {tokens:'limitTokens', storage:'limitStorage', compute:'limitCompute'};
+  var LIMIT_SPEND = {tokens: featureTotal, storage: storageTotal, compute: computeTotal, traffic: trafficTotal, other: otherTotal};
+  var LIMIT_IDS = {tokens:'limitTokens', storage:'limitStorage', compute:'limitCompute', traffic:'limitTraffic', other:'limitOther'};
 
   function updateLimitBar(key){
     var input = document.getElementById(LIMIT_IDS[key]);
@@ -1714,6 +1860,8 @@
   renderRequests();
   renderStorage();
   renderCompute();
+  renderTraffic();
+  renderOther();
   initLimits();
 
   ['filterTeam','filterUser','filterFeature','filterModel','filterDate','requestSearch'].forEach(function(id){
