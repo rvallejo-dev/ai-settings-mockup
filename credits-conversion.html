@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credits conversion · Celonis Documentation (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --sidebar-bg:#F3F4F6;
+    --border:#E3E6EA;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--surface);
+    font-size:14px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--blue-dark);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    height:64px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:24px;
+    padding:0 24px;
+  }
+  .brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;flex-shrink:0;}
+  .brand .sep{color:var(--border);}
+  .brand .doc-label{color:var(--text-secondary);font-weight:500;}
+  .search-box{
+    flex:1;max-width:640px;margin:0 auto;
+    display:flex;align-items:center;gap:10px;
+    border:1px solid var(--border);border-radius:9px;
+    padding:9px 14px;color:var(--text-muted);font-size:13.5px;
+  }
+  .search-box .kbd{
+    margin-left:auto;font-family:'IBM Plex Mono', monospace;font-size:11px;
+    color:var(--text-muted);border:1px solid var(--border);border-radius:5px;padding:2px 6px;
+  }
+  .hamburger{width:20px;height:14px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between;}
+  .hamburger span{display:block;height:2px;background:var(--text-secondary);border-radius:1px;}
+
+  /* ---------- layout ---------- */
+  .layout{display:flex;max-width:1600px;margin:0 auto;}
+  .sidebar{
+    width:260px;flex-shrink:0;background:var(--sidebar-bg);
+    padding:20px 0;min-height:calc(100vh - 65px);
+    font-size:13.5px;
+  }
+  .sidebar .nav-item{
+    display:block;padding:9px 24px;color:var(--text-secondary);cursor:default;
+  }
+  .sidebar .nav-item.sub{padding-left:40px;color:var(--text-secondary);}
+  .sidebar .nav-item.sub2{padding-left:56px;}
+  .sidebar .nav-item.current{color:var(--blue-dark);font-weight:600;background:var(--blue-tint);}
+  .sidebar .nav-item.parent-open{font-weight:600;color:var(--ink);}
+
+  .content{
+    flex:1;min-width:0;max-width:880px;
+    padding:36px 48px 80px;
+  }
+  .toc{
+    width:220px;flex-shrink:0;padding:36px 24px 0;font-size:12.5px;
+  }
+  .toc-title{color:var(--text-muted);font-weight:600;margin-bottom:10px;}
+  .toc a{display:block;color:var(--text-secondary);padding:5px 0;}
+  .toc a.current{color:var(--ink);font-weight:600;}
+  .toc a.current::before{content:'● ';color:var(--blue);font-size:9px;}
+  .toc a.related{color:var(--blue-dark);font-weight:600;}
+
+  .crumb{font-size:12.5px;color:var(--text-muted);margin-bottom:14px;}
+  .crumb a{color:var(--text-muted);}
+  .crumb .sep{margin:0 6px;}
+  h1{font-size:30px;font-weight:700;margin:0 0 16px;letter-spacing:-0.01em;}
+  .intro{color:var(--ink);font-size:14.5px;margin-bottom:20px;max-width:720px;}
+
+  .expand-all{
+    display:inline-block;background:none;border:1px solid var(--blue);color:var(--blue-dark);
+    font-family:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:7px;
+    cursor:pointer;margin-bottom:8px;
+  }
+  .expand-all:hover{background:var(--blue-tint);}
+
+  details{border-bottom:1px solid var(--border);padding:16px 0;}
+  details:first-of-type{border-top:1px solid var(--border);margin-top:16px;}
+  summary{
+    font-size:16px;font-weight:700;cursor:pointer;list-style:none;
+    display:flex;align-items:center;gap:10px;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary .arrow{
+    display:inline-block;width:0;height:0;
+    border-top:5px solid transparent;border-bottom:5px solid transparent;
+    border-left:6px solid var(--blue);transition:transform 0.15s;flex-shrink:0;
+  }
+  details[open] summary .arrow{transform:rotate(90deg);}
+  .details-body{padding:14px 0 2px 16px;}
+  .details-body p{margin:0 0 14px;color:var(--ink);font-size:14px;max-width:700px;}
+
+  table{width:100%;border-collapse:collapse;margin-top:4px;}
+  thead th{
+    text-align:left;background:var(--surface-alt);font-size:13px;font-weight:600;
+    padding:10px 14px;border:1px solid var(--border);
+  }
+  tbody td{padding:12px 14px;font-size:13.5px;border:1px solid var(--border);vertical-align:top;}
+
+  .related-topics h2{font-size:18px;font-weight:700;margin:36px 0 10px;}
+  .related-topics ul{margin:0;padding-left:20px;}
+  .related-topics li{margin-bottom:6px;font-size:14px;}
+
+  .helpful{text-align:center;margin:56px 0 24px;}
+  .helpful p{font-weight:700;font-size:14px;margin-bottom:12px;}
+  .helpful-btns{display:flex;gap:10px;justify-content:center;}
+  .helpful-btns button{
+    font-family:inherit;font-size:13.5px;border:1px solid var(--border);
+    background:var(--surface);border-radius:7px;padding:8px 20px;cursor:pointer;
+  }
+  .helpful-btns button:hover{background:var(--surface-alt);}
+
+  .pagenav{
+    display:flex;justify-content:space-between;border-top:1px solid var(--border);
+    padding-top:18px;font-size:13.5px;font-weight:600;
+  }
+
+  .back-callout{
+    margin-top:28px;background:var(--blue-tint);border:1px solid #C7D9FB;border-radius:9px;
+    padding:14px 18px;font-size:13.5px;color:var(--ink);
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">celonis <span class="sep">|</span> <span class="doc-label">Documentation</span></div>
+    <div class="search-box">🔍 Search here <span class="kbd">⌘ + K</span></div>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="nav-item">Release Notes</div>
+      <div class="nav-item">Getting Started</div>
+      <div class="nav-item">Admin &amp; Settings</div>
+      <div class="nav-item">On-premises clients (OPC)</div>
+      <div class="nav-item">Data Integration</div>
+      <div class="nav-item">Celonis Context Model</div>
+      <div class="nav-item">Celonis Apollo</div>
+      <div class="nav-item">Machine Learning Workbench</div>
+      <div class="nav-item parent-open">Credits &amp; Consumption</div>
+      <div class="nav-item sub current">Credits conversion</div>
+    </div>
+
+    <div class="content">
+      <div class="crumb">
+        <a href="#">Celonis Product Documentation</a><span class="sep">/</span>
+        <a href="#">Credits &amp; Consumption</a><span class="sep">/</span>
+        Credits conversion
+      </div>
+
+      <h1>Credits conversion</h1>
+      <div class="intro">
+        Celonis consumption across AI, Compute, Storage, Data Transfer, and Other Services is unified into a single Credits balance. Each lane converts its underlying USD list price into Credits at its own rate, since the cost per unit varies a lot between an AI token and a gigabyte of storage. Expand a lane below to see its conversion rate.
+      </div>
+
+      <button class="expand-all" onclick="document.querySelectorAll('details').forEach(function(d){d.open=true;})">Expand all</button>
+
+      <details open>
+        <summary><span class="arrow"></span>AI Tokens</summary>
+        <div class="details-body">
+          <p>Every AI provider and model is priced at standard list price in USD, then passed through to Credits at 1:1. This is the same rate used across the token-based pricing model.</p>
+          <table>
+            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <tbody>
+              <tr><td class="num">$1.00 USD of token usage</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="arrow"></span>Compute</summary>
+        <div class="details-body">
+          <p>Machine Learning Workbench and other on-demand compute usage converts to Credits at the same 1:1 rate as AI Tokens, matching standard compute list price.</p>
+          <table>
+            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <tbody>
+              <tr><td class="num">$1.00 USD of compute usage</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="arrow"></span>Storage</summary>
+        <div class="details-body">
+          <p>Storage is billed in much smaller dollar increments per GB than AI or Compute. A finer conversion rate is used so storage consumption still shows up as meaningful Credit amounts, instead of rounding to near zero.</p>
+          <table>
+            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <tbody>
+              <tr><td class="num">$0.25 USD of storage usage</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="arrow"></span>Data Transfer</summary>
+        <div class="details-body">
+          <p>Data Transfer (egress) usage converts at an intermediate rate, reflecting current egress list price tiers. This rate may be revisited once the zero-copy traffic work is finalized.</p>
+          <table>
+            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <tbody>
+              <tr><td class="num">$0.50 USD of data transfer usage</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="arrow"></span>Other Services</summary>
+        <div class="details-body">
+          <p>Any consumption not yet covered by a dedicated lane uses a default 1:1 rate until a service-specific rate is defined.</p>
+          <table>
+            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <tbody>
+              <tr><td class="num">$1.00 USD of usage</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <div class="back-callout">
+        Looking at your account's Credits balance? <a href="account-manager.html">Go back to the BMW account consumption and allocation view</a>.
+      </div>
+
+      <div class="related-topics">
+        <h2>Related topics</h2>
+        <ul>
+          <li><a href="#">AI Settings</a></li>
+          <li><a href="account-manager.html">Account consumption &amp; credit allocation</a></li>
+        </ul>
+      </div>
+
+      <div class="helpful">
+        <p>Was this helpful?</p>
+        <div class="helpful-btns">
+          <button>Yes</button>
+          <button>No</button>
+        </div>
+      </div>
+
+      <div class="pagenav">
+        <a href="#">&larr; Prev</a>
+        <a href="#">Next &rarr;</a>
+      </div>
+    </div>
+
+    <div class="toc">
+      <div class="toc-title">Credits conversion</div>
+      <a href="#" class="current">AI Tokens</a>
+      <a href="#">Compute</a>
+      <a href="#">Storage</a>
+      <a href="#">Data Transfer</a>
+      <a href="#">Other Services</a>
+      <a href="#" class="related">Related topics</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

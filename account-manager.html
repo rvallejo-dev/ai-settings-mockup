@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMW Account · Consumption &amp; Allocation (Account Manager mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --border:#DFE4EA;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+    --green-text:#1B6B4A;
+    --green-tint:#E6F5EE;
+    --amber-text:#8A5A00;
+    --amber-tint:#FFF2D9;
+    --red:#B23A38;
+    --red-tint:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--surface-alt);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;}
+
+  /* ---------- login screen ---------- */
+  .login-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .login-card{
+    width:100%;
+    max-width:380px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:36px 32px 28px;
+    box-shadow:0 2px 24px rgba(16,35,59,0.06);
+  }
+  .login-logo{
+    width:36px;height:36px;border-radius:9px;
+    background:var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:16px;
+    margin-bottom:18px;
+  }
+  .login-card h1{
+    font-size:20px;
+    font-weight:600;
+    margin:0 0 4px;
+    letter-spacing:-0.01em;
+  }
+  .login-sub{
+    font-size:13px;
+    color:var(--text-secondary);
+    margin-bottom:26px;
+  }
+  .login-field{margin-bottom:16px;}
+  .login-field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--text-secondary);
+    margin-bottom:6px;
+  }
+  .login-field input{
+    width:100%;
+    font-family:inherit;
+    font-size:14px;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:var(--surface-alt);
+    color:var(--ink);
+  }
+  .login-field input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .login-btn{
+    width:100%;
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:12px 0;
+    font-family:inherit;
+    font-size:14.5px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .login-btn:hover{background:var(--blue-dark);}
+  .login-foot{
+    margin-top:18px;
+    font-size:11.5px;
+    color:var(--text-muted);
+    text-align:center;
+  }
+
+  /* ---------- app shell ---------- */
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:28px 28px 80px;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding-bottom:16px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-id{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .topbar-badge{
+    width:30px;height:30px;border-radius:8px;
+    background:var(--blue);
+    color:#fff;font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .topbar-id .name{font-size:13.5px;font-weight:600;color:var(--ink);}
+  .topbar-id .role{font-size:12px;color:var(--text-muted);}
+  .logout-link{
+    font-size:13px;
+    color:var(--blue-dark);
+    font-weight:600;
+    cursor:pointer;
+    background:none;
+    border:none;
+    font-family:inherit;
+  }
+  h1{font-size:24px;font-weight:600;margin:0 0 6px;letter-spacing:-0.01em;}
+  .subtitle{color:var(--text-secondary);font-size:14px;max-width:680px;margin-bottom:6px;}
+  .account-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--blue-tint);color:var(--blue-dark);
+    border:1px solid #C7D9FB;padding:5px 11px;border-radius:20px;
+    font-size:12px;font-weight:600;margin-bottom:18px;
+  }
+
+  /* ---------- tabs ---------- */
+  .tabs{
+    display:flex;
+    gap:4px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:20px;
+  }
+  .tab-btn{
+    background:none;border:none;font-family:inherit;
+    font-size:14px;font-weight:500;color:var(--text-secondary);
+    padding:12px 16px;cursor:pointer;
+    border-bottom:2px solid transparent;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{color:var(--ink);font-weight:600;border-bottom-color:var(--blue);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  /* ---------- cards ---------- */
+  .overview-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+    margin-bottom:24px;
+  }
+  .overview-grid-single{grid-template-columns:1fr;}
+  .top-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:20px;
+    align-items:stretch;
+  }
+  .top-grid .hero-card{margin-bottom:0;}
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+  }
+  .hero-card{padding:26px 28px;}
+  .hero-card .card-value{font-size:40px;}
+  .hero-card .progress-track{max-width:420px;}
+  .card-label{font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;}
+  .card-value{font-family:'IBM Plex Mono', monospace;font-size:26px;font-weight:600;color:var(--ink);}
+  .card-value .unit{font-size:13px;font-weight:500;color:var(--text-secondary);margin-left:6px;}
+  .card-sub{font-size:12.5px;color:var(--text-muted);margin-top:6px;}
+  .progress-track{height:8px;background:var(--surface-alt);border-radius:5px;margin-top:14px;overflow:hidden;border:1px solid var(--border);}
+  .progress-fill{height:100%;background:var(--blue);border-radius:5px 0 0 5px;}
+
+  .block-heading{font-size:16px;font-weight:600;margin:28px 0 2px;}
+  .block-desc{font-size:13px;color:var(--text-secondary);margin-bottom:14px;}
+
+  .panel-box{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px;
+    margin-bottom:20px;
+  }
+
+  /* ---------- donut ---------- */
+  .donut-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .donut-svg-wrap{position:relative;flex-shrink:0;width:110px;height:110px;}
+  .donut-svg-wrap svg{display:block;}
+  .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+  .donut-center .val{font-family:'IBM Plex Mono', monospace;font-weight:600;font-size:14px;color:var(--ink);line-height:1.2;}
+  .donut-center .lbl{font-size:9px;color:var(--text-muted);margin-top:1px;}
+  .legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;flex:1;min-width:220px;}
+  .legend-item{display:flex;align-items:center;gap:8px;}
+  .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .legend-label{font-size:12.5px;color:var(--ink);flex:1;min-width:0;}
+  .legend-val{font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:var(--text-secondary);white-space:nowrap;}
+
+  /* ---------- stacked bars ---------- */
+  .stacked-bars{margin-bottom:6px;}
+  .stacked-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .stacked-bar-label{width:150px;flex-shrink:0;font-size:13px;color:var(--ink);}
+  .stacked-bar-track{flex:1;height:22px;border-radius:6px;overflow:hidden;display:flex;border:1px solid var(--border);}
+  .stacked-bar-seg{height:100%;}
+  .stacked-bar-total{width:110px;flex-shrink:0;text-align:right;font-family:'IBM Plex Mono', monospace;font-size:12.5px;color:var(--text-secondary);}
+  .stacked-bar-pct{width:120px;flex-shrink:0;text-align:right;font-size:11.5px;color:var(--text-muted);}
+  .stack-legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 18px;font-size:12px;color:var(--text-secondary);}
+  .stack-legend .legend-item{display:flex;align-items:center;gap:6px;}
+
+  /* ---------- tables ---------- */
+  table{width:100%;border-collapse:collapse;}
+  thead th{
+    text-align:left;font-size:12px;font-weight:600;color:var(--text-muted);
+    text-transform:uppercase;letter-spacing:0.02em;
+    padding:0 10px 10px;border-bottom:1px solid var(--border);
+  }
+  thead th.num-col, tbody td.num-col{text-align:right;}
+  tbody td{padding:12px 10px;font-size:13.5px;border-bottom:1px solid var(--border);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-alt);}
+
+  /* ---------- allocation tab ---------- */
+  .pool-summary{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    margin-bottom:18px;
+  }
+  .pool-summary .pool-figure{font-family:'IBM Plex Mono', monospace;font-size:20px;font-weight:600;}
+  .pool-status{font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;}
+  .pool-status.ok{background:var(--green-tint);color:var(--green-text);}
+  .pool-status.warn{background:var(--amber-tint);color:var(--amber-text);}
+  .alloc-row{
+    display:flex;align-items:center;gap:16px;
+    padding:14px 0;border-bottom:1px solid var(--border);
+  }
+  .alloc-row:last-child{border-bottom:none;}
+  .alloc-name{width:190px;flex-shrink:0;font-size:13.5px;font-weight:600;color:var(--ink);}
+  .alloc-consumed{width:170px;flex-shrink:0;font-size:12px;color:var(--text-muted);}
+  .alloc-input-wrap{display:flex;align-items:center;gap:8px;}
+  .alloc-input-wrap input{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;width:120px;padding:8px 10px;
+    border:1px solid var(--border);border-radius:7px;background:var(--surface-alt);color:var(--ink);
+  }
+  .alloc-input-wrap input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+  .alloc-unit{font-size:12.5px;color:var(--text-secondary);}
+  .alloc-pct{flex:1;text-align:right;font-size:12.5px;color:var(--text-secondary);}
+  .alloc-warn-inline{font-size:11.5px;color:var(--red);margin-top:3px;display:block;}
+  .save-row{display:flex;align-items:center;gap:14px;margin-top:20px;}
+  .save-btn{
+    background:var(--blue);color:#fff;border:none;border-radius:8px;
+    padding:11px 20px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;
+  }
+  .save-btn:hover{background:var(--blue-dark);}
+  .save-confirm{font-size:13px;color:var(--green-text);font-weight:600;opacity:0;transition:opacity 0.2s;}
+  .save-confirm.show{opacity:1;}
+  .mock-note{
+    margin-top:18px;padding-top:14px;border-top:1px dashed var(--border);
+    font-size:11.5px;color:var(--text-muted);
+  }
+
+  /* ---------- needs attention ---------- */
+  .attention-box{
+    background:var(--red-tint);border:1px solid #F3C6C4;border-radius:10px;
+    padding:16px 20px;margin-bottom:20px;
+  }
+  .attention-box.warn-box{background:var(--amber-tint);border-color:#F0DBA6;}
+  .attention-head{
+    display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;
+    color:var(--red);margin-bottom:10px;
+  }
+  .attention-box.warn-box .attention-head{color:var(--amber-text);}
+  .attention-item{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    font-size:13.5px;color:var(--ink);padding:8px 0;
+  }
+  .attention-item + .attention-item{border-top:1px dashed rgba(16,35,59,0.12);}
+  .attention-item b{font-weight:700;}
+  .attention-link{
+    background:none;border:1px solid currentColor;border-radius:7px;
+    color:var(--blue-dark);font-weight:600;font-size:12.5px;cursor:pointer;
+    font-family:inherit;padding:5px 11px;flex-shrink:0;
+  }
+  .attention-link:hover{background:var(--blue-tint);}
+
+  /* ---------- % used cell with bar ---------- */
+  .pct-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+  .pct-bar-track{width:56px;height:6px;background:var(--surface-alt);border-radius:4px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;}
+  .pct-bar-fill{height:100%;border-radius:4px;}
+  .pct-text{font-family:'IBM Plex Mono', monospace;font-size:12.5px;width:36px;text-align:right;flex-shrink:0;}
+  .tier-ok{color:var(--text-secondary);}
+  .tier-warn{color:var(--amber-text);font-weight:600;}
+  .tier-critical{color:var(--red);font-weight:700;}
+  .bar-ok{background:var(--blue);}
+  .bar-warn{background:#D99B1D;}
+  .bar-critical{background:var(--red);}
+</style>
+</head>
+<body>
+
+  <!-- ===================== LOGIN SCREEN ===================== -->
+  <div class="login-wrap" id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">C</div>
+      <h1>AI Consumption Portal</h1>
+      <div class="login-sub">Account Manager sign-in &middot; BMW</div>
+      <div class="login-field">
+        <label for="loginEmail">Work email</label>
+        <input type="email" id="loginEmail" value="sara.mueller@bmw.de">
+      </div>
+      <div class="login-field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" value="••••••••••">
+      </div>
+      <button class="login-btn" onclick="doLogin()">Log in</button>
+      <div class="login-foot">Mockup only &middot; no real authentication</div>
+    </div>
+  </div>
+
+  <!-- ===================== APP SHELL ===================== -->
+  <div class="shell" id="appShell" style="display:none;">
+
+    <div class="topbar">
+      <div class="topbar-id">
+        <div class="topbar-badge">SM</div>
+        <div>
+          <div class="name">Sara Müller</div>
+          <div class="role">Account Manager</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="account-tag" style="margin-bottom:0;"><span>&#9679;</span> BMW · Account view</div>
+        <button class="logout-link" onclick="doLogout()">Log out</button>
+      </div>
+    </div>
+
+    <h1>Account consumption &amp; credit allocation</h1>
+    <div class="subtitle">Everything below is shown in Credits, aggregated across all BMW teams. Use Allowance Allocation to set how much of the account pool each team can spend.</div>
+    <div class="subtitle"><a href="credits-conversion.html" style="color:var(--blue-dark);font-weight:600;">How do USD costs convert to Credits? &rarr;</a></div>
+
+    <div class="top-grid">
+      <div class="card hero-card">
+        <div class="card-label">Account pool &middot; consumed this period</div>
+        <div class="card-value num" id="mConsumedTotal">63,000<span class="unit">/ 210,000 Credits</span></div>
+        <div class="progress-track"><div class="progress-fill" id="mConsumedBar" style="width:30%"></div></div>
+        <div class="card-sub" id="mConsumedSub">30% of account pool used across 4 teams &middot; last 28 days</div>
+      </div>
+
+      <div class="panel-box" style="margin-bottom:0;">
+        <div class="block-heading" style="margin-top:0;">Consumption by lane</div>
+        <div class="block-desc">Account-wide total, across all 4 teams.</div>
+        <div id="laneDonut"></div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="monitor">Monitor</button>
+      <button class="tab-btn" data-tab="allocation">Allowance Allocation</button>
+    </div>
+
+    <!-- ===================== MONITOR PANEL ===================== -->
+    <div class="panel active" id="panel-monitor">
+
+      <div id="attentionBox"></div>
+
+      <div class="panel-box">
+        <div class="block-heading">Consumption by team</div>
+        <div class="block-desc">Each bar shows a team's lane breakdown; totals are consumed Credits against that team's own allocation.</div>
+        <div class="stack-legend" id="laneLegendStrip"></div>
+        <div class="stacked-bars" id="teamStackedBars"></div>
+        <table>
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th class="num-col">Allocated</th>
+              <th class="num-col">Consumed</th>
+              <th class="num-col">% used</th>
+              <th class="num-col">Remaining</th>
+            </tr>
+          </thead>
+          <tbody id="teamTableBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ===================== ALLOCATION PANEL ===================== -->
+    <div class="panel" id="panel-allocation">
+      <div class="panel-box">
+        <div class="pool-summary">
+          <div>
+            <div class="card-label">BMW account pool</div>
+            <div class="pool-figure num">210,000 Credits</div>
+          </div>
+          <div class="pool-status" id="allocStatus">Fully allocated</div>
+        </div>
+
+        <div id="allocRows"></div>
+
+        <div class="save-row">
+          <button class="save-btn" onclick="saveAllocation()">Save allocation</button>
+          <span class="save-confirm" id="saveConfirm">Allocation saved ✓</span>
+        </div>
+
+        <div class="mock-note">Changes here update the Monitor tab immediately. Nothing is persisted to a backend, this is a mockup.</div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function fmtCr(n){ return fmt(n) + ' Credits'; }
+  function pct(n, total){ return total>0 ? Math.round(n/total*100) : 0; }
+
+  var LANE_LABELS = {tokens:'AI Tokens', storage:'Storage', compute:'Compute', traffic:'Data Transfer', other:'Other Services'};
+  var LANE_COLORS = {tokens:'#1464F4', storage:'#0E9594', compute:'#7B61FF', traffic:'#D4862A', other:'#C23B6E'};
+  var LANE_KEYS = ['tokens','storage','compute','traffic','other'];
+  var POOL_TOTAL = 210000;
+
+  var TEAMS = [
+    {name:'Production 1', allocation:100000, consumed:42000, lanes:{tokens:19000, storage:8500, compute:7500, traffic:4500, other:2500}},
+    {name:'Production 2', allocation:100000, consumed:90000, lanes:{tokens:40000, storage:18000, compute:16000, traffic:10000, other:6000}},
+    {name:'Sandbox 1',    allocation:3000,   consumed:1800,  lanes:{tokens:800,   storage:350,  compute:300,  traffic:200,  other:150}},
+    {name:'Premium Sandbox 2', allocation:7000, consumed:1200, lanes:{tokens:500, storage:250,  compute:200,  traffic:150,  other:100}}
+  ];
+
+  function doLogin(){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+  }
+  function doLogout(){
+    document.getElementById('appShell').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---------- donut ----------
+  function renderDonut(containerId, segments, total){
+    var size = 110, cx = size/2, cy = size/2, sw = 15;
+    var r = cx - sw/2 - 1;
+    var C = 2*Math.PI*r;
+    var cumulative = 0;
+    var circles = segments.map(function(seg){
+      var frac = total > 0 ? seg.value/total : 0;
+      var len = frac*C;
+      var dasharray = len.toFixed(2)+' '+(C-len).toFixed(2);
+      var dashoffset = (-cumulative).toFixed(2);
+      cumulative += len;
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+seg.color+'" stroke-width="'+sw+'" stroke-dasharray="'+dasharray+'" stroke-dashoffset="'+dashoffset+'"/>';
+    }).join('');
+    var svgHtml = '<div class="donut-svg-wrap"><svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><g transform="rotate(-90 '+cx+' '+cy+')">'+circles+'</g></svg>'+
+      '<div class="donut-center"><span class="val">'+fmt(total)+'</span><span class="lbl">Credits</span></div></div>';
+    var legendHtml = '<ul class="legend">'+segments.map(function(seg){
+      return '<li class="legend-item"><span class="legend-dot" style="background:'+seg.color+'"></span>'+
+        '<span class="legend-label">'+seg.label+'</span>'+
+        '<span class="legend-val">'+fmt(seg.value)+' Cr &middot; '+pct(seg.value, total)+'%</span></li>';
+    }).join('')+'</ul>';
+    document.getElementById(containerId).innerHTML = '<div class="donut-row">'+svgHtml+legendHtml+'</div>';
+  }
+
+  // ---------- monitor render ----------
+  function renderMonitor(){
+    var allocatedTotal = TEAMS.reduce(function(s,t){ return s+t.allocation; }, 0);
+    var consumedTotal = TEAMS.reduce(function(s,t){ return s+t.consumed; }, 0);
+
+    document.getElementById('mConsumedTotal').innerHTML = fmt(consumedTotal) + '<span class="unit">/ ' + fmt(POOL_TOTAL) + ' Credits</span>';
+    var consumedPct = pct(consumedTotal, POOL_TOTAL);
+    document.getElementById('mConsumedBar').style.width = consumedPct + '%';
+    document.getElementById('mConsumedSub').textContent = consumedPct + '% of account pool used across ' + TEAMS.length + ' teams · last 28 days';
+
+    // lane donut (account-wide)
+    var laneTotals = {};
+    LANE_KEYS.forEach(function(key){
+      laneTotals[key] = TEAMS.reduce(function(s,t){ return s + t.lanes[key]; }, 0);
+    });
+    var laneSegments = LANE_KEYS.map(function(key){
+      return {label: LANE_LABELS[key], value: laneTotals[key], color: LANE_COLORS[key]};
+    });
+    renderDonut('laneDonut', laneSegments, consumedTotal);
+
+    // lane legend strip (for stacked bars section)
+    document.getElementById('laneLegendStrip').innerHTML = LANE_KEYS.map(function(key){
+      return '<span class="legend-item"><span class="legend-dot" style="background:'+LANE_COLORS[key]+'"></span>'+LANE_LABELS[key]+'</span>';
+    }).join('');
+
+    // stacked bars per team
+    document.getElementById('teamStackedBars').innerHTML = TEAMS.map(function(t){
+      var segs = LANE_KEYS.map(function(key){
+        var val = t.lanes[key];
+        var segPct = t.consumed>0 ? (val/t.consumed*100) : 0;
+        return '<div class="stacked-bar-seg" style="width:'+segPct.toFixed(1)+'%;background:'+LANE_COLORS[key]+'" title="'+LANE_LABELS[key]+': '+fmt(val)+' Cr ('+segPct.toFixed(1)+'%)"></div>';
+      }).join('');
+      var usedPct = pct(t.consumed, t.allocation);
+      var tier = usageTier(usedPct);
+      return '<div class="stacked-bar-row">'+
+        '<div class="stacked-bar-label">'+t.name+'</div>'+
+        '<div class="stacked-bar-track">'+segs+'</div>'+
+        '<div class="stacked-bar-total num">'+fmt(t.consumed)+' Cr</div>'+
+        '<div class="stacked-bar-pct tier-'+tier+'">'+usedPct+'% of '+fmt(t.allocation)+' Cr</div>'+
+        '</div>';
+    }).join('');
+
+    // team table
+    document.getElementById('teamTableBody').innerHTML = TEAMS.map(function(t){
+      var usedPct = pct(t.consumed, t.allocation);
+      var tier = usageTier(usedPct);
+      var remaining = t.allocation - t.consumed;
+      return '<tr>'+
+        '<td>'+t.name+'</td>'+
+        '<td class="num-col num">'+fmt(t.allocation)+' Cr</td>'+
+        '<td class="num-col num">'+fmt(t.consumed)+' Cr</td>'+
+        '<td class="num-col"><div class="pct-cell">'+
+          '<div class="pct-bar-track"><div class="pct-bar-fill bar-'+tier+'" style="width:'+Math.min(usedPct,100)+'%"></div></div>'+
+          '<span class="pct-text tier-'+tier+'">'+usedPct+'%</span>'+
+        '</div></td>'+
+        '<td class="num-col num">'+fmt(remaining)+' Cr</td>'+
+        '</tr>';
+    }).join('');
+
+    // needs attention
+    renderAttention();
+  }
+
+  function usageTier(usedPct){
+    if(usedPct >= 90) return 'critical';
+    if(usedPct >= 75) return 'warn';
+    return 'ok';
+  }
+
+  function renderAttention(){
+    var flagged = TEAMS.map(function(t){
+      return {team:t, usedPct: pct(t.consumed, t.allocation)};
+    }).filter(function(x){ return x.usedPct >= 75; })
+      .sort(function(a,b){ return b.usedPct - a.usedPct; });
+
+    var box = document.getElementById('attentionBox');
+    if(flagged.length === 0){ box.innerHTML = ''; return; }
+
+    var hasCritical = flagged.some(function(x){ return x.usedPct >= 90; });
+    var boxClass = hasCritical ? 'attention-box' : 'attention-box warn-box';
+    var headLabel = hasCritical ? '⚠ Needs attention' : '⚠ Approaching limit';
+
+    var items = flagged.map(function(x){
+      var tier = usageTier(x.usedPct);
+      var verb = tier === 'critical' ? 'is at' : 'is approaching';
+      return '<div class="attention-item">'+
+        '<span><b>'+x.team.name+'</b> '+verb+' <b>'+x.usedPct+'%</b> of its '+fmt(x.team.allocation)+' Cr allocation ('+fmt(x.team.consumed)+' Cr consumed).</span>'+
+        '<button class="attention-link" onclick="goToAllocationTab()">Review allocation &rarr;</button>'+
+        '</div>';
+    }).join('');
+
+    box.innerHTML = '<div class="'+boxClass+'">'+
+      '<div class="attention-head">'+headLabel+'</div>'+
+      items+
+      '</div>';
+  }
+
+  function goToAllocationTab(){
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelector('.tab-btn[data-tab="allocation"]').classList.add('active');
+    document.getElementById('panel-allocation').classList.add('active');
+  }
+
+  // ---------- allocation render ----------
+  function renderAllocation(){
+    document.getElementById('allocRows').innerHTML = TEAMS.map(function(t, i){
+      return '<div class="alloc-row">'+
+        '<div class="alloc-name">'+t.name+'</div>'+
+        '<div class="alloc-consumed">Consumed: '+fmt(t.consumed)+' Cr</div>'+
+        '<div class="alloc-input-wrap">'+
+          '<input type="number" step="1000" min="0" id="allocInput'+i+'" value="'+t.allocation+'" oninput="onAllocInput('+i+')">'+
+          '<span class="alloc-unit">Credits</span>'+
+        '</div>'+
+        '<div class="alloc-pct" id="allocPct'+i+'">'+pct(t.allocation, POOL_TOTAL)+'% of pool</div>'+
+        '</div>';
+    }).join('');
+    updateAllocStatus();
+  }
+
+  function onAllocInput(i){
+    var input = document.getElementById('allocInput'+i);
+    var val = parseInt(input.value, 10);
+    if(isNaN(val) || val<0) val = 0;
+    TEAMS[i].allocation = val;
+    document.getElementById('allocPct'+i).textContent = pct(val, POOL_TOTAL) + '% of pool';
+    updateAllocStatus();
+  }
+
+  function updateAllocStatus(){
+    var total = TEAMS.reduce(function(s,t){ return s+t.allocation; }, 0);
+    var statusEl = document.getElementById('allocStatus');
+    if(total === POOL_TOTAL){
+      statusEl.textContent = 'Fully allocated';
+      statusEl.className = 'pool-status ok';
+    } else if(total < POOL_TOTAL){
+      statusEl.textContent = (fmt(POOL_TOTAL-total)) + ' Cr unallocated';
+      statusEl.className = 'pool-status warn';
+    } else {
+      statusEl.textContent = 'Exceeds pool by ' + fmt(total-POOL_TOTAL) + ' Cr';
+      statusEl.className = 'pool-status warn';
+    }
+  }
+
+  function saveAllocation(){
+    renderMonitor();
+    var confirmEl = document.getElementById('saveConfirm');
+    confirmEl.classList.add('show');
+    setTimeout(function(){ confirmEl.classList.remove('show'); }, 2200);
+  }
+
+  renderMonitor();
+  renderAllocation();
+</script>
+
+</body>
+</html>
