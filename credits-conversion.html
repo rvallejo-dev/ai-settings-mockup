@@ -179,7 +179,7 @@
 
       <h1>Credits conversion</h1>
       <div class="intro">
-        Celonis consumption across AI, Compute, Storage, Data Transfer, and Other Services is unified into a single Credits balance. Each lane converts its underlying USD list price into Credits at its own rate, since the cost per unit varies a lot between an AI token and a gigabyte of storage. Expand a lane below to see its conversion rate.
+        Celonis consumption across AI, Compute, Storage, Data Transfer, and Other Services is unified into a single Credits balance. Each lane meters usage in its own unit (tokens, CPU-hours, terabytes) and has its own Credit rate, which can vary further by sub-type. Expand a lane below to see its rates.
       </div>
 
       <button class="expand-all" onclick="document.querySelectorAll('details').forEach(function(d){d.open=true;})">Expand all</button>
@@ -187,11 +187,12 @@
       <details open>
         <summary><span class="arrow"></span>AI Tokens</summary>
         <div class="details-body">
-          <p>Every AI provider and model is priced at standard list price in USD, then passed through to Credits at 1:1. This is the same rate used across the token-based pricing model.</p>
+          <p>AI token usage is metered separately for input and output tokens, each with its own Credit rate per 10 million tokens.</p>
           <table>
-            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <thead><tr><th>Token type</th><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td class="num">$1.00 USD of token usage</td></tr>
+              <tr><td>Input</td><td class="num">0.2 Credits / 10M tokens</td></tr>
+              <tr><td>Output</td><td class="num">0.1 Credits / 10M tokens</td></tr>
             </tbody>
           </table>
         </div>
@@ -200,11 +201,13 @@
       <details>
         <summary><span class="arrow"></span>Compute</summary>
         <div class="details-body">
-          <p>Machine Learning Workbench and other on-demand compute usage converts to Credits at the same 1:1 rate as AI Tokens, matching standard compute list price.</p>
+          <p>Compute usage is metered per CPU-hour, with a different Credit rate depending on the workload type.</p>
           <table>
-            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <thead><tr><th>Workload type</th><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td class="num">$1.00 USD of compute usage</td></tr>
+              <tr><td>ETL</td><td class="num">0.15 Credits / CPU-hr</td></tr>
+              <tr><td>QE</td><td class="num">0.3 Credits / CPU-hr</td></tr>
+              <tr><td>DI</td><td class="num">0.4 Credits / CPU-hr</td></tr>
             </tbody>
           </table>
         </div>
@@ -213,11 +216,12 @@
       <details>
         <summary><span class="arrow"></span>Storage</summary>
         <div class="details-body">
-          <p>Storage is billed in much smaller dollar increments per GB than AI or Compute. A finer conversion rate is used so storage consumption still shows up as meaningful Credit amounts, instead of rounding to near zero.</p>
+          <p>Storage usage is metered per 10 TB, with a different Credit rate depending on the storage engine.</p>
           <table>
-            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <thead><tr><th>Storage type</th><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td class="num">$0.25 USD of storage usage</td></tr>
+              <tr><td>Iceberg</td><td class="num">0.1 Credits / 10 TB</td></tr>
+              <tr><td>S3</td><td class="num">0.15 Credits / 10 TB</td></tr>
             </tbody>
           </table>
         </div>
@@ -226,11 +230,11 @@
       <details>
         <summary><span class="arrow"></span>Data Transfer</summary>
         <div class="details-body">
-          <p>Data Transfer (egress) usage converts at an intermediate rate, reflecting current egress list price tiers. This rate may be revisited once the zero-copy traffic work is finalized.</p>
+          <p>Data Transfer (egress) usage is metered per 10 TB at a single Credit rate.</p>
           <table>
-            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <thead><tr><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td class="num">$0.50 USD of data transfer usage</td></tr>
+              <tr><td class="num">0.15 Credits / 10 TB</td></tr>
             </tbody>
           </table>
         </div>
@@ -239,11 +243,11 @@
       <details>
         <summary><span class="arrow"></span>Other Services</summary>
         <div class="details-body">
-          <p>Any consumption not yet covered by a dedicated lane uses a default 1:1 rate until a service-specific rate is defined.</p>
+          <p>Rate not yet defined for this lane.</p>
           <table>
-            <thead><tr><th>1 Credit equals</th></tr></thead>
+            <thead><tr><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td class="num">$1.00 USD of usage</td></tr>
+              <tr><td class="num">&mdash;</td></tr>
             </tbody>
           </table>
         </div>
