@@ -179,7 +179,7 @@
 
       <h1>Credits conversion</h1>
       <div class="intro">
-        Celonis consumption across AI, Compute, Storage, Data Transfer, and Other Services is unified into a single Credits balance. Each lane meters usage in its own unit (tokens, CPU-hours, terabytes) and has its own Credit rate, which can vary further by sub-type. Expand a lane below to see its rates.
+        Celonis consumption across AI, Compute, and Storage is unified into a single Credits balance. Each lane meters usage in its own unit (tokens, CPU-hours, terabytes) and has its own Credit rate, which can vary further by sub-type. Expand a lane below to see its rates.
       </div>
 
       <button class="expand-all" onclick="document.querySelectorAll('details').forEach(function(d){d.open=true;})">Expand all</button>
@@ -227,32 +227,6 @@
         </div>
       </details>
 
-      <details>
-        <summary><span class="arrow"></span>Data Transfer</summary>
-        <div class="details-body">
-          <p>Data Transfer (egress) usage is metered per 10 TB at a single Credit rate.</p>
-          <table>
-            <thead><tr><th>Credits</th></tr></thead>
-            <tbody>
-              <tr><td class="num">0.15 Credits / 10 TB</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </details>
-
-      <details>
-        <summary><span class="arrow"></span>Other Services</summary>
-        <div class="details-body">
-          <p>Rate not yet defined for this lane.</p>
-          <table>
-            <thead><tr><th>Credits</th></tr></thead>
-            <tbody>
-              <tr><td class="num">&mdash;</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </details>
-
       <div class="back-callout">
         Looking at your account's Credits balance? <a href="account-manager.html">Go back to the BMW account consumption and allocation view</a>.
       </div>
@@ -284,8 +258,6 @@
       <a href="#" class="current">AI Tokens</a>
       <a href="#">Compute</a>
       <a href="#">Storage</a>
-      <a href="#">Data Transfer</a>
-      <a href="#">Other Services</a>
       <a href="#" class="related">Related topics</a>
     </div>
 

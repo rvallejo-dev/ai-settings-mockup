@@ -400,15 +400,15 @@
     </div>
 
     <h1>Production 1 consumption</h1>
-    <div class="subtitle" style="max-width:none;white-space:nowrap;">Everything below is shown in USD, for your team only. Your team's total allocation is set by your Account Manager.</div>
-    <div class="subtitle"><a href="https://docs.celonis.com/" style="color:var(--blue-dark);font-weight:400;">Consumption pricing &rarr;</a></div>
+    <div class="subtitle" style="max-width:none;white-space:nowrap;">Everything below is shown in Credits, for your team only. Your team's total allocation is set by your Account Manager.</div>
+    <div class="subtitle"><a href="https://rvallejo-dev.github.io/ai-settings-mockup/credits-conversion.html" style="color:var(--blue-dark);font-weight:400;">How do USD costs convert to Credits? &rarr;</a></div>
 
     <div class="top-grid">
       <div class="card hero-card">
         <div class="card-label">Team allocation &middot; consumed this period</div>
-        <div class="card-value num" id="mConsumedTotal">$3,500<span class="unit">/ $10,000</span></div>
+        <div class="card-value num" id="mConsumedTotal">35,000<span class="unit">/ 100,000 Credits</span></div>
         <div class="progress-track"><div class="progress-fill" id="mConsumedBar" style="width:35%"></div></div>
-        <div class="card-sub" id="mConsumedSub">35% of team allocation used &middot; set by your Account Manager (Sara M&uuml;ller) &middot; last 28 days</div>
+        <div class="card-sub" id="mConsumedSub">Token spend / year &middot; Contract ends Dec 31, 2026</div>
       </div>
 
       <div class="panel-box" style="margin-bottom:0;">
@@ -419,7 +419,7 @@
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" data-tab="monitor">Monitor</button>
+      <button class="tab-btn active" data-tab="monitor">Overview</button>
       <button class="tab-btn" data-tab="tokens">AI Tokens</button>
       <button class="tab-btn" data-tab="storage">Storage</button>
       <button class="tab-btn" data-tab="compute">Compute</button>
@@ -466,14 +466,14 @@
           </div>
           <div class="results-strip">
             <span id="featuresResultsCount">Showing 5 of 5 features</span>
-            <span>Filtered: <span class="total-chip" id="featuresResultsTotal">$0</span></span>
+            <span>Filtered: <span class="total-chip" id="featuresResultsTotal">0 Cr</span></span>
           </div>
           <table>
             <thead><tr><th>Feature</th><th class="num-col">Consumed</th><th class="num-col">Share of source</th></tr></thead>
             <tbody id="tokensTableBody"></tbody>
             <tfoot><tr><td>Total</td><td class="num-col num" id="tokensTotalCell"></td><td class="num-col"></td></tr></tfoot>
           </table>
-          <div class="foot-note">Sorted by consumption. See Consumption pricing for the per-token USD rate.</div>
+          <div class="foot-note">Sorted by consumption. See Credits conversion for the per-token Credit rate.</div>
         </div>
 
         <!-- ---- Models ---- -->
@@ -484,13 +484,13 @@
           </div>
           <div class="results-strip">
             <span id="modelsResultsCount">Showing 5 of 5 models</span>
-            <span>Filtered: <span class="total-chip" id="modelsResultsTotal">$0</span></span>
+            <span>Filtered: <span class="total-chip" id="modelsResultsTotal">0 Cr</span></span>
           </div>
           <table>
             <thead><tr><th>Model</th><th class="num-col">Tokens consumed</th><th class="num-col">Consumed</th><th class="num-col">Share of source</th></tr></thead>
             <tbody id="modelsTableBody"></tbody>
           </table>
-          <div class="foot-note">Sorted by USD cost. Enabling or disabling a model happens elsewhere; this view is read-only usage.</div>
+          <div class="foot-note">Sorted by Credits consumed. Enabling or disabling a model happens elsewhere; this view is read-only usage.</div>
         </div>
 
         <!-- ---- Asset usage ---- -->
@@ -503,7 +503,7 @@
           </div>
           <div class="results-strip">
             <span id="assetsResultsCount">Showing 4 of 4 assets</span>
-            <span>Filtered: <span class="total-chip" id="assetsResultsTotal">$0</span></span>
+            <span>Filtered: <span class="total-chip" id="assetsResultsTotal">0 Cr</span></span>
           </div>
           <table>
             <thead><tr><th>Asset</th><th>Type</th><th>Model used</th><th class="num-col">Consumed</th><th>Last used</th></tr></thead>
@@ -521,7 +521,7 @@
           </div>
           <div class="results-strip">
             <span id="mlwbResultsCount">Showing 3 of 3 jobs</span>
-            <span>Filtered: <span class="total-chip" id="mlwbResultsTotal">$0</span></span>
+            <span>Filtered: <span class="total-chip" id="mlwbResultsTotal">0 Cr</span></span>
           </div>
           <table>
             <thead><tr><th>Job</th><th>Model used</th><th class="num-col">Consumed</th><th>Last used</th></tr></thead>
@@ -555,7 +555,7 @@
           <tbody id="computeTableBody"></tbody>
           <tfoot><tr><td>Total</td><td class="num-col num" id="computeTotalCell"></td><td class="num-col"></td></tr></tfoot>
         </table>
-        <div class="foot-note">Sorted by consumption. See Consumption pricing for the per-CPU-hour USD rate by workload type.</div>
+        <div class="foot-note">Sorted by consumption. See Credits conversion for the per-CPU-hour Credit rate by workload type.</div>
       </div>
     </div>
 
@@ -575,9 +575,7 @@
   }
 
   var TEAM_ALLOCATION = 100000;
-  // Placeholder conversion for the mockup only: 1 internal unit = $0.10. Replace with the real USD rate.
-  var USD_PER_CREDIT = 0.1;
-  function usd(c){ return '$' + Math.round(c*USD_PER_CREDIT).toLocaleString('en-US'); }
+  function usd(c){ return fmt(c) + ' Cr'; }
 
   var LANES = [
     {key:'tokens',  label:'AI Tokens', color:'#1464F4', consumed:19000},
@@ -690,10 +688,10 @@
   function renderMonitor(){
     var teamConsumed = LANES.reduce(function(s,l){ return s+l.consumed; }, 0);
 
-    document.getElementById('mConsumedTotal').innerHTML = usd(teamConsumed) + '<span class="unit">/ ' + usd(TEAM_ALLOCATION) + '</span>';
+    document.getElementById('mConsumedTotal').innerHTML = fmt(teamConsumed) + '<span class="unit">/ ' + fmt(TEAM_ALLOCATION) + ' Credits</span>';
     var teamPct = pct(teamConsumed, TEAM_ALLOCATION);
     document.getElementById('mConsumedBar').style.width = teamPct + '%';
-    document.getElementById('mConsumedSub').textContent = teamPct + '% of team allocation used · set by your Account Manager (Sara Müller) · last 28 days';
+    document.getElementById('mConsumedSub').textContent = 'Token spend / year · Contract ends Dec 31, 2026';
 
     var segments = LANES.map(function(l){ return {label:l.label, value:l.consumed, color:l.color}; });
     renderDonut('laneDonut', segments, teamConsumed);
