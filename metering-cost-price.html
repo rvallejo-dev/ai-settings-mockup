@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metering, cost and price: Storage and Compute (alignment report)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --border:#DFE4EA;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+    --green:#2E9E6B;
+    --green-text:#1B6B4A;
+    --green-tint:#E6F5EE;
+    --amber:#E3A21A;
+    --amber-text:#8A5A00;
+    --amber-tint:#FFF2D9;
+    --red:#C94644;
+    --red-text:#9B2D2B;
+    --red-tint:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--surface-alt);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+
+  .shell{max-width:1180px;margin:0 auto;padding:28px 28px 90px;}
+
+  /* ---------- header ---------- */
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px;}
+  h1{font-size:24px;font-weight:600;margin:0 0 6px;letter-spacing:-0.01em;}
+  .subtitle{color:var(--text-secondary);font-size:14px;max-width:640px;}
+  .draft-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--amber-tint);color:var(--amber-text);
+    border:1px solid #F0D79A;padding:5px 11px;border-radius:20px;
+    font-size:12px;font-weight:600;white-space:nowrap;
+  }
+
+  /* ---------- resource tabs ---------- */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:22px;}
+  .tab-btn{
+    background:none;border:none;font-family:inherit;
+    font-size:15px;font-weight:500;color:var(--text-secondary);
+    padding:12px 18px;cursor:pointer;border-bottom:2px solid transparent;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{color:var(--ink);font-weight:600;border-bottom-color:var(--blue);}
+  .tab-btn .tab-count{font-size:12px;font-weight:500;color:var(--text-muted);margin-left:8px;}
+
+  /* ---------- pipeline ---------- */
+  .pipeline-intro{font-size:13px;color:var(--text-secondary);margin:0 0 12px;max-width:760px;}
+  .pipeline{
+    display:grid;
+    grid-template-columns:1fr 28px 1fr 28px 1fr;
+    align-items:stretch;
+    margin-bottom:34px;
+  }
+  .stage{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px 16px;
+    display:flex;flex-direction:column;
+    text-align:left;
+    font-family:inherit;color:inherit;
+    cursor:pointer;
+  }
+  .stage:hover{border-color:#B9C6D6;}
+  .stage-name{font-size:17px;font-weight:600;margin:0;}
+  .stage-ask{font-size:13px;color:var(--text-secondary);margin:2px 0 14px;}
+  .seg{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--surface-alt);border:1px solid var(--border);}
+  .seg span{display:block;height:100%;}
+  .seg .s-def{background:var(--green);}
+  .seg .s-ass{background:var(--amber);}
+  .seg .s-open{background:var(--red);}
+  .stage-counts{display:flex;gap:14px;font-size:12px;color:var(--text-secondary);margin-top:8px;flex-wrap:wrap;}
+  .stage-counts b{font-family:'IBM Plex Mono', monospace;font-weight:600;color:var(--ink);}
+  .stage-example{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+  .ex-value{font-family:'IBM Plex Mono', monospace;font-size:16px;font-weight:600;}
+  .ex-note{font-size:12px;color:var(--text-muted);margin-top:2px;}
+  .stage.gap{border-style:dashed;border-color:#E2A5A3;background:#FFFCFC;}
+  .stage.gap .ex-value{color:var(--red-text);}
+  .link{display:flex;align-items:center;justify-content:center;color:var(--text-muted);}
+  .link svg{display:block;}
+
+  /* ---------- stage sections ---------- */
+  .section{margin-bottom:30px;scroll-margin-top:16px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px;}
+  .section-head h2{font-size:18px;font-weight:600;margin:0;}
+  .section-head .hint{font-size:12.5px;color:var(--text-muted);}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;min-width:900px;}
+  th{
+    text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);
+    padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface-alt);
+    white-space:nowrap;
+  }
+  td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top;font-size:13.5px;}
+  tr:last-child td{border-bottom:none;}
+  td.def{width:21%;font-weight:600;}
+  td.answer{width:29%;color:var(--ink);}
+  td.status{width:11%;}
+  td.owner{width:12%;color:var(--text-secondary);}
+  td.question{width:27%;color:var(--text-secondary);}
+  .editable{border-radius:4px;padding:1px 3px;margin:-1px -3px;cursor:text;}
+  .editable:hover{background:var(--surface-alt);}
+  .editable:focus{outline:2px solid var(--blue);background:#fff;}
+
+  .status-select{
+    font-family:inherit;font-size:12.5px;font-weight:600;
+    border-radius:16px;padding:4px 24px 4px 10px;border:1px solid transparent;
+    appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2356677D' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 9px center;
+  }
+  .status-select.defined{background-color:var(--green-tint);color:var(--green-text);border-color:#BFE3D0;}
+  .status-select.assumed{background-color:var(--amber-tint);color:var(--amber-text);border-color:#F0D79A;}
+  .status-select.open{background-color:var(--red-tint);color:var(--red-text);border-color:#EFC3C2;}
+
+  /* ---------- gap register ---------- */
+  .register{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px 8px;}
+  .register-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+  .register-top h2{font-size:18px;font-weight:600;margin:0 0 2px;}
+  .register-top p{margin:0;font-size:13px;color:var(--text-secondary);}
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .controls select{
+    font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--border);
+    border-radius:8px;background:var(--surface);color:var(--ink);
+  }
+  .btn{
+    font-family:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--border);background:var(--surface);color:var(--ink);
+  }
+  .btn:hover{border-color:#B9C6D6;}
+  .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.primary:hover{background:var(--blue-dark);}
+  .register .table-wrap{border:none;border-top:1px solid var(--border);border-radius:0;margin:0 -22px;}
+  .register table{min-width:960px;}
+  .register td.res{width:9%;color:var(--text-secondary);}
+  .register td.stg{width:8%;color:var(--text-secondary);}
+  .register td.def{width:22%;}
+  .register td.status{width:11%;}
+  .register td.owner{width:12%;}
+  .register td.question{width:38%;color:var(--ink);}
+  .pill{display:inline-block;font-size:12px;font-weight:600;border-radius:16px;padding:3px 10px;}
+  .pill.assumed{background:var(--amber-tint);color:var(--amber-text);}
+  .pill.open{background:var(--red-tint);color:var(--red-text);}
+  .empty{padding:22px 4px;color:var(--text-secondary);font-size:13.5px;}
+  .toast{font-size:12.5px;color:var(--green-text);min-height:18px;margin:10px 0 12px;}
+
+  .footnote{margin-top:26px;font-size:12.5px;color:var(--text-muted);max-width:760px;}
+  .footnote a{color:var(--blue-dark);}
+
+  @media (max-width:860px){
+    .pipeline{grid-template-columns:1fr;gap:8px;}
+    .link{transform:rotate(90deg);height:24px;}
+    .shell{padding:20px 16px 70px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important;}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="head">
+    <div>
+      <h1>Metering, cost and price</h1>
+      <div class="subtitle">How Storage and Compute usage becomes a price on the customer's Credits balance. Each definition below has a status, an owner and the question we still need the pricing team to answer.</div>
+    </div>
+    <span class="draft-tag">Working draft &middot; values are illustrative until marked Defined</span>
+  </div>
+
+  <div class="tabs" role="tablist" id="resourceTabs">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-res="storage">Storage<span class="tab-count" id="countStorage"></span></button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-res="compute">Compute<span class="tab-count" id="countCompute"></span></button>
+  </div>
+
+  <p class="pipeline-intro" id="pipelineIntro"></p>
+  <div class="pipeline" id="pipeline"></div>
+
+  <div id="stageSections"></div>
+
+  <div class="register" id="register">
+    <div class="register-top">
+      <div>
+        <h2>Gap register</h2>
+        <p>Everything not yet Defined, across both resources. Copy it into the pricing team's doc or download it.</p>
+      </div>
+      <div class="controls">
+        <label for="regRes" class="ex-note" style="margin:0;">Show</label>
+        <select id="regRes" aria-label="Resource filter">
+          <option value="all">Storage and Compute</option>
+          <option value="storage">Storage only</option>
+          <option value="compute">Compute only</option>
+        </select>
+        <select id="regStatus" aria-label="Status filter">
+          <option value="both">Open and Assumed</option>
+          <option value="open">Open only</option>
+        </select>
+        <button class="btn" id="btnCopy">Copy as Markdown</button>
+        <button class="btn primary" id="btnCsv">Download CSV</button>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="table-wrap" id="registerTable"></div>
+  </div>
+
+  <div class="footnote">
+    Customer-facing views built on this: <a href="team-admin-licensing.html">Team admin consumption page</a> and <a href="credits-conversion.html">Credits conversion page</a>. Rates quoted as "mockup rates" come from the conversion page and are placeholders, not agreed prices. Changes made on this page (statuses, working answers) are not saved when you reload.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var STATUSES = ['Defined','Assumed','Open'];
+
+  var STAGES = [
+    {key:'meter', name:'Meter', ask:'What do we measure, and for whom?'},
+    {key:'cost',  name:'Cost',  ask:'What does it cost Celonis to provide?'},
+    {key:'price', name:'Price', ask:'What does the customer pay, in Credits?'}
+  ];
+
+  var DATA = {
+    storage: {
+      label: 'Storage',
+      intro: 'Storage is metered in terabytes today and priced per 10 TB by storage engine. Below, the same 10 TB held for one month, traced through each stage.',
+      example: {
+        meter: {value:'10 TB held a month', note:'Time basis (average, peak or snapshot) is not decided', gap:false},
+        cost:  {value:'No internal rate', note:'FinOps has not provided a cost per TB-month', gap:true},
+        price: {value:'0.1 Credits', note:'Mockup rate for Iceberg; billing period not stated', gap:false}
+      },
+      rows: {
+        meter: [
+          {def:'What counts as billable storage', answer:'Data pool and OCPM tables (Iceberg) and object storage (S3). Undecided: workbench disk (25 GB per MLWB workbench), vector store, file uploads.', status:'Open', owner:'Platform', q:'Which storage types are billable, which are included in the platform fee, and which stay out of scope?'},
+          {def:'Unit of measure', answer:'Terabytes. The conversion page shows a rate per 10 TB.', status:'Assumed', owner:'Pricing team', q:'Is 10 TB the billing block, or only a display unit with fractional billing underneath?'},
+          {def:'Time basis', answer:'Not decided. Candidates: average over the period, peak, or end-of-period snapshot.', status:'Open', owner:'Pricing team', q:'Which basis does the contract use, and does it match what the customer can verify themselves?'},
+          {def:'Sampling frequency', answer:'Daily snapshot per team.', status:'Assumed', owner:'Intake service team', q:'Is daily enough for billing, and how are late or corrected readings handled?'},
+          {def:'Attribution to a team', answer:'By the team that owns the data pool or connection. Shared (global scope) tables have no owner today.', status:'Open', owner:'Data platform', q:'Who is charged for shared data, and does the team view need to sum to the account total?'},
+          {def:'Copies and derived data', answer:'Not decided. Zero-copy shares, materialized views and double materialization can multiply stored bytes.', status:'Open', owner:'Data platform', q:'Do materialized copies of shared or external data count as billable storage, and for which team?'},
+          {def:'Usage source and latency', answer:'Intake service receiving usage events from each source.', status:'Assumed', owner:'Intake service team', q:'What is the maximum delay between usage and its appearance on the customer balance?'}
+        ],
+        cost: [
+          {def:'Cost basis', answer:'Cloud provider list rates for object and block storage per realm.', status:'Assumed', owner:'FinOps', q:'Does pricing use list, negotiated or blended cost?'},
+          {def:'Internal cost per unit by storage type', answer:'Not provided for Iceberg or S3.', status:'Open', owner:'FinOps', q:'What is the internal cost per TB-month for each storage type?'},
+          {def:'Cloud and region variance', answer:'Not decided. Realms run on AWS, Azure, GCP and OCI.', status:'Open', owner:'FinOps', q:'One blended cost for all realms, or a cost per cloud and region?'},
+          {def:'Overhead on top of raw storage', answer:'Not decided. Replication, backups, metadata and egress.', status:'Open', owner:'FinOps', q:'Are these inside the unit cost or tracked as separate lines?'},
+          {def:'Customer-owned external storage', answer:'Zero-copy from the customer\'s own platform stores nothing at Celonis, but queries still cost compute.', status:'Open', owner:'Pricing team', q:'Is zero-copy data free to store and priced only through compute?'},
+          {def:'Cost refresh cadence', answer:'Not decided.', status:'Open', owner:'FinOps', q:'How often are unit costs updated, and who signs them off?'}
+        ],
+        price: [
+          {def:'Credit rate by storage type', answer:'Mockup rates: Iceberg 0.1 Credits per 10 TB, S3 0.15 Credits per 10 TB.', status:'Assumed', owner:'Pricing team', q:'Are these the agreed rates, and why does S3 cost more than Iceberg?'},
+          {def:'Rate period', answer:'The conversion page does not say whether the rate is per day, month or year.', status:'Open', owner:'Pricing team', q:'Is the rate per 10 TB per month?'},
+          {def:'Rounding and minimums', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is usage rounded up to the next 10 TB, or billed fractionally?'},
+          {def:'Included allowance', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Does any storage come with the platform fee before Credits are consumed?'},
+          {def:'Relation between cost and price', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is price derived from cost plus margin, or set as a list price independent of cost?'},
+          {def:'Rate changes on existing contracts', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'When a rate changes, does it apply to running contracts or only at renewal?'},
+          {def:'What the customer sees', answer:'Credits only, with a link explaining how USD converts to Credits.', status:'Assumed', owner:'Product', q:'Confirm that customers never see the internal cost or USD per unit.'}
+        ]
+      }
+    },
+    compute: {
+      label: 'Compute',
+      intro: 'Compute is metered at seven sources and shown to customers as three buckets: Analytics engines and Data processing in CPU-hours, and ML Workbench in machine-hours by machine type. Below, 100 CPU-hours of Data processing traced through each stage.',
+      example: {
+        meter: {value:'100 CPU-hours of Data processing', note:'How each source becomes CPU-hours is not decided', gap:false},
+        cost:  {value:'No internal rate', note:'FinOps has not provided a cost per CPU-hour by source', gap:true},
+        price: {value:'20 Credits', note:'100 × 0.2 Credits per CPU-hour, placeholder rate', gap:false}
+      },
+      rows: {
+        meter: [
+          {def:'Metering sources', answer:'Seven sources today: Vertica VM, All Purpose, Serverless, StarRocks, Saola Compute, Celostar Compute and MLWB.', status:'Assumed', owner:'Platform', q:'Is this list complete, and who adds a new source when one appears?'},
+          {def:'Customer buckets', answer:'Analytics engines (Vertica VM, StarRocks, Saola Compute, Celostar Compute), Data processing (All Purpose, Serverless) and ML Workbench (MLWB).', status:'Assumed', owner:'Product', q:'Do these three buckets work for the pricing team, and where does a source land when it replaces another?'},
+          {def:'Native unit per source', answer:'Differs by source. Vertica VM is a provisioned machine, Serverless is usage-based, MLWB is machine time by machine type.', status:'Open', owner:'Platform', q:'What does each source report natively, and how is it converted to CPU-hours or machine-hours?'},
+          {def:'Unit of measure', answer:'CPU-hours for Analytics engines and Data processing. Machine-hours by machine type for ML Workbench.', status:'Assumed', owner:'Pricing team', q:'Is CPU-hours right for the first two buckets, or is memory also metered?'},
+          {def:'Billable window', answer:'Not decided. V2 workbenches run on demand, but a schedule reserves compute whether or not it is busy. V1 runs always on. A provisioned VM runs all the time.', status:'Open', owner:'ML Infra', q:'Do we bill allocated time or used time, and how are reserved schedules and provisioned machines treated?'},
+          {def:'ML Workbench machine types', answer:'Sizes from Small (1 CPU, 4 GB) to 2XLarge high memory (16 CPU, 128 GB), plus GPU machines. Plans (X16 up to X384) cap total capacity.', status:'Open', owner:'ML Infra', q:'Which machine types are billable, and are high-memory and GPU types in scope at launch?'},
+          {def:'Attribution to a team', answer:'By the team that owns the job, workbench or schedule.', status:'Assumed', owner:'Platform', q:'How is shared infrastructure, such as a cluster used by several teams, split?'},
+          {def:'Granularity', answer:'Per job or per run, summed to hours.', status:'Assumed', owner:'Intake service team', q:'Is per-minute metering with hourly rollup enough?'},
+          {def:'Usage source', answer:'Different today per source: service events for some, cluster metrics for others.', status:'Open', owner:'Platform', q:'Which system is the source of truth for each of the seven sources?'},
+          {def:'Shared platform overhead', answer:'Not decided. Control plane and idle node pools.', status:'Open', owner:'FinOps', q:'Is platform overhead excluded from the customer meter and absorbed in the price?'}
+        ],
+        cost: [
+          {def:'Internal cost per unit by source', answer:'Not provided for any of the seven sources.', status:'Open', owner:'FinOps', q:'What is the internal cost per CPU-hour for each source, and per machine-hour for each ML Workbench machine type?'},
+          {def:'Spread inside a bucket', answer:'Not known. Sources in one bucket may cost very different amounts per CPU-hour.', status:'Open', owner:'FinOps', q:'If they differ widely, do we use a blended bucket cost that moves with the mix, or split the bucket?'},
+          {def:'ML Workbench machine cost', answer:'ML Workbench runs on different machines per type, so cost per hour differs by size, memory and GPU.', status:'Open', owner:'ML Infra', q:'What is the internal cost per hour of each machine type, and does it grow in step with CPU count?'},
+          {def:'Provisioned versus used', answer:'Not decided. A provisioned machine such as Vertica VM costs the same whether it is busy or idle.', status:'Open', owner:'FinOps', q:'Is cost calculated per allocated hour or per used hour?'},
+          {def:'Instance family', answer:'Part of the fleet runs on ARM nodes, the rest on x86.', status:'Open', owner:'FinOps', q:'Do we price on blended cost, or on the cost of the nodes actually used?'},
+          {def:'Reserved, on-demand and spot', answer:'Not decided.', status:'Open', owner:'FinOps', q:'Which purchasing mix does the unit cost assume?'},
+          {def:'Cloud and region variance', answer:'Not decided. Realms run on AWS, Azure, GCP and OCI.', status:'Open', owner:'FinOps', q:'One blended cost or a cost per cloud and region?'}
+        ],
+        price: [
+          {def:'Credit rate by bucket', answer:'Placeholder rates: Analytics engines 0.3 and Data processing 0.2 Credits per CPU-hour. The earlier ETL, QE and DI rates are retired.', status:'Assumed', owner:'Pricing team', q:'Are these the agreed rates, and what justifies the difference between the two buckets?'},
+          {def:'ML Workbench price by machine type', answer:'Placeholder rates from 0.3 Credits per hour (Small) to 14 Credits per hour (XLarge GPU), rising with CPU, memory and GPU.', status:'Assumed', owner:'Pricing team', q:'Is ML Workbench priced per machine type, or as CPU-hours with uplifts for memory and GPU?'},
+          {def:'Compute included in the plan', answer:'ML Workbench plans (X16 up to X384) come with fixed CPU and memory.', status:'Open', owner:'Pricing team', q:'Is plan compute included, with only usage above it paid in Credits?'},
+          {def:'Rounding and minimums', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is usage billed per second, per minute or per started hour?'},
+          {def:'Scheduled versus on-demand', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is reserved schedule time priced differently from on-demand runs?'},
+          {def:'Relation between cost and price', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is price derived from cost plus margin, or set as a list price independent of cost?'},
+          {def:'What the customer sees', answer:'Credits only, shown as three buckets. The seven sources are not shown.', status:'Assumed', owner:'Product', q:'Confirm customers see the buckets only, with no breakdown by source and no internal cost or USD per unit.'}
+        ]
+      }
+    }
+  };
+
+  // give every row a stable id
+  Object.keys(DATA).forEach(function(rk){
+    STAGES.forEach(function(st){
+      DATA[rk].rows[st.key].forEach(function(row, i){
+        row.id = rk + '-' + st.key + '-' + i;
+        row.resource = rk;
+        row.stage = st.key;
+      });
+    });
+  });
+
+  var current = 'storage';
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function stageName(key){
+    for (var i=0;i<STAGES.length;i++){ if (STAGES[i].key===key) return STAGES[i].name; }
+    return key;
+  }
+  function counts(rows){
+    var c = {Defined:0, Assumed:0, Open:0};
+    rows.forEach(function(r){ c[r.status]++; });
+    return c;
+  }
+  function allRows(rk){
+    var out = [];
+    STAGES.forEach(function(st){ out = out.concat(DATA[rk].rows[st.key]); });
+    return out;
+  }
+  function findRow(id){
+    var out = null;
+    Object.keys(DATA).forEach(function(rk){
+      allRows(rk).forEach(function(r){ if (r.id===id) out = r; });
+    });
+    return out;
+  }
+
+  // ---------- tab counts ----------
+  function renderTabCounts(){
+    ['storage','compute'].forEach(function(rk){
+      var c = counts(allRows(rk));
+      var total = c.Defined + c.Assumed + c.Open;
+      var el = document.getElementById(rk==='storage' ? 'countStorage' : 'countCompute');
+      el.textContent = c.Defined + ' of ' + total + ' defined';
+    });
+  }
+
+  // ---------- pipeline ----------
+  var ARROW = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function renderPipeline(){
+    var d = DATA[current];
+    document.getElementById('pipelineIntro').textContent = d.intro;
+    var html = '';
+    STAGES.forEach(function(st, i){
+      var c = counts(d.rows[st.key]);
+      var total = c.Defined + c.Assumed + c.Open;
+      var ex = d.example[st.key];
+      html += '<button class="stage'+(ex.gap?' gap':'')+'" data-jump="'+st.key+'" aria-label="Go to '+esc(st.name)+' definitions">'+
+        '<h2 class="stage-name">'+esc(st.name)+'</h2>'+
+        '<div class="stage-ask">'+esc(st.ask)+'</div>'+
+        '<div class="seg" role="img" aria-label="'+c.Defined+' defined, '+c.Assumed+' assumed, '+c.Open+' open">'+
+          '<span class="s-def" style="width:'+(c.Defined/total*100)+'%"></span>'+
+          '<span class="s-ass" style="width:'+(c.Assumed/total*100)+'%"></span>'+
+          '<span class="s-open" style="width:'+(c.Open/total*100)+'%"></span>'+
+        '</div>'+
+        '<div class="stage-counts"><span><b>'+c.Defined+'</b> defined</span><span><b>'+c.Assumed+'</b> assumed</span><span><b>'+c.Open+'</b> open</span></div>'+
+        '<div class="stage-example"><div class="ex-value">'+esc(ex.value)+'</div><div class="ex-note">'+esc(ex.note)+'</div></div>'+
+        '</button>';
+      if (i < STAGES.length-1) html += '<div class="link">'+ARROW+'</div>';
+    });
+    document.getElementById('pipeline').innerHTML = html;
+  }
+
+  // ---------- stage sections ----------
+  function statusSelect(row){
+    var opts = STATUSES.map(function(s){
+      return '<option value="'+s+'"'+(s===row.status?' selected':'')+'>'+s+'</option>';
+    }).join('');
+    return '<select class="status-select '+row.status.toLowerCase()+'" data-id="'+row.id+'" aria-label="Status for '+esc(row.def)+'">'+opts+'</select>';
+  }
+
+  function renderSections(){
+    var d = DATA[current];
+    var html = '';
+    STAGES.forEach(function(st){
+      var rows = d.rows[st.key];
+      var body = rows.map(function(r){
+        return '<tr>'+
+          '<td class="def">'+esc(r.def)+'</td>'+
+          '<td class="answer"><div class="editable" contenteditable="true" spellcheck="false" data-edit="'+r.id+'">'+esc(r.answer)+'</div></td>'+
+          '<td class="status">'+statusSelect(r)+'</td>'+
+          '<td class="owner">'+esc(r.owner)+'</td>'+
+          '<td class="question">'+esc(r.q)+'</td>'+
+          '</tr>';
+      }).join('');
+      html += '<section class="section" id="sec-'+st.key+'">'+
+        '<div class="section-head"><h2>'+esc(d.label)+': '+esc(st.name)+'</h2><span class="hint">Click a working answer to edit it. Change a status to update the counts.</span></div>'+
+        '<div class="table-wrap"><table>'+
+          '<thead><tr><th>Definition</th><th>Working answer</th><th>Status</th><th>Owner</th><th>Question for the pricing team</th></tr></thead>'+
+          '<tbody>'+body+'</tbody></table></div></section>';
+    });
+    document.getElementById('stageSections').innerHTML = html;
+  }
+
+  // ---------- gap register ----------
+  function registerRows(){
+    var resFilter = document.getElementById('regRes').value;
+    var stFilter = document.getElementById('regStatus').value;
+    var out = [];
+    ['storage','compute'].forEach(function(rk){
+      if (resFilter!=='all' && resFilter!==rk) return;
+      STAGES.forEach(function(st){
+        DATA[rk].rows[st.key].forEach(function(r){
+          if (r.status==='Defined') return;
+          if (stFilter==='open' && r.status!=='Open') return;
+          out.push(r);
+        });
+      });
+    });
+    return out;
+  }
+
+  function renderRegister(){
+    var rows = registerRows();
+    var el = document.getElementById('registerTable');
+    if (!rows.length){
+      el.innerHTML = '<div class="empty" style="padding:22px;">Nothing left to align for this selection. Every definition is marked Defined.</div>';
+      return;
+    }
+    var body = rows.map(function(r){
+      return '<tr>'+
+        '<td class="res">'+esc(DATA[r.resource].label)+'</td>'+
+        '<td class="stg">'+esc(stageName(r.stage))+'</td>'+
+        '<td class="def">'+esc(r.def)+'</td>'+
+        '<td class="status"><span class="pill '+r.status.toLowerCase()+'">'+r.status+'</span></td>'+
+        '<td class="owner">'+esc(r.owner)+'</td>'+
+        '<td class="question">'+esc(r.q)+'</td>'+
+        '</tr>';
+    }).join('');
+    el.innerHTML = '<table><thead><tr><th>Resource</th><th>Stage</th><th>Definition</th><th>Status</th><th>Owner</th><th>Question for the pricing team</th></tr></thead><tbody>'+body+'</tbody></table>';
+  }
+
+  function toMarkdown(rows){
+    var lines = ['| Resource | Stage | Definition | Status | Owner | Question |','|---|---|---|---|---|---|'];
+    rows.forEach(function(r){
+      function c(s){ return String(s).replace(/\|/g,'\\|'); }
+      lines.push('| '+c(DATA[r.resource].label)+' | '+c(stageName(r.stage))+' | '+c(r.def)+' | '+r.status+' | '+c(r.owner)+' | '+c(r.q)+' |');
+    });
+    return lines.join('\n');
+  }
+  function toCsv(rows){
+    function q(s){ return '"'+String(s).replace(/"/g,'""')+'"'; }
+    var lines = [['Resource','Stage','Definition','Working answer','Status','Owner','Question'].map(q).join(',')];
+    rows.forEach(function(r){
+      lines.push([DATA[r.resource].label, stageName(r.stage), r.def, r.answer, r.status, r.owner, r.q].map(q).join(','));
+    });
+    return lines.join('\n');
+  }
+  function toast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    setTimeout(function(){ if (t.textContent===msg) t.textContent=''; }, 3500);
+  }
+
+  // ---------- render all ----------
+  function refreshSummaries(){
+    renderTabCounts();
+    renderPipeline();
+    renderRegister();
+  }
+  function renderAll(){
+    renderTabCounts();
+    renderPipeline();
+    renderSections();
+    renderRegister();
+  }
+
+  // ---------- events ----------
+  document.getElementById('resourceTabs').addEventListener('click', function(e){
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    current = btn.getAttribute('data-res');
+    Array.prototype.forEach.call(document.querySelectorAll('.tab-btn'), function(b){
+      var on = b===btn;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    renderAll();
+  });
+
+  document.getElementById('pipeline').addEventListener('click', function(e){
+    var s = e.target.closest('.stage');
+    if (!s) return;
+    var sec = document.getElementById('sec-' + s.getAttribute('data-jump'));
+    if (sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  document.getElementById('stageSections').addEventListener('change', function(e){
+    var sel = e.target.closest('.status-select');
+    if (!sel) return;
+    var row = findRow(sel.getAttribute('data-id'));
+    if (!row) return;
+    row.status = sel.value;
+    sel.className = 'status-select ' + row.status.toLowerCase();
+    refreshSummaries();
+  });
+
+  document.getElementById('stageSections').addEventListener('input', function(e){
+    var ed = e.target.closest('[data-edit]');
+    if (!ed) return;
+    var row = findRow(ed.getAttribute('data-edit'));
+    if (row) row.answer = ed.textContent;
+  });
+  document.getElementById('stageSections').addEventListener('focusout', function(e){
+    if (e.target.closest && e.target.closest('[data-edit]')) renderRegister();
+  });
+
+  document.getElementById('regRes').addEventListener('change', renderRegister);
+  document.getElementById('regStatus').addEventListener('change', renderRegister);
+
+  document.getElementById('btnCopy').addEventListener('click', function(){
+    var text = toMarkdown(registerRows());
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch(err) {}
+      document.body.removeChild(ta);
+      toast(ok ? 'Copied the gap register as Markdown.' : 'Copy was blocked by the browser. Use Download CSV instead.');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ toast('Copied the gap register as Markdown.'); }, fallback);
+    } else { fallback(); }
+  });
+
+  document.getElementById('btnCsv').addEventListener('click', function(){
+    var blob = new Blob([toCsv(registerRows())], {type:'text/csv;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'metering-cost-price-gaps.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+    toast('Downloaded metering-cost-price-gaps.csv.');
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

@@ -179,7 +179,7 @@
 
       <h1>Credits conversion</h1>
       <div class="intro">
-        Celonis consumption across AI, Compute, and Storage is unified into a single Credits balance. Each lane meters usage in its own unit (tokens, CPU-hours, terabytes) and has its own Credit rate, which can vary further by sub-type. Expand a lane below to see its rates.
+        Celonis consumption across AI, Compute, and Storage is unified into a single Credits balance. Each lane meters usage in its own unit (tokens, CPU-hours, machine-hours, terabytes) and has its own Credit rate, which can vary further by sub-type. Expand a lane below to see its rates.
       </div>
 
       <button class="expand-all" onclick="document.querySelectorAll('details').forEach(function(d){d.open=true;})">Expand all</button>
@@ -187,12 +187,15 @@
       <details open>
         <summary><span class="arrow"></span>AI Tokens</summary>
         <div class="details-body">
-          <p>AI token usage is metered separately for input and output tokens, each with its own Credit rate per 10 million tokens.</p>
+          <p>AI token usage is priced per model and per token type (input, output, cache read and cache write). Rates are in Credits per 1 million tokens.</p>
           <table>
-            <thead><tr><th>Token type</th><th>Credits</th></tr></thead>
+            <thead><tr><th>Model</th><th>Input</th><th>Output</th><th>Cache read</th><th>Cache write</th></tr></thead>
             <tbody>
-              <tr><td>Input</td><td class="num">0.2 Credits / 10M tokens</td></tr>
-              <tr><td>Output</td><td class="num">0.1 Credits / 10M tokens</td></tr>
+              <tr><td>Claude Sonnet 4.6 (AWS)</td><td class="num">30</td><td class="num">150</td><td class="num">3</td><td class="num">37.5</td></tr>
+              <tr><td>Claude Opus 4.8 (AWS)</td><td class="num">150</td><td class="num">750</td><td class="num">15</td><td class="num">187.5</td></tr>
+              <tr><td>Claude Haiku 4.5 (AWS)</td><td class="num">10</td><td class="num">50</td><td class="num">1</td><td class="num">12.5</td></tr>
+              <tr><td>GPT 4.1 (Azure OpenAI)</td><td class="num">20</td><td class="num">80</td><td class="num">5</td><td class="num">n/a</td></tr>
+              <tr><td>GPT 5 Mini (Azure OpenAI)</td><td class="num">2.5</td><td class="num">20</td><td class="num">0.25</td><td class="num">n/a</td></tr>
             </tbody>
           </table>
         </div>
@@ -201,13 +204,25 @@
       <details>
         <summary><span class="arrow"></span>Compute</summary>
         <div class="details-body">
-          <p>Compute usage is metered per CPU-hour, with a different Credit rate depending on the workload type.</p>
+          <p>Compute usage is grouped into three buckets. Analytics engines and Data processing are metered per CPU-hour. ML Workbench is metered per hour of machine time, with a rate for each machine type.</p>
           <table>
-            <thead><tr><th>Workload type</th><th>Credits</th></tr></thead>
+            <thead><tr><th>Bucket</th><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td>ETL</td><td class="num">0.15 Credits / CPU-hr</td></tr>
-              <tr><td>QE</td><td class="num">0.3 Credits / CPU-hr</td></tr>
-              <tr><td>DI</td><td class="num">0.4 Credits / CPU-hr</td></tr>
+              <tr><td>Analytics engines</td><td class="num">0.3 Credits / CPU-hr</td></tr>
+              <tr><td>Data processing</td><td class="num">0.2 Credits / CPU-hr</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:18px;">ML Workbench machine types</p>
+          <table>
+            <thead><tr><th>Machine type</th><th>Credits</th></tr></thead>
+            <tbody>
+              <tr><td>Small (1 CPU, 4 GB)</td><td class="num">0.3 Credits / hr</td></tr>
+              <tr><td>Medium (2 CPU, 8 GB)</td><td class="num">0.6 Credits / hr</td></tr>
+              <tr><td>Large (4 CPU, 16 GB)</td><td class="num">1.2 Credits / hr</td></tr>
+              <tr><td>XLarge (8 CPU, 32 GB)</td><td class="num">2.4 Credits / hr</td></tr>
+              <tr><td>2XLarge (16 CPU, 64 GB)</td><td class="num">4.8 Credits / hr</td></tr>
+              <tr><td>2XLarge high memory (16 CPU, 128 GB)</td><td class="num">6.4 Credits / hr</td></tr>
+              <tr><td>XLarge GPU (8 CPU, 32 GB, 1 GPU)</td><td class="num">14 Credits / hr</td></tr>
             </tbody>
           </table>
         </div>

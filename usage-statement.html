@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMW consumption statement, October 2026 (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --text-secondary:#56677D;
+    --text-muted:#8598AC;
+    --surface:#FFFFFF;
+    --surface-alt:#F5F7FA;
+    --border:#DFE4EA;
+    --rule:#C9D2DD;
+    --blue:#1464F4;
+    --blue-dark:#0F4FC4;
+    --blue-tint:#E8EFFE;
+    --green-text:#1B6B4A;
+    --green-tint:#E6F5EE;
+    --amber-text:#8A5A00;
+    --amber-tint:#FFF2D9;
+    --red-text:#9B2D2B;
+    --red-tint:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:#E9EDF2;
+    font-size:13.5px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-family:'IBM Plex Mono', monospace;font-variant-numeric:tabular-nums;}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+  a{color:var(--blue-dark);}
+
+  /* ---------- controls (not printed) ---------- */
+  .controls{
+    max-width:940px;margin:0 auto;padding:18px 12px 14px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .controls .spacer{flex:1;}
+  .controls label{font-size:13px;color:var(--text-secondary);}
+  .controls select{
+    font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--border);
+    border-radius:8px;background:var(--surface);color:var(--ink);margin-left:6px;
+  }
+  .check{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text-secondary);cursor:pointer;}
+  .btn{
+    font-family:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--border);background:var(--surface);color:var(--ink);
+  }
+  .btn:hover{border-color:#B9C6D6;}
+  .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.primary:hover{background:var(--blue-dark);}
+
+  /* ---------- the statement ---------- */
+  .paper{
+    max-width:940px;margin:0 auto;background:var(--surface);
+    border:1px solid var(--border);border-radius:4px;
+    box-shadow:0 2px 18px rgba(16,35,59,0.07);
+    padding:52px 60px 44px;
+  }
+  .doc-head{display:flex;justify-content:space-between;gap:32px;align-items:flex-start;flex-wrap:wrap;
+    padding-bottom:22px;border-bottom:2px solid var(--ink);}
+  h1{font-size:26px;font-weight:600;margin:0;letter-spacing:-0.01em;line-height:1.2;}
+  .doc-head .sub{color:var(--text-secondary);margin-top:6px;max-width:380px;}
+  dl.meta{margin:0;display:grid;grid-template-columns:auto auto;column-gap:18px;row-gap:3px;font-size:13px;}
+  dl.meta dt{color:var(--text-muted);}
+  dl.meta dd{margin:0;font-weight:500;}
+
+  h2{font-size:16px;font-weight:600;margin:0 0 4px;}
+  h3{font-size:13.5px;font-weight:600;margin:20px 0 6px;color:var(--ink);}
+  .block{margin-top:34px;}
+  .block > p.lead{margin:0 0 12px;color:var(--text-secondary);max-width:640px;}
+
+  /* summary */
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:26px;border-bottom:1px solid var(--rule);padding-bottom:20px;}
+  .summary .item{padding-right:20px;}
+  .summary .item + .item{padding-left:24px;border-left:1px solid var(--border);}
+  .summary .k{font-size:12.5px;color:var(--text-secondary);}
+  .summary .v{font-family:'IBM Plex Mono', monospace;font-size:24px;font-weight:600;margin-top:2px;line-height:1.25;}
+  .summary .v small{font-size:12.5px;font-weight:500;color:var(--text-secondary);margin-left:4px;}
+  .summary .s{font-size:12.5px;color:var(--text-muted);margin-top:2px;}
+  .bar{height:8px;border-radius:4px;background:var(--surface-alt);border:1px solid var(--border);overflow:hidden;margin-top:10px;}
+  .bar span{display:block;height:100%;background:var(--blue);}
+  .bar.over span{background:#C94644;}
+  .alert{
+    margin-top:16px;padding:11px 14px;border-radius:8px;
+    background:var(--amber-tint);border:1px solid #F0D79A;color:var(--amber-text);font-size:13px;
+  }
+
+  /* tables */
+  .tw{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;}
+  th{
+    text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);
+    padding:8px 10px;border-bottom:1px solid var(--rule);white-space:nowrap;
+  }
+  td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th.r, td.r{text-align:right;}
+  td.r{font-family:'IBM Plex Mono', monospace;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  tr.total td{font-weight:600;border-top:1px solid var(--rule);border-bottom:none;background:var(--surface-alt);}
+  tr.sub td{font-weight:600;background:#FAFBFC;}
+  td.indent{padding-left:26px;color:var(--text-secondary);}
+  td.muted{color:var(--text-muted);}
+  .appendix table{font-size:12.5px;}
+  .appendix td, .appendix th{padding:6px 8px;}
+
+  .check-line{
+    margin-top:26px;padding:10px 14px;border-radius:8px;background:var(--green-tint);
+    border:1px solid #BFE3D0;color:var(--green-text);font-size:13px;
+  }
+  .check-line.bad{background:var(--red-tint);border-color:#EFC3C2;color:var(--red-text);}
+
+  .notes{margin-top:34px;padding-top:18px;border-top:1px solid var(--rule);color:var(--text-secondary);font-size:12.5px;}
+  .notes h2{font-size:14px;color:var(--ink);}
+  .notes ul{margin:6px 0 0;padding-left:18px;}
+  .notes li{margin-bottom:3px;}
+
+  /* reviewer panel (not printed) */
+  .reviewer{
+    max-width:940px;margin:22px auto 70px;background:var(--surface);
+    border:1px dashed #B9C6D6;border-radius:8px;padding:22px 28px;
+  }
+  .reviewer h2{font-size:16px;}
+  .reviewer p.lead{margin:0 0 12px;color:var(--text-secondary);}
+  .reviewer ol{margin:0;padding-left:20px;}
+  .reviewer li{margin-bottom:9px;}
+  .reviewer .tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:12px;padding:1px 8px;margin-right:6px;}
+  .tag.open{background:var(--red-tint);color:var(--red-text);}
+  .tag.assumed{background:var(--amber-tint);color:var(--amber-text);}
+  .tag.fix{background:var(--blue-tint);color:var(--blue-dark);}
+
+  @page{size:A4;margin:14mm;}
+  @media print{
+    body{background:#fff;}
+    .controls,.reviewer{display:none !important;}
+    .paper{border:none;box-shadow:none;border-radius:0;padding:0;max-width:none;}
+    .appendix{page-break-before:always;}
+    tr{page-break-inside:avoid;}
+    thead{display:table-header-group;}
+    .block{page-break-inside:auto;}
+    h2,h3{page-break-after:avoid;}
+  }
+  @media (max-width:760px){
+    .paper{padding:28px 20px;}
+    .summary{grid-template-columns:1fr;gap:16px;}
+    .summary .item + .item{padding-left:0;border-left:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <label>Scope
+    <select id="teamSel" aria-label="Statement scope"></select>
+  </label>
+  <label class="check"><input type="checkbox" id="overChk"> Preview: allowance exceeded</label>
+  <span class="spacer"></span>
+  <button class="btn" id="btnCsv">Download line items (CSV)</button>
+  <button class="btn primary" id="btnPrint">Save as PDF</button>
+</div>
+
+<main class="paper" id="paper"></main>
+
+<section class="reviewer" id="reviewer" aria-label="Notes for reviewers">
+  <h2>Notes for reviewers (not part of the statement)</h2>
+  <p class="lead">What this mockup assumes, and what it shows about the numbers. Each item is a question for the pricing team or for engineering before a customer sees a real statement.</p>
+  <ol id="reviewerList"></ol>
+</section>
+
+<script>
+(function(){
+  // ---------------------------------------------------------------
+  // Rate card (Credits per unit). Token rates are per model and token
+  // type and are placeholder values. Storage and Compute rates are the
+  // ones on credits-conversion.html.
+  // ---------------------------------------------------------------
+  var MODELS = {
+    sonnet46: {name:'Claude Sonnet 4.6 (AWS)',     in:30,  out:150, cr:3,    cw:37.5},
+    opus48:   {name:'Claude Opus 4.8 (AWS)',       in:150, out:750, cr:15,   cw:187.5},
+    haiku45:  {name:'Claude Haiku 4.5 (AWS)',      in:10,  out:50,  cr:1,    cw:12.5},
+    gpt41:    {name:'GPT 4.1 (Azure OpenAI)',      in:20,  out:80,  cr:5,    cw:null},
+    gpt5mini: {name:'GPT 5 Mini (Azure OpenAI)',   in:2.5, out:20,  cr:0.25, cw:null}
+  };
+  var MODEL_ORDER = ['sonnet46','opus48','haiku45','gpt41','gpt5mini'];
+  var TOKEN_TYPES = [['in','Input'],['out','Output'],['cr','Cache read'],['cw','Cache write']];
+  var STORAGE_RATE = {Iceberg:0.1, S3:0.15};      // Credits per 10 TB
+  // Compute: seven metering sources roll up to three customer buckets.
+  // Analytics engines = Vertica VM, StarRocks, Saola Compute, Celostar Compute
+  // Data processing   = All Purpose, Serverless
+  // ML Workbench      = MLWB (priced per machine type, not per CPU-hour)
+  var CPU_BUCKETS = {'Analytics engines':0.3, 'Data processing':0.2};   // Credits per CPU-hour
+  var MLWB_MACHINES = [                                                  // Credits per machine-hour
+    ['small',  'Small (1 CPU, 4 GB)',            0.3],
+    ['medium', 'Medium (2 CPU, 8 GB)',           0.6],
+    ['large',  'Large (4 CPU, 16 GB)',           1.2],
+    ['xlarge', 'XLarge (8 CPU, 32 GB)',          2.4],
+    ['x2',     '2XLarge (16 CPU, 64 GB)',        4.8],
+    ['x2mem',  '2XLarge high memory (16 CPU, 128 GB)', 6.4],
+    ['gpu',    'XLarge GPU (8 CPU, 32 GB, 1 GPU)', 14]
+  ];
+  var CPU_BUCKET_ORDER = ['Analytics engines','Data processing'];
+
+  var TEAMS = [
+    {name:'Production 1', ctd:35000},
+    {name:'Production 2', ctd:22400},
+    {name:'Development',  ctd:9800},
+    {name:'Sandbox',      ctd:2100}
+  ];
+  var ALLOCATION = 250000;
+  var ALLOCATION_PREVIEW = 60000;
+
+  // [feature, model, input, output, cache read, cache write]  (million tokens)
+  var TOKEN_USAGE = {
+    'Production 1': [
+      ['ML Workbench','sonnet46',22,4.4,51,5.2],
+      ['ML Workbench','opus48',1.9,0.26,4.6,0.5],
+      ['Process Copilot','sonnet46',9.5,0.7,20,2.1],
+      ['Process Copilot','gpt41',3.2,0.4,1.4,0],
+      ['Decision Intelligence','sonnet46',4.1,0.5,7.8,0.9],
+      ['Celonis Assistant','haiku45',8.4,0.9,12,1.3],
+      ['MCP Gateway','haiku45',0.6,0.05,0.9,0.1]
+    ],
+    'Production 2': [
+      ['Process Copilot','sonnet46',7.2,0.6,15,1.6],
+      ['Process Copilot','gpt5mini',6,1.4,2.4,0],
+      ['Decision Intelligence','opus48',0.9,0.11,1.8,0.2],
+      ['Celonis Assistant','haiku45',5.1,0.5,7.7,0.8]
+    ],
+    'Development': [
+      ['ML Workbench','sonnet46',13.5,2.9,31,3.4],
+      ['ML Workbench','haiku45',9.8,1,14,1.5],
+      ['Process Copilot','gpt41',1.8,0.2,0.6,0],
+      ['MCP Gateway','haiku45',0.3,0.02,0.4,0.05]
+    ],
+    'Sandbox': [
+      ['ML Workbench','sonnet46',2.2,0.4,4.1,0.5],
+      ['Celonis Assistant','gpt5mini',1.4,0.3,0.5,0]
+    ]
+  };
+  var STORAGE_USAGE = {   // average TB over the month
+    'Production 1': {Iceberg:142.5, S3:38.2},
+    'Production 2': {Iceberg:88.4,  S3:21.7},
+    'Development':  {Iceberg:36,    S3:9.5},
+    'Sandbox':      {Iceberg:4.8,   S3:1.2}
+  };
+  var COMPUTE_USAGE = {   // CPU-hours per bucket, and machine-hours per ML Workbench machine type
+    'Production 1': {cpu:{'Analytics engines':2600, 'Data processing':2900}, mlwb:{small:420, large:260, xlarge:110, x2mem:24, gpu:12}},
+    'Production 2': {cpu:{'Analytics engines':1500, 'Data processing':1700}, mlwb:{small:150, medium:90}},
+    'Development':  {cpu:{'Analytics engines':600,  'Data processing':900},  mlwb:{small:600, medium:340, large:180, xlarge:60, x2:16}},
+    'Sandbox':      {cpu:{'Analytics engines':120,  'Data processing':150},  mlwb:{small:80, medium:30}}
+  };
+
+  // ---------------------------------------------------------------
+  // Line items. Credits are computed per line in whole cents, so every
+  // total is a sum of rounded lines and foots exactly.
+  // ---------------------------------------------------------------
+  function toCents(qty, rate, perUnit){ return Math.round(qty / perUnit * rate * 100 + 1e-9); }
+
+  var RECORDS = [];
+  TEAMS.forEach(function(t){
+    (TOKEN_USAGE[t.name] || []).forEach(function(u){
+      var m = MODELS[u[1]];
+      TOKEN_TYPES.forEach(function(tt, i){
+        var q = u[2+i];
+        if (!q) return;
+        RECORDS.push({team:t.name, source:'AI Tokens', category:u[0], modelKey:u[1], model:m.name,
+          tkey:tt[0], item:m.name + ', ' + tt[1].toLowerCase(), qty:q, qdp:2, unit:'M tokens',
+          rate:m[tt[0]], rateUnit:'Credits / 1M tokens', cents:toCents(q, m[tt[0]], 1)});
+      });
+    });
+    var st = STORAGE_USAGE[t.name] || {};
+    Object.keys(STORAGE_RATE).forEach(function(k){
+      if (!st[k]) return;
+      RECORDS.push({team:t.name, source:'Storage', category:k, item:k, qty:st[k], qdp:1, unit:'TB (monthly average)',
+        rate:STORAGE_RATE[k], rateUnit:'Credits / 10 TB', cents:toCents(st[k], STORAGE_RATE[k], 10)});
+    });
+    var cp = COMPUTE_USAGE[t.name] || {cpu:{}, mlwb:{}};
+    CPU_BUCKET_ORDER.forEach(function(k){
+      var q = cp.cpu[k];
+      if (!q) return;
+      RECORDS.push({team:t.name, source:'Compute', category:k, item:k, qty:q, qdp:0, unit:'CPU-hours',
+        rate:CPU_BUCKETS[k], rateUnit:'Credits / CPU-hour', cents:toCents(q, CPU_BUCKETS[k], 1)});
+    });
+    MLWB_MACHINES.forEach(function(m){
+      var q = cp.mlwb[m[0]];
+      if (!q) return;
+      RECORDS.push({team:t.name, source:'Compute', category:'ML Workbench', item:'ML Workbench, ' + m[1], mkey:m[0], qty:q, qdp:0, unit:'machine-hours',
+        rate:m[2], rateUnit:'Credits / machine-hour', cents:toCents(q, m[2], 1)});
+    });
+  });
+
+  // ---------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------
+  var state = {team:'all', over:false};
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function fmtCr(c){ return (c/100).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2}); }
+  function fmtInt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function fmtQty(q, dp){ return q.toLocaleString('en-US',{minimumFractionDigits:dp, maximumFractionDigits:dp}); }
+  function fmtRate(r){ return parseFloat(r.toFixed(3)).toString(); }
+  function pct(part, whole){
+    if (!whole || !part) return '0%';
+    var p = part / whole * 100;
+    return p < 0.1 ? '<0.1%' : p.toFixed(1) + '%';
+  }
+  function sum(arr, fn){ var s = 0; arr.forEach(function(x){ s += fn(x); }); return s; }
+  function scoped(){ return RECORDS.filter(function(r){ return state.team==='all' || r.team===state.team; }); }
+  function only(recs, source){ return recs.filter(function(r){ return r.source===source; }); }
+  function teamList(){ return TEAMS.filter(function(t){ return state.team==='all' || t.name===state.team; }); }
+
+  // ---------------------------------------------------------------
+  // Sections
+  // ---------------------------------------------------------------
+  function sectionHeader(){
+    var scope = state.team==='all' ? 'All teams' : state.team;
+    return '<div class="doc-head">'+
+      '<div><h1>Consumption statement</h1><div class="sub">Usage of AI Tokens, Storage and Compute, shown in Credits.</div></div>'+
+      '<dl class="meta">'+
+        '<dt>Customer</dt><dd>BMW</dd>'+
+        '<dt>Scope</dt><dd>'+esc(scope)+'</dd>'+
+        '<dt>Period</dt><dd>Oct 1 to Oct 31, 2026</dd>'+
+        '<dt>Contract ends</dt><dd>Dec 31, 2026</dd>'+
+        '<dt>Generated</dt><dd>Nov 5, 2026</dd>'+
+      '</dl></div>';
+  }
+
+  function sectionSummary(recs){
+    var oct = sum(recs, function(r){ return r.cents; });
+    var teams = teamList();
+    var ctd = sum(teams, function(t){ return t.ctd * 100; });
+    var html = '<div class="summary">';
+    html += '<div class="item"><div class="k">Consumed in October</div><div class="v">'+fmtCr(oct)+'<small>Credits</small></div></div>';
+    if (state.team==='all'){
+      var alloc = (state.over ? ALLOCATION_PREVIEW : ALLOCATION) * 100;
+      var over = ctd > alloc;
+      var barW = Math.min(100, ctd / alloc * 100);
+      html += '<div class="item"><div class="k">Contract to date</div><div class="v">'+fmtCr(ctd)+'<small>of '+fmtInt(alloc/100)+'</small></div>'+
+        '<div class="bar'+(over?' over':'')+'" role="img" aria-label="'+pct(ctd, alloc)+' of allowance used"><span style="width:'+barW+'%"></span></div></div>';
+      if (over){
+        html += '<div class="item"><div class="k">Over allowance</div><div class="v" style="color:var(--red-text)">'+fmtCr(ctd - alloc)+'<small>Credits</small></div></div>';
+      } else {
+        html += '<div class="item"><div class="k">Remaining</div><div class="v">'+fmtCr(alloc - ctd)+'<small>Credits</small></div><div class="s">'+pct(alloc - ctd, alloc)+' of allowance</div></div>';
+      }
+      html += '</div>';
+      if (over){
+        html += '<div class="alert" role="alert">Allowance exceeded. While services remain active, usage exceeds your allowance. Contact your account team for additional capacity.</div>';
+      }
+    } else {
+      html += '<div class="item"><div class="k">Contract to date</div><div class="v">'+fmtCr(ctd)+'<small>Credits</small></div></div>';
+      html += '<div class="item"><div class="k">Allowance</div><div class="v" style="font-size:15px;font-weight:500;">Set for the account</div><div class="s">Switch scope to All teams to see it</div></div>';
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function sectionBySource(recs){
+    var total = sum(recs, function(r){ return r.cents; });
+    var rows = ['AI Tokens','Storage','Compute'].map(function(s){
+      var c = sum(only(recs, s), function(r){ return r.cents; });
+      return '<tr><td>'+s+'</td><td class="r">'+fmtCr(c)+'</td><td class="r">'+pct(c, total)+'</td></tr>';
+    }).join('');
+    return '<section class="block"><h2>Consumption by source</h2>'+
+      '<p class="lead">Credits consumed in October, with each source\'s share of the total.</p>'+
+      '<div class="tw"><table><thead><tr><th>Source</th><th class="r">Credits</th><th class="r">Share</th></tr></thead><tbody>'+rows+
+      '<tr class="total"><td>Total</td><td class="r">'+fmtCr(total)+'</td><td class="r">100%</td></tr></tbody></table></div></section>';
+  }
+
+  function sectionByTeam(recs){
+    var rows = '', tot = {t:0,s:0,c:0,all:0,ctd:0};
+    teamList().forEach(function(t){
+      var tr = recs.filter(function(r){ return r.team===t.name; });
+      var a = sum(only(tr,'AI Tokens'), function(r){ return r.cents; });
+      var b = sum(only(tr,'Storage'), function(r){ return r.cents; });
+      var c = sum(only(tr,'Compute'), function(r){ return r.cents; });
+      tot.t += a; tot.s += b; tot.c += c; tot.all += a+b+c; tot.ctd += t.ctd*100;
+      rows += '<tr><td>'+esc(t.name)+'</td><td class="r">'+fmtCr(a)+'</td><td class="r">'+fmtCr(b)+'</td><td class="r">'+fmtCr(c)+'</td><td class="r">'+fmtCr(a+b+c)+'</td><td class="r">'+fmtCr(t.ctd*100)+'</td></tr>';
+    });
+    var totalRow = state.team==='all'
+      ? '<tr class="total"><td>Total</td><td class="r">'+fmtCr(tot.t)+'</td><td class="r">'+fmtCr(tot.s)+'</td><td class="r">'+fmtCr(tot.c)+'</td><td class="r">'+fmtCr(tot.all)+'</td><td class="r">'+fmtCr(tot.ctd)+'</td></tr>'
+      : '';
+    return '<section class="block"><h2>Consumption by team</h2>'+
+      '<p class="lead">October by source for each team, and each team\'s total since the start of the contract.</p>'+
+      '<div class="tw"><table><thead><tr><th>Team</th><th class="r">AI Tokens</th><th class="r">Storage</th><th class="r">Compute</th><th class="r">October</th><th class="r">Contract to date</th></tr></thead><tbody>'+rows+totalRow+'</tbody></table></div></section>';
+  }
+
+  function sectionTokens(recs){
+    var tr = only(recs, 'AI Tokens');
+    var total = sum(tr, function(r){ return r.cents; });
+
+    // by feature
+    var feats = [], seen = {};
+    tr.forEach(function(r){ if (!seen[r.category]){ seen[r.category]=1; feats.push(r.category); } });
+    var ft = {in:0,out:0,cr:0,cw:0};
+    var frows = feats.map(function(f){
+      var fr = tr.filter(function(r){ return r.category===f; });
+      var q = {in:0,out:0,cr:0,cw:0};
+      fr.forEach(function(r){ q[r.tkey] += r.qty; ft[r.tkey] += r.qty; });
+      var c = sum(fr, function(r){ return r.cents; });
+      return '<tr><td>'+esc(f)+'</td><td class="r">'+fmtQty(q.in,2)+'</td><td class="r">'+fmtQty(q.out,2)+'</td><td class="r">'+fmtQty(q.cr,2)+'</td><td class="r">'+fmtQty(q.cw,2)+'</td><td class="r">'+fmtCr(c)+'</td></tr>';
+    }).join('');
+    var ftable = '<h3>By feature</h3><div class="tw"><table><thead><tr><th>Feature</th><th class="r">Input (M)</th><th class="r">Output (M)</th><th class="r">Cache read (M)</th><th class="r">Cache write (M)</th><th class="r">Credits</th></tr></thead><tbody>'+frows+
+      '<tr class="total"><td>Total</td><td class="r">'+fmtQty(ft.in,2)+'</td><td class="r">'+fmtQty(ft.out,2)+'</td><td class="r">'+fmtQty(ft.cr,2)+'</td><td class="r">'+fmtQty(ft.cw,2)+'</td><td class="r">'+fmtCr(total)+'</td></tr></tbody></table></div>';
+
+    // by model and token type
+    var mrows = '';
+    MODEL_ORDER.forEach(function(k){
+      var mr = tr.filter(function(r){ return r.modelKey===k; });
+      if (!mr.length) return;
+      mrows += '<tr class="sub"><td colspan="4">'+esc(MODELS[k].name)+'</td><td class="r">'+fmtCr(sum(mr, function(r){ return r.cents; }))+'</td></tr>';
+      TOKEN_TYPES.forEach(function(tt){
+        var rr = mr.filter(function(r){ return r.tkey===tt[0]; });
+        if (!rr.length) return;
+        var q = sum(rr, function(r){ return r.qty; });
+        var c = sum(rr, function(r){ return r.cents; });
+        mrows += '<tr><td class="indent">'+tt[1]+'</td><td class="r">'+fmtQty(q,2)+'</td><td class="r">'+fmtRate(MODELS[k][tt[0]])+'</td><td class="muted">Credits / 1M tokens</td><td class="r">'+fmtCr(c)+'</td></tr>';
+      });
+    });
+    var mtable = '<h3>By model and token type</h3><div class="tw"><table><thead><tr><th>Model and token type</th><th class="r">Tokens (M)</th><th class="r">Rate</th><th>Rate unit</th><th class="r">Credits</th></tr></thead><tbody>'+mrows+
+      '<tr class="total"><td colspan="4">Total</td><td class="r">'+fmtCr(total)+'</td></tr></tbody></table></div>';
+
+    return '<section class="block"><h2>AI Tokens</h2>'+
+      '<p class="lead">Tokens are priced per model and token type. Cache read and cache write tokens are listed separately from input and output.</p>'+ftable+mtable+'</section>';
+  }
+
+  function sectionStorage(recs){
+    var sr = only(recs, 'Storage');
+    var total = sum(sr, function(r){ return r.cents; });
+    var rows = Object.keys(STORAGE_RATE).map(function(k){
+      var rr = sr.filter(function(r){ return r.category===k; });
+      if (!rr.length) return '';
+      var q = sum(rr, function(r){ return r.qty; });
+      return '<tr><td>'+k+'</td><td class="r">'+fmtQty(q,1)+'</td><td class="r">'+fmtRate(STORAGE_RATE[k])+'</td><td class="r">'+fmtCr(sum(rr, function(r){ return r.cents; }))+'</td></tr>';
+    }).join('');
+    return '<section class="block"><h2>Storage</h2>'+
+      '<p class="lead">Terabytes stored by storage type, as the average over the month.</p>'+
+      '<div class="tw"><table><thead><tr><th>Storage type</th><th class="r">Average TB</th><th class="r">Rate (Credits / 10 TB)</th><th class="r">Credits</th></tr></thead><tbody>'+rows+
+      '<tr class="total"><td colspan="3">Total</td><td class="r">'+fmtCr(total)+'</td></tr></tbody></table></div></section>';
+  }
+
+  function sectionCompute(recs){
+    var cr = only(recs, 'Compute');
+    var total = sum(cr, function(r){ return r.cents; });
+    var rows = '';
+    CPU_BUCKET_ORDER.forEach(function(k){
+      var rr = cr.filter(function(r){ return r.category===k; });
+      if (!rr.length) return;
+      var q = sum(rr, function(r){ return r.qty; });
+      rows += '<tr><td>'+esc(k)+'</td><td class="r">'+fmtInt(q)+'</td><td class="muted">CPU-hours</td><td class="r">'+fmtRate(CPU_BUCKETS[k])+'</td><td class="r">'+fmtCr(sum(rr, function(r){ return r.cents; }))+'</td></tr>';
+    });
+    var ml = cr.filter(function(r){ return r.category==='ML Workbench'; });
+    if (ml.length){
+      rows += '<tr class="sub"><td colspan="4">ML Workbench, by machine type</td><td class="r">'+fmtCr(sum(ml, function(r){ return r.cents; }))+'</td></tr>';
+      MLWB_MACHINES.forEach(function(m){
+        var rr = ml.filter(function(r){ return r.mkey===m[0]; });
+        if (!rr.length) return;
+        var q = sum(rr, function(r){ return r.qty; });
+        rows += '<tr><td class="indent">'+esc(m[1])+'</td><td class="r">'+fmtInt(q)+'</td><td class="muted">machine-hours</td><td class="r">'+fmtRate(m[2])+'</td><td class="r">'+fmtCr(sum(rr, function(r){ return r.cents; }))+'</td></tr>';
+      });
+    }
+    return '<section class="block"><h2>Compute</h2>'+
+      '<p class="lead">Compute is grouped into three buckets. Analytics engines and Data processing are measured in CPU-hours. ML Workbench is measured in hours of machine time and priced by machine type.</p>'+
+      '<div class="tw"><table><thead><tr><th>Bucket</th><th class="r">Quantity</th><th>Unit</th><th class="r">Rate (Credits per unit)</th><th class="r">Credits</th></tr></thead><tbody>'+rows+
+      '<tr class="total"><td colspan="4">Total</td><td class="r">'+fmtCr(total)+'</td></tr></tbody></table></div></section>';
+  }
+
+  function sectionNotes(){
+    return '<section class="notes"><h2>About this statement</h2><ul>'+
+      '<li>Credits on each line are quantity multiplied by the rate shown, rounded to two decimals. Totals are the sum of the rounded lines.</li>'+
+      '<li>Each source has its own rate per unit. See <a href="credits-conversion.html">how usage converts to Credits</a>.</li>'+
+      '<li>Contract to date includes all usage since the contract started, not only October.</li>'+
+      '</ul></section>';
+  }
+
+  function sectionAppendix(recs){
+    var ordered = recs.slice().sort(function(a,b){
+      if (a.team!==b.team) return TEAMS.map(function(t){return t.name;}).indexOf(a.team) - TEAMS.map(function(t){return t.name;}).indexOf(b.team);
+      var so = ['AI Tokens','Storage','Compute'];
+      return so.indexOf(a.source) - so.indexOf(b.source);
+    });
+    var rows = ordered.map(function(r){
+      return '<tr><td>'+esc(r.team)+'</td><td>'+r.source+'</td><td>'+esc(r.category)+'</td><td>'+esc(r.item)+'</td>'+
+        '<td class="r">'+fmtQty(r.qty, r.qdp)+'</td><td>'+esc(r.unit)+'</td><td class="r">'+fmtRate(r.rate)+'</td><td class="r">'+fmtCr(r.cents)+'</td></tr>';
+    }).join('');
+    var total = sum(recs, function(r){ return r.cents; });
+    return '<section class="block appendix"><h2>Line items</h2>'+
+      '<p class="lead">Every line behind the totals above. '+recs.length+' lines for October 2026.</p>'+
+      '<div class="tw"><table><thead><tr><th>Team</th><th>Source</th><th>Category</th><th>Item</th><th class="r">Quantity</th><th>Unit</th><th class="r">Rate</th><th class="r">Credits</th></tr></thead><tbody>'+rows+
+      '<tr class="total"><td colspan="7">Total</td><td class="r">'+fmtCr(total)+'</td></tr></tbody></table></div></section>';
+  }
+
+  function footing(recs){
+    var lines = sum(recs, function(r){ return r.cents; });
+    var bySource = sum(['AI Tokens','Storage','Compute'], function(s){ return sum(only(recs, s), function(r){ return r.cents; }); });
+    var byTeam = sum(teamList(), function(t){ return sum(recs.filter(function(r){ return r.team===t.name; }), function(r){ return r.cents; }); });
+    var ok = lines===bySource && lines===byTeam;
+    return '<div class="check-line'+(ok?'':' bad')+'" role="status">'+
+      (ok ? 'Totals agree: by source, by team and across all '+recs.length+' line items, '+fmtCr(lines)+' Credits.'
+          : 'Totals do not agree between source, team and line items. Check the data.')+'</div>';
+  }
+
+  // ---------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------
+  function render(){
+    var recs = scoped();
+    document.getElementById('paper').innerHTML =
+      sectionHeader() + sectionSummary(recs) + footing(recs) + sectionBySource(recs) + sectionByTeam(recs) +
+      sectionTokens(recs) + sectionStorage(recs) + sectionCompute(recs) + sectionNotes() + sectionAppendix(recs);
+    renderReviewer();
+  }
+
+  function renderReviewer(){
+    var all = RECORDS;
+    var total = sum(all, function(r){ return r.cents; });
+    var storageShare = pct(sum(only(all,'Storage'), function(r){ return r.cents; }), total);
+    var tokenShare = pct(sum(only(all,'AI Tokens'), function(r){ return r.cents; }), total);
+    var items = [
+      ['open','Token rates are placeholders.','The statement prices tokens per model and token type (as AI Settings does today), at values set for this mockup. The flat 0.2 and 0.1 Credits per 10M tokens that were on the conversion page did not reflect per-model pricing, so that page now shows the same per-model table. Real rates are needed from the pricing team.'],
+      ['open','Storage is almost free at the current rates.','Storage is '+storageShare+' of October consumption and AI Tokens '+tokenShare+', using the conversion page rates (0.1 and 0.15 Credits per 10 TB) at realistic volumes. If that is not the intent, the storage rate needs to change before customers see it.'],
+      ['assumed','Storage time basis and rate period.','The statement says storage is the monthly average and the rate applies per month. Neither is defined yet. Billing in whole 10 TB blocks versus fractions is also undecided: this mockup bills fractions.'],
+      ['open','Compute buckets are a first proposal.','Seven metering sources (Vertica VM, All Purpose, Serverless, StarRocks, Saola Compute, Celostar Compute, MLWB) roll up to three buckets: Analytics engines, Data processing and ML Workbench. Customers see the buckets, not the sources. The earlier ETL, Query Engine and Data Integration rates are retired, and the bucket rates here (0.3 and 0.2 Credits per CPU-hour) are placeholders. Whether the sources in a bucket cost similar amounts per CPU-hour is not confirmed.'],
+      ['open','ML Workbench machine types may change cost and price.','ML Workbench runs on different machine sizes, including high-memory and GPU. This statement prices ML Workbench per machine type per hour, with placeholder rates. Not yet confirmed: whether internal cost differs by machine type as sharply as shown, whether reserved schedule time is priced like on-demand time, and whether plan-included compute is deducted first.'],
+      ['open','Different native units across sources.','Vertica VM is a provisioned machine, serverless is usage-based. Converting each source to CPU-hours (or machine-hours) and deciding whether a provisioned machine counts for every hour or only busy hours is undecided.'],
+      ['open','Late-arriving usage.','If usage for October arrives after the statement is generated, it is unclear whether the statement is restated or the usage moves to the next period. The statement does not say.'],
+      ['fix','Cache tokens now have quantities.','In AI Settings, Input $13 plus Output $35 does not equal the $56 spend, and "Tokens used" leaves out cache tokens. This statement lists all four token types with quantities, so each total can be rebuilt from its lines.'],
+      ['assumed','Earlier months are placeholders.','Contract to date per team is a fixed figure (Production 1 uses the 35,000 from the team consumption page). Only October is built from line items.'],
+      ['assumed','Credits only.','No USD, cost or margin appears anywhere. Confirm that is the intended boundary of what customers see.']
+    ];
+    document.getElementById('reviewerList').innerHTML = items.map(function(it){
+      var label = it[0]==='open' ? 'Open' : it[0]==='assumed' ? 'Assumed' : 'Fixed here';
+      return '<li><span class="tag '+it[0]+'">'+label+'</span><strong>'+esc(it[1])+'</strong> '+esc(it[2])+'</li>';
+    }).join('');
+  }
+
+  // ---------------------------------------------------------------
+  // CSV
+  // ---------------------------------------------------------------
+  function csv(){
+    function q(s){ return '"' + String(s).replace(/"/g,'""') + '"'; }
+    var head = ['Period','Team','Source','Category','Item','Quantity','Unit','Rate (Credits per unit)','Rate unit','Credits'];
+    var lines = [head.map(q).join(',')];
+    scoped().forEach(function(r){
+      lines.push(['October 2026', r.team, r.source, r.category, r.item, r.qty, r.unit, r.rate, r.rateUnit, (r.cents/100).toFixed(2)].map(q).join(','));
+    });
+    return lines.join('\n');
+  }
+
+  // ---------------------------------------------------------------
+  // Events
+  // ---------------------------------------------------------------
+  var sel = document.getElementById('teamSel');
+  sel.innerHTML = '<option value="all">All teams</option>' + TEAMS.map(function(t){ return '<option value="'+esc(t.name)+'">'+esc(t.name)+'</option>'; }).join('');
+  sel.addEventListener('change', function(){ state.team = sel.value; render(); });
+  document.getElementById('overChk').addEventListener('change', function(e){ state.over = e.target.checked; render(); });
+  document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
+  document.getElementById('btnCsv').addEventListener('click', function(){
+    var blob = new Blob([csv()], {type:'text/csv;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'bmw-consumption-october-2026.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
