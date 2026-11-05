@@ -376,9 +376,9 @@
     <div class="top-grid">
       <div class="card hero-card">
         <div class="card-label">Account pool &middot; consumed this period</div>
-        <div class="card-value num" id="mConsumedTotal">63,000<span class="unit">/ 210,000 Credits</span></div>
-        <div class="progress-track"><div class="progress-fill" id="mConsumedBar" style="width:30%"></div></div>
-        <div class="card-sub" id="mConsumedSub">30% of account pool used across 4 teams &middot; last 28 days</div>
+        <div class="card-value num" id="mConsumedTotal">128,000<span class="unit">/ 210,000 Credits</span></div>
+        <div class="progress-track"><div class="progress-fill" id="mConsumedBar" style="width:61%"></div></div>
+        <div class="card-sub" id="mConsumedSub">61% of account pool used across 4 teams &middot; last 28 days</div>
       </div>
 
       <div class="panel-box" style="margin-bottom:0;">
@@ -448,16 +448,16 @@
   function fmtCr(n){ return fmt(n) + ' Credits'; }
   function pct(n, total){ return total>0 ? Math.round(n/total*100) : 0; }
 
-  var LANE_LABELS = {tokens:'AI Tokens', storage:'Storage', compute:'Compute', traffic:'Data Transfer', other:'Other Services'};
-  var LANE_COLORS = {tokens:'#1464F4', storage:'#0E9594', compute:'#7B61FF', traffic:'#D4862A', other:'#C23B6E'};
-  var LANE_KEYS = ['tokens','storage','compute','traffic','other'];
+  var LANE_LABELS = {tokens:'AI Tokens', storage:'Storage', compute:'Compute'};
+  var LANE_COLORS = {tokens:'#1464F4', storage:'#0E9594', compute:'#7B61FF'};
+  var LANE_KEYS = ['tokens','storage','compute'];
   var POOL_TOTAL = 210000;
 
   var TEAMS = [
-    {name:'Production 1', allocation:100000, consumed:42000, lanes:{tokens:19000, storage:8500, compute:7500, traffic:4500, other:2500}},
-    {name:'Production 2', allocation:100000, consumed:90000, lanes:{tokens:40000, storage:18000, compute:16000, traffic:10000, other:6000}},
-    {name:'Sandbox 1',    allocation:3000,   consumed:1800,  lanes:{tokens:800,   storage:350,  compute:300,  traffic:200,  other:150}},
-    {name:'Premium Sandbox 2', allocation:7000, consumed:1200, lanes:{tokens:500, storage:250,  compute:200,  traffic:150,  other:100}}
+    {name:'Production 1', allocation:100000, consumed:35000, lanes:{tokens:19000, storage:8500, compute:7500}},
+    {name:'Production 2', allocation:100000, consumed:90000, lanes:{tokens:48000, storage:21500, compute:20500}},
+    {name:'Sandbox 1',    allocation:3000,   consumed:1800,  lanes:{tokens:960,   storage:430,  compute:410}},
+    {name:'Premium Sandbox 2', allocation:7000, consumed:1200, lanes:{tokens:640, storage:290,  compute:270}}
   ];
 
   function doLogin(){

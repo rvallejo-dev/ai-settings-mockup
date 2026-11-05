@@ -400,9 +400,9 @@
     <div class="top-grid">
       <div class="card hero-card">
         <div class="card-label">Team allocation &middot; consumed this period</div>
-        <div class="card-value num" id="mConsumedTotal">42,000<span class="unit">/ 100,000 Credits</span></div>
-        <div class="progress-track"><div class="progress-fill" id="mConsumedBar" style="width:42%"></div></div>
-        <div class="card-sub" id="mConsumedSub">42% of team allocation used &middot; set by your Account Manager (Sara M&uuml;ller) &middot; last 28 days</div>
+        <div class="card-value num" id="mConsumedTotal">35,000<span class="unit">/ 100,000 Credits</span></div>
+        <div class="progress-track"><div class="progress-fill" id="mConsumedBar" style="width:35%"></div></div>
+        <div class="card-sub" id="mConsumedSub">35% of team allocation used &middot; set by your Account Manager (Sara M&uuml;ller) &middot; last 28 days</div>
       </div>
 
       <div class="panel-box" style="margin-bottom:0;">
@@ -417,8 +417,6 @@
       <button class="tab-btn" data-tab="tokens">AI Tokens</button>
       <button class="tab-btn" data-tab="storage">Storage</button>
       <button class="tab-btn" data-tab="compute">Compute</button>
-      <button class="tab-btn" data-tab="traffic">Data Transfer</button>
-      <button class="tab-btn" data-tab="other">Other Services</button>
       <button class="tab-btn" data-tab="limits">Limits &amp; Alerts</button>
     </div>
 
@@ -556,7 +554,7 @@
             <thead><tr><th>Asset</th><th>Type</th><th>Model used</th><th class="num-col">Consumed</th><th>Last used</th></tr></thead>
             <tbody id="assetsTableBody"></tbody>
           </table>
-          <div class="foot-note">Illustrative sample. Totals are a subset of the Process Copilots feature spend shown in Features.</div>
+          <div class="foot-note">Illustrative sample. Totals are a subset of the Process Copilot feature spend shown in Features.</div>
         </div>
 
         <!-- ---- MLWB usage ---- -->
@@ -596,41 +594,17 @@
     <div class="panel" id="panel-compute">
       <div class="panel-box">
         <div class="lane-head"><span class="lane-dot" style="background:#7B61FF"></span><div class="block-heading" style="margin:0;">Compute</div></div>
-        <div class="block-desc">Production 1's compute consumption this period, by workload type.</div>
+        <div class="block-desc">Production 1's compute consumption this period, by bucket.</div>
         <table>
-          <thead><tr><th>Workload type</th><th class="num-col">Consumed</th><th class="num-col">Share of lane</th></tr></thead>
+          <thead><tr><th>Bucket</th><th class="num-col">Consumed</th><th class="num-col">Share of lane</th></tr></thead>
           <tbody id="computeTableBody"></tbody>
           <tfoot><tr><td>Total</td><td class="num-col num" id="computeTotalCell"></td><td class="num-col"></td></tr></tfoot>
         </table>
-        <div class="foot-note">Sorted by consumption. See Credits conversion for the per-CPU-hour Credit rate by workload type.</div>
+        <div class="foot-note">Sorted by consumption. Analytics engines and Data processing are metered per CPU-hour; ML Workbench is metered per machine-hour by machine type. See Credits conversion for the rates.</div>
       </div>
     </div>
 
-    <div class="panel" id="panel-traffic">
-      <div class="panel-box">
-        <div class="lane-head"><span class="lane-dot" style="background:#D4862A"></span><div class="block-heading" style="margin:0;">Data Transfer</div></div>
-        <div class="block-desc">Production 1's data transfer consumption this period, by transfer type.</div>
-        <table>
-          <thead><tr><th>Transfer type</th><th class="num-col">Consumed</th><th class="num-col">Share of lane</th></tr></thead>
-          <tbody id="trafficTableBody"></tbody>
-          <tfoot><tr><td>Total</td><td class="num-col num" id="trafficTotalCell"></td><td class="num-col"></td></tr></tfoot>
-        </table>
-        <div class="foot-note">Sorted by consumption.</div>
-      </div>
-    </div>
 
-    <div class="panel" id="panel-other">
-      <div class="panel-box">
-        <div class="lane-head"><span class="lane-dot" style="background:#C23B6E"></span><div class="block-heading" style="margin:0;">Other Services</div></div>
-        <div class="block-desc">Production 1's consumption this period for services outside AI Tokens/Storage/Compute/Data Transfer.</div>
-        <table>
-          <thead><tr><th>Service</th><th class="num-col">Consumed</th><th class="num-col">Share of lane</th></tr></thead>
-          <tbody id="otherTableBody"></tbody>
-          <tfoot><tr><td>Total</td><td class="num-col num" id="otherTotalCell"></td><td class="num-col"></td></tr></tfoot>
-        </table>
-        <div class="foot-note">Sorted by consumption.</div>
-      </div>
-    </div>
 
     <!-- ===================== LIMITS PANEL ===================== -->
     <div class="panel" id="panel-limits">
@@ -674,55 +648,39 @@
   var LANES = [
     {key:'tokens',  label:'AI Tokens',      color:'#1464F4', consumed:19000, limit:20000},
     {key:'storage', label:'Storage',        color:'#0E9594', consumed:8500,  limit:15000},
-    {key:'compute', label:'Compute',        color:'#7B61FF', consumed:7500,  limit:10000},
-    {key:'traffic', label:'Data Transfer',  color:'#D4862A', consumed:4500,  limit:8000},
-    {key:'other',   label:'Other Services', color:'#C23B6E', consumed:2500,  limit:5000}
+    {key:'compute', label:'Compute',        color:'#7B61FF', consumed:7500,  limit:10000}
   ];
 
   // ---------- per-lane breakdown data (sub-type consumption, each sums to the lane's LANES.consumed) ----------
   var TOKENS_BREAKDOWN = [
-    ['Process Copilots', 7600],
-    ['ML Workbench', 4750],
-    ['AI Annotations', 3800],
-    ['Celonis Assistant', 1900],
-    ['Agent', 950]
+    ['ML Workbench', 8200],
+    ['Process Copilot', 4800],
+    ['Celonis Assistant', 2700],
+    ['Decision Intelligence', 2600],
+    ['MCP Gateway', 700]
   ];
   var STORAGE_BREAKDOWN = [
-    ['Data Pool storage', 4000],
-    ['Vector Store indexes', 2200],
-    ['Document repository (RAG sources)', 1500],
-    ['Backup snapshots', 800]
+    ['Iceberg', 5600],
+    ['S3', 2900]
   ];
   var COMPUTE_BREAKDOWN = [
-    ['ETL', 3500],
-    ['QE', 2500],
-    ['DI', 1500]
-  ];
-  var TRAFFIC_BREAKDOWN = [
-    ['Zero-Copy data share (Fabric/Snowflake)', 2200],
-    ['Cross-region data sync', 1200],
-    ['API egress', 700],
-    ['Connector ingestion transfer', 400]
-  ];
-  var OTHER_BREAKDOWN = [
-    ['Task Mining', 1300],
-    ['CPM (Celonis Process Mining core)', 700],
-    ['Action Engine executions', 300],
-    ['Process Automation runs', 200]
+    ['Analytics engines', 3300],
+    ['Data processing', 2400],
+    ['ML Workbench', 1800]
   ];
 
   // ---------- AI Tokens drill-down data (Production 1 only) ----------
-  var FEATURES_T1 = ['Process Copilots','ML Workbench','AI Annotations','Celonis Assistant','Agent'];
-  var MODELS_T1 = ['Claude 3.5 Sonnet','GPT-4o mini','GPT-4o','Claude 3.5 Haiku','text-embedding-3-large'];
+  var FEATURES_T1 = ['ML Workbench','Process Copilot','Celonis Assistant','Decision Intelligence','MCP Gateway'];
+  var MODELS_T1 = ['Claude Sonnet 4.6 (AWS)','Claude Opus 4.8 (AWS)','Claude Haiku 4.5 (AWS)','GPT 4.1 (Azure OpenAI)','GPT 5 Mini (Azure OpenAI)'];
   var USERS_T1 = ['A. Mendes','T. Falk','P. Lindqvist','K. Novak'];
 
   // [model, tokens consumed, Credits]
   var MODELS_BREAKDOWN = [
-    ['Claude 3.5 Sonnet', 2100000, 8500],
-    ['GPT-4o mini', 9600000, 4500],
-    ['GPT-4o', 1100000, 3200],
-    ['Claude 3.5 Haiku', 1800000, 1800],
-    ['text-embedding-3-large', 6200000, 1000]
+    ['Claude Sonnet 4.6 (AWS)', 78000000, 9800],
+    ['Claude Opus 4.8 (AWS)', 6200000, 4300],
+    ['GPT 4.1 (Azure OpenAI)', 31000000, 2300],
+    ['Claude Haiku 4.5 (AWS)', 52000000, 1900],
+    ['GPT 5 Mini (Azure OpenAI)', 44000000, 700]
   ];
 
   // [user, Credits]
@@ -735,33 +693,33 @@
 
   // [date, user, feature, model, promptTokens, completionTokens, Credits]
   var REQUEST_ROWS = [
-    ['2026-10-02','A. Mendes','Process Copilots','Claude 3.5 Sonnet',182000,61000,620],
-    ['2026-10-04','T. Falk','ML Workbench','GPT-4o',240000,54000,540],
-    ['2026-10-06','P. Lindqvist','AI Annotations','GPT-4o mini',410000,88000,310],
-    ['2026-10-08','K. Novak','Celonis Assistant','Claude 3.5 Haiku',128000,33000,210],
-    ['2026-10-10','A. Mendes','Agent','Claude 3.5 Sonnet',205000,88000,580],
-    ['2026-10-12','T. Falk','Process Copilots','GPT-4o mini',355000,72000,290],
-    ['2026-10-14','P. Lindqvist','ML Workbench','GPT-4o',174000,41000,410],
-    ['2026-10-16','K. Novak','AI Annotations','Claude 3.5 Haiku',118000,31000,190],
-    ['2026-10-18','A. Mendes','Celonis Assistant','text-embedding-3-large',610000,0,180],
-    ['2026-10-20','T. Falk','Agent','Claude 3.5 Sonnet',219000,94000,640],
-    ['2026-10-22','P. Lindqvist','Process Copilots','GPT-4o mini',402000,86000,330],
-    ['2026-10-24','K. Novak','ML Workbench','GPT-4o',183000,44000,440]
+    ['2026-10-02','A. Mendes','Process Copilot','Claude Sonnet 4.6 (AWS)',182000,61000,620],
+    ['2026-10-04','T. Falk','ML Workbench','GPT 4.1 (Azure OpenAI)',240000,54000,540],
+    ['2026-10-06','P. Lindqvist','Decision Intelligence','GPT 5 Mini (Azure OpenAI)',410000,88000,310],
+    ['2026-10-08','K. Novak','Celonis Assistant','Claude Haiku 4.5 (AWS)',128000,33000,210],
+    ['2026-10-10','A. Mendes','Decision Intelligence','Claude Opus 4.8 (AWS)',205000,88000,580],
+    ['2026-10-12','T. Falk','Process Copilot','GPT 5 Mini (Azure OpenAI)',355000,72000,290],
+    ['2026-10-14','P. Lindqvist','ML Workbench','GPT 4.1 (Azure OpenAI)',174000,41000,410],
+    ['2026-10-16','K. Novak','Decision Intelligence','Claude Haiku 4.5 (AWS)',118000,31000,190],
+    ['2026-10-18','A. Mendes','Celonis Assistant','Claude Haiku 4.5 (AWS)',610000,0,180],
+    ['2026-10-20','T. Falk','MCP Gateway','Claude Sonnet 4.6 (AWS)',219000,94000,640],
+    ['2026-10-22','P. Lindqvist','Process Copilot','GPT 5 Mini (Azure OpenAI)',402000,86000,330],
+    ['2026-10-24','K. Novak','ML Workbench','Claude Sonnet 4.6 (AWS)',183000,44000,440]
   ];
 
   // [asset, type, model used, Credits, last used]
   var ASSET_ROWS = [
-    ['Invoice Dispute Copilot','Studio Copilot','Claude 3.5 Sonnet',620,'2026-10-24'],
-    ['Supplier Risk Assistant','Studio Copilot','GPT-4o',480,'2026-10-22'],
-    ['PR Prioritization Agent','Studio Agent','GPT-4o mini',340,'2026-10-19'],
-    ['Backoffice Reconciliation Bot','Studio Copilot','GPT-4o mini',210,'2026-10-12']
+    ['Invoice Dispute Copilot','Studio Copilot','Claude Sonnet 4.6 (AWS)',620,'2026-10-24'],
+    ['Supplier Risk Assistant','Studio Copilot','GPT 4.1 (Azure OpenAI)',480,'2026-10-22'],
+    ['PR Prioritization Agent','Studio Agent','GPT 5 Mini (Azure OpenAI)',340,'2026-10-19'],
+    ['Backoffice Reconciliation Bot','Studio Copilot','GPT 5 Mini (Azure OpenAI)',210,'2026-10-12']
   ];
 
   // [job, model used, Credits, last used]
   var MLWB_ROWS = [
-    ['Demand Forecast Retrain','GPT-4o',2200,'2026-10-21'],
-    ['Anomaly Detection Pipeline','Claude 3.5 Haiku',1600,'2026-10-18'],
-    ['Churn Scoring Job','GPT-4o mini',950,'2026-10-10']
+    ['Demand Forecast Retrain','GPT 4.1 (Azure OpenAI)',2200,'2026-10-21'],
+    ['Anomaly Detection Pipeline','Claude Haiku 4.5 (AWS)',1600,'2026-10-18'],
+    ['Churn Scoring Job','GPT 5 Mini (Azure OpenAI)',950,'2026-10-10']
   ];
 
   function doLogin(){
@@ -894,8 +852,6 @@
   function renderLaneBreakdowns(){
     renderBreakdown('storageTableBody', 'storageTotalCell', STORAGE_BREAKDOWN);
     renderBreakdown('computeTableBody', 'computeTotalCell', COMPUTE_BREAKDOWN);
-    renderBreakdown('trafficTableBody', 'trafficTotalCell', TRAFFIC_BREAKDOWN);
-    renderBreakdown('otherTableBody', 'otherTotalCell', OTHER_BREAKDOWN);
   }
 
   // ---------- AI Tokens subtabs: Features ----------

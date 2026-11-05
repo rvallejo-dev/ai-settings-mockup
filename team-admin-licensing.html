@@ -509,7 +509,7 @@
             <thead><tr><th>Asset</th><th>Type</th><th>Model used</th><th class="num-col">Consumed</th><th>Last used</th></tr></thead>
             <tbody id="assetsTableBody"></tbody>
           </table>
-          <div class="foot-note">Illustrative sample. Totals are a subset of the Process Copilots feature spend shown in Features.</div>
+          <div class="foot-note">Illustrative sample. Totals are a subset of the Process Copilot feature spend shown in Features.</div>
         </div>
 
         <!-- ---- MLWB usage ---- -->
@@ -549,13 +549,13 @@
     <div class="panel" id="panel-compute">
       <div class="panel-box">
         <div class="lane-head"><span class="lane-dot" style="background:#7B61FF"></span><div class="block-heading" style="margin:0;">Compute</div></div>
-        <div class="block-desc">Production 1's compute consumption this period, by workload type.</div>
+        <div class="block-desc">Production 1's compute consumption this period, by bucket.</div>
         <table>
-          <thead><tr><th>Workload type</th><th class="num-col">Consumed</th><th class="num-col">Share of source</th></tr></thead>
+          <thead><tr><th>Bucket</th><th class="num-col">Consumed</th><th class="num-col">Share of source</th></tr></thead>
           <tbody id="computeTableBody"></tbody>
           <tfoot><tr><td>Total</td><td class="num-col num" id="computeTotalCell"></td><td class="num-col"></td></tr></tfoot>
         </table>
-        <div class="foot-note">Sorted by consumption. See Credits conversion for the per-CPU-hour Credit rate by workload type.</div>
+        <div class="foot-note">Sorted by consumption. Analytics engines and Data processing are metered per CPU-hour; ML Workbench is metered per machine-hour by machine type. See Credits conversion for the rates.</div>
       </div>
     </div>
 
@@ -585,50 +585,48 @@
 
   // ---------- per-lane breakdown data (sub-type consumption, each sums to the lane's LANES.consumed) ----------
   var TOKENS_BREAKDOWN = [
-    ['Process Copilots', 7600],
-    ['ML Workbench', 4750],
-    ['AI Annotations', 3800],
-    ['Celonis Assistant', 1900],
-    ['Agent', 950]
+    ['ML Workbench', 8200],
+    ['Process Copilot', 4800],
+    ['Celonis Assistant', 2700],
+    ['Decision Intelligence', 2600],
+    ['MCP Gateway', 700]
   ];
   var STORAGE_BREAKDOWN = [
-    ['Data Pool storage', 4000],
-    ['Vector Store indexes', 2200],
-    ['Document repository (RAG sources)', 1500],
-    ['Backup snapshots', 800]
+    ['Iceberg', 5600],
+    ['S3', 2900]
   ];
   var COMPUTE_BREAKDOWN = [
-    ['ETL', 3500],
-    ['QE', 2500],
-    ['DI', 1500]
+    ['Analytics engines', 3300],
+    ['Data processing', 2400],
+    ['ML Workbench', 1800]
   ];
 
   // ---------- AI Tokens drill-down data (Production 1 only) ----------
-  var FEATURES_T1 = ['Process Copilots','ML Workbench','AI Annotations','Celonis Assistant','Agent'];
-  var MODELS_T1 = ['Claude 3.5 Sonnet','GPT-4o mini','GPT-4o','Claude 3.5 Haiku','text-embedding-3-large'];
+  var FEATURES_T1 = ['ML Workbench','Process Copilot','Celonis Assistant','Decision Intelligence','MCP Gateway'];
+  var MODELS_T1 = ['Claude Sonnet 4.6 (AWS)','Claude Opus 4.8 (AWS)','Claude Haiku 4.5 (AWS)','GPT 4.1 (Azure OpenAI)','GPT 5 Mini (Azure OpenAI)'];
 
   // [model, tokens consumed, Credits]
   var MODELS_BREAKDOWN = [
-    ['Claude 3.5 Sonnet', 2100000, 8500],
-    ['GPT-4o mini', 9600000, 4500],
-    ['GPT-4o', 1100000, 3200],
-    ['Claude 3.5 Haiku', 1800000, 1800],
-    ['text-embedding-3-large', 6200000, 1000]
+    ['Claude Sonnet 4.6 (AWS)', 78000000, 9800],
+    ['Claude Opus 4.8 (AWS)', 6200000, 4300],
+    ['GPT 4.1 (Azure OpenAI)', 31000000, 2300],
+    ['Claude Haiku 4.5 (AWS)', 52000000, 1900],
+    ['GPT 5 Mini (Azure OpenAI)', 44000000, 700]
   ];
 
   // [asset, type, model used, Credits, last used]
   var ASSET_ROWS = [
-    ['Invoice Dispute Copilot','Studio Copilot','Claude 3.5 Sonnet',620,'2026-10-24'],
-    ['Supplier Risk Assistant','Studio Copilot','GPT-4o',480,'2026-10-22'],
-    ['PR Prioritization Agent','Studio Agent','GPT-4o mini',340,'2026-10-19'],
-    ['Backoffice Reconciliation Bot','Studio Copilot','GPT-4o mini',210,'2026-10-12']
+    ['Invoice Dispute Copilot','Studio Copilot','Claude Sonnet 4.6 (AWS)',620,'2026-10-24'],
+    ['Supplier Risk Assistant','Studio Copilot','GPT 4.1 (Azure OpenAI)',480,'2026-10-22'],
+    ['PR Prioritization Agent','Studio Agent','GPT 5 Mini (Azure OpenAI)',340,'2026-10-19'],
+    ['Backoffice Reconciliation Bot','Studio Copilot','GPT 5 Mini (Azure OpenAI)',210,'2026-10-12']
   ];
 
   // [job, model used, Credits, last used]
   var MLWB_ROWS = [
-    ['Demand Forecast Retrain','GPT-4o',2200,'2026-10-21'],
-    ['Anomaly Detection Pipeline','Claude 3.5 Haiku',1600,'2026-10-18'],
-    ['Churn Scoring Job','GPT-4o mini',950,'2026-10-10']
+    ['Demand Forecast Retrain','GPT 4.1 (Azure OpenAI)',2200,'2026-10-21'],
+    ['Anomaly Detection Pipeline','Claude Haiku 4.5 (AWS)',1600,'2026-10-18'],
+    ['Churn Scoring Job','GPT 5 Mini (Azure OpenAI)',950,'2026-10-10']
   ];
 
   function doLogin(){
