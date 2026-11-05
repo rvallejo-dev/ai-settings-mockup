@@ -215,11 +215,12 @@
 
   /* ---------- donut ---------- */
   .donut-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
-  .donut-svg-wrap{position:relative;flex-shrink:0;width:110px;height:110px;}
+  .donut-svg-wrap{position:relative;flex-shrink:0;width:132px;height:132px;}
   .donut-svg-wrap svg{display:block;}
   .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
-  .donut-center .val{font-family:'IBM Plex Mono', monospace;font-weight:600;font-size:14px;color:var(--ink);line-height:1.2;}
-  .donut-center .lbl{font-size:9px;color:var(--text-muted);margin-top:1px;}
+  .donut-center{padding:0 22px;}
+  .donut-center .val{font-family:'IBM Plex Mono', monospace;font-weight:600;font-size:15px;color:var(--ink);line-height:1.2;}
+  .donut-center .lbl{font-size:9px;color:var(--text-muted);margin-top:2px;line-height:1.25;}
   .legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;flex:1;min-width:220px;}
   .legend-item{display:flex;align-items:center;gap:8px;}
   .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
@@ -662,7 +663,7 @@
 
   // ---------- donut ----------
   function renderDonut(containerId, segments, total){
-    var size = 110, cx = size/2, cy = size/2, sw = 15;
+    var size = 132, cx = size/2, cy = size/2, sw = 14;
     var r = cx - sw/2 - 1;
     var C = 2*Math.PI*r;
     var cumulative = 0;
@@ -675,7 +676,7 @@
       return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+seg.color+'" stroke-width="'+sw+'" stroke-dasharray="'+dasharray+'" stroke-dashoffset="'+dashoffset+'"/>';
     }).join('');
     var svgHtml = '<div class="donut-svg-wrap"><svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><g transform="rotate(-90 '+cx+' '+cy+')">'+circles+'</g></svg>'+
-      '<div class="donut-center"><span class="val">'+usd(total)+'</span><span class="lbl">this period</span></div></div>';
+      '<div class="donut-center"><span class="val">'+fmt(total)+'</span><span class="lbl">Credits<br>this period</span></div></div>';
     var legendHtml = '<ul class="legend">'+segments.map(function(seg){
       return '<li class="legend-item"><span class="legend-dot" style="background:'+seg.color+'"></span>'+
         '<span class="legend-label">'+seg.label+'</span>'+
