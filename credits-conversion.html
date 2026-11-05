@@ -204,15 +204,15 @@
       <details>
         <summary><span class="arrow"></span>Compute</summary>
         <div class="details-body">
-          <p>Compute usage is grouped into three buckets. Analytics engines and Data processing are metered per CPU-hour. ML Workbench is metered per hour of machine time, with a rate for each machine type.</p>
+          <p>Compute usage is grouped into three buckets: ETL, Query Engine and Special Services (Value adding products). ETL and Query Engine are metered per CPU-hour. Special Services (Value adding products), such as ML Workbench, are metered per hour of machine time, with a rate for each machine type.</p>
           <table>
             <thead><tr><th>Bucket</th><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td>Analytics engines</td><td class="num">0.3 Credits / CPU-hr</td></tr>
-              <tr><td>Data processing</td><td class="num">0.2 Credits / CPU-hr</td></tr>
+              <tr><td>ETL</td><td class="num">0.2 Credits / CPU-hr</td></tr>
+              <tr><td>Query Engine</td><td class="num">0.3 Credits / CPU-hr</td></tr>
             </tbody>
           </table>
-          <p style="margin-top:18px;">ML Workbench machine types</p>
+          <p style="margin-top:18px;">Special Services (Value adding products): ML Workbench machine types</p>
           <table>
             <thead><tr><th>Machine type</th><th>Credits</th></tr></thead>
             <tbody>
@@ -231,11 +231,11 @@
       <details>
         <summary><span class="arrow"></span>Storage</summary>
         <div class="details-body">
-          <p>Storage usage is metered per 10 TB, with a different Credit rate depending on the storage engine.</p>
+          <p>Storage usage is metered per 10 TB, with a different Credit rate depending on the storage type.</p>
           <table>
             <thead><tr><th>Storage type</th><th>Credits</th></tr></thead>
             <tbody>
-              <tr><td>Iceberg</td><td class="num">0.1 Credits / 10 TB</td></tr>
+              <tr><td>Blob</td><td class="num">0.1 Credits / 10 TB</td></tr>
               <tr><td>S3</td><td class="num">0.15 Credits / 10 TB</td></tr>
             </tbody>
           </table>

@@ -242,15 +242,15 @@
   var DATA = {
     storage: {
       label: 'Storage',
-      intro: 'Storage is metered in terabytes today and priced per 10 TB by storage engine. Below, the same 10 TB held for one month, traced through each stage.',
+      intro: 'Storage is metered in terabytes today and priced per 10 TB by storage type. Below, the same 10 TB held for one month, traced through each stage.',
       example: {
         meter: {value:'10 TB held a month', note:'Time basis (average, peak or snapshot) is not decided', gap:false},
         cost:  {value:'No internal rate', note:'FinOps has not provided a cost per TB-month', gap:true},
-        price: {value:'0.1 Credits', note:'Mockup rate for Iceberg; billing period not stated', gap:false}
+        price: {value:'0.1 Credits', note:'Mockup rate for Blob; billing period not stated', gap:false}
       },
       rows: {
         meter: [
-          {def:'What counts as billable storage', answer:'Data pool and OCPM tables (Iceberg) and object storage (S3). Undecided: workbench disk (25 GB per MLWB workbench), vector store, file uploads.', status:'Open', owner:'Platform', q:'Which storage types are billable, which are included in the platform fee, and which stay out of scope?'},
+          {def:'What counts as billable storage', answer:'Object storage (S3 and Blob). Undecided: workbench disk (25 GB per MLWB workbench), vector store, file uploads.', status:'Open', owner:'Platform', q:'Which storage types are billable, which are included in the platform fee, and which stay out of scope?'},
           {def:'Unit of measure', answer:'Terabytes. The conversion page shows a rate per 10 TB.', status:'Assumed', owner:'Pricing team', q:'Is 10 TB the billing block, or only a display unit with fractional billing underneath?'},
           {def:'Time basis', answer:'Not decided. Candidates: average over the period, peak, or end-of-period snapshot.', status:'Open', owner:'Pricing team', q:'Which basis does the contract use, and does it match what the customer can verify themselves?'},
           {def:'Sampling frequency', answer:'Daily snapshot per team.', status:'Assumed', owner:'Intake service team', q:'Is daily enough for billing, and how are late or corrected readings handled?'},
@@ -260,14 +260,14 @@
         ],
         cost: [
           {def:'Cost basis', answer:'Cloud provider list rates for object and block storage per realm.', status:'Assumed', owner:'FinOps', q:'Does pricing use list, negotiated or blended cost?'},
-          {def:'Internal cost per unit by storage type', answer:'Not provided for Iceberg or S3.', status:'Open', owner:'FinOps', q:'What is the internal cost per TB-month for each storage type?'},
+          {def:'Internal cost per unit by storage type', answer:'Not provided for S3 or Blob.', status:'Open', owner:'FinOps', q:'What is the internal cost per TB-month for each storage type?'},
           {def:'Cloud and region variance', answer:'Not decided. Realms run on AWS, Azure, GCP and OCI.', status:'Open', owner:'FinOps', q:'One blended cost for all realms, or a cost per cloud and region?'},
           {def:'Overhead on top of raw storage', answer:'Not decided. Replication, backups, metadata and egress.', status:'Open', owner:'FinOps', q:'Are these inside the unit cost or tracked as separate lines?'},
           {def:'Customer-owned external storage', answer:'Zero-copy from the customer\'s own platform stores nothing at Celonis, but queries still cost compute.', status:'Open', owner:'Pricing team', q:'Is zero-copy data free to store and priced only through compute?'},
           {def:'Cost refresh cadence', answer:'Not decided.', status:'Open', owner:'FinOps', q:'How often are unit costs updated, and who signs them off?'}
         ],
         price: [
-          {def:'Credit rate by storage type', answer:'Mockup rates: Iceberg 0.1 Credits per 10 TB, S3 0.15 Credits per 10 TB.', status:'Assumed', owner:'Pricing team', q:'Are these the agreed rates, and why does S3 cost more than Iceberg?'},
+          {def:'Credit rate by storage type', answer:'Mockup rates: Blob 0.1 Credits per 10 TB, S3 0.15 Credits per 10 TB.', status:'Assumed', owner:'Pricing team', q:'Are these the agreed rates, and why does S3 cost more than Blob?'},
           {def:'Rate period', answer:'The conversion page does not say whether the rate is per day, month or year.', status:'Open', owner:'Pricing team', q:'Is the rate per 10 TB per month?'},
           {def:'Rounding and minimums', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is usage rounded up to the next 10 TB, or billed fractionally?'},
           {def:'Included allowance', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Does any storage come with the platform fee before Credits are consumed?'},
@@ -279,18 +279,18 @@
     },
     compute: {
       label: 'Compute',
-      intro: 'Compute is metered at seven sources and shown to customers as three buckets: Analytics engines and Data processing in CPU-hours, and ML Workbench in machine-hours by machine type. Below, 100 CPU-hours of Data processing traced through each stage.',
+      intro: 'Compute is metered at seven sources and shown to customers as three buckets: ETL and Query Engine in CPU-hours, and Special Services (Value adding products) (ML Workbench) in machine-hours by machine type. Below, 100 CPU-hours of ETL traced through each stage.',
       example: {
-        meter: {value:'100 CPU-hours of Data processing', note:'How each source becomes CPU-hours is not decided', gap:false},
+        meter: {value:'100 CPU-hours of ETL', note:'How each source becomes CPU-hours is not decided', gap:false},
         cost:  {value:'No internal rate', note:'FinOps has not provided a cost per CPU-hour by source', gap:true},
         price: {value:'20 Credits', note:'100 × 0.2 Credits per CPU-hour, placeholder rate', gap:false}
       },
       rows: {
         meter: [
           {def:'Metering sources', answer:'Seven sources today: Vertica VM, All Purpose, Serverless, StarRocks, Saola Compute, Celostar Compute and MLWB.', status:'Assumed', owner:'Platform', q:'Is this list complete, and who adds a new source when one appears?'},
-          {def:'Customer buckets', answer:'Analytics engines (Vertica VM, StarRocks, Saola Compute, Celostar Compute), Data processing (All Purpose, Serverless) and ML Workbench (MLWB).', status:'Assumed', owner:'Product', q:'Do these three buckets work for the pricing team, and where does a source land when it replaces another?'},
+          {def:'Customer buckets', answer:'ETL (All Purpose, Serverless), Query Engine (Vertica VM, StarRocks, Saola Compute, Celostar Compute) and Special Services (Value adding products) (MLWB).', status:'Assumed', owner:'Product', q:'Do these three buckets work for the pricing team, and where does a source land when it replaces another?'},
           {def:'Native unit per source', answer:'Differs by source. Vertica VM is a provisioned machine, Serverless is usage-based, MLWB is machine time by machine type.', status:'Open', owner:'Platform', q:'What does each source report natively, and how is it converted to CPU-hours or machine-hours?'},
-          {def:'Unit of measure', answer:'CPU-hours for Analytics engines and Data processing. Machine-hours by machine type for ML Workbench.', status:'Assumed', owner:'Pricing team', q:'Is CPU-hours right for the first two buckets, or is memory also metered?'},
+          {def:'Unit of measure', answer:'CPU-hours for ETL and Query Engine. Machine-hours by machine type for Special Services (Value adding products) (ML Workbench).', status:'Assumed', owner:'Pricing team', q:'Is CPU-hours right for the first two buckets, or is memory also metered?'},
           {def:'Billable window', answer:'Not decided. V2 workbenches run on demand, but a schedule reserves compute whether or not it is busy. V1 runs always on. A provisioned VM runs all the time.', status:'Open', owner:'ML Infra', q:'Do we bill allocated time or used time, and how are reserved schedules and provisioned machines treated?'},
           {def:'ML Workbench machine types', answer:'Sizes from Small (1 CPU, 4 GB) to 2XLarge high memory (16 CPU, 128 GB), plus GPU machines. Plans (X16 up to X384) cap total capacity.', status:'Open', owner:'ML Infra', q:'Which machine types are billable, and are high-memory and GPU types in scope at launch?'},
           {def:'Attribution to a team', answer:'By the team that owns the job, workbench or schedule.', status:'Assumed', owner:'Platform', q:'How is shared infrastructure, such as a cluster used by several teams, split?'},
@@ -308,7 +308,7 @@
           {def:'Cloud and region variance', answer:'Not decided. Realms run on AWS, Azure, GCP and OCI.', status:'Open', owner:'FinOps', q:'One blended cost or a cost per cloud and region?'}
         ],
         price: [
-          {def:'Credit rate by bucket', answer:'Placeholder rates: Analytics engines 0.3 and Data processing 0.2 Credits per CPU-hour. The earlier ETL, QE and DI rates are retired.', status:'Assumed', owner:'Pricing team', q:'Are these the agreed rates, and what justifies the difference between the two buckets?'},
+          {def:'Credit rate by bucket', answer:'Placeholder rates: ETL 0.2 and Query Engine 0.3 Credits per CPU-hour. The earlier DI rate is retired.', status:'Assumed', owner:'Pricing team', q:'Are these the agreed rates, and what justifies the difference between the two buckets?'},
           {def:'ML Workbench price by machine type', answer:'Placeholder rates from 0.3 Credits per hour (Small) to 14 Credits per hour (XLarge GPU), rising with CPU, memory and GPU.', status:'Assumed', owner:'Pricing team', q:'Is ML Workbench priced per machine type, or as CPU-hours with uplifts for memory and GPU?'},
           {def:'Compute included in the plan', answer:'ML Workbench plans (X16 up to X384) come with fixed CPU and memory.', status:'Open', owner:'Pricing team', q:'Is plan compute included, with only usage above it paid in Credits?'},
           {def:'Rounding and minimums', answer:'Not decided.', status:'Open', owner:'Pricing team', q:'Is usage billed per second, per minute or per started hour?'},

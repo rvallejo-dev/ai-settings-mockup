@@ -600,7 +600,7 @@
           <tbody id="computeTableBody"></tbody>
           <tfoot><tr><td>Total</td><td class="num-col num" id="computeTotalCell"></td><td class="num-col"></td></tr></tfoot>
         </table>
-        <div class="foot-note">Sorted by consumption. Analytics engines and Data processing are metered per CPU-hour; ML Workbench is metered per machine-hour by machine type. See Credits conversion for the rates.</div>
+        <div class="foot-note">Sorted by consumption. ETL and Query Engine are metered per CPU-hour; Special Services (Value adding products), such as ML Workbench, are metered per machine-hour by machine type. See Credits conversion for the rates.</div>
       </div>
     </div>
 
@@ -660,13 +660,13 @@
     ['MCP Gateway', 700]
   ];
   var STORAGE_BREAKDOWN = [
-    ['Iceberg', 5600],
+    ['Blob', 5600],
     ['S3', 2900]
   ];
   var COMPUTE_BREAKDOWN = [
-    ['Analytics engines', 3300],
-    ['Data processing', 2400],
-    ['ML Workbench', 1800]
+    ['Query Engine', 3300],
+    ['ETL', 2400],
+    ['Special Services (Value adding products)', 1800]
   ];
 
   // ---------- AI Tokens drill-down data (Production 1 only) ----------
