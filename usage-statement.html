@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BMW consumption statement, October 2026 (mockup)</title>
+<title>Acme Corp consumption statement, October 2026 (mockup)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -326,7 +326,7 @@
     return '<div class="doc-head">'+
       '<div><h1>Consumption statement</h1><div class="sub">Usage of AI Tokens, Storage and Compute, shown in Credits.</div></div>'+
       '<dl class="meta">'+
-        '<dt>Customer</dt><dd>BMW</dd>'+
+        '<dt>Customer</dt><dd>Acme Corp</dd>'+
         '<dt>Scope</dt><dd>'+esc(scope)+'</dd>'+
         '<dt>Period</dt><dd>Oct 1 to Oct 31, 2026</dd>'+
         '<dt>Contract ends</dt><dd>Dec 31, 2026</dd>'+
@@ -567,7 +567,7 @@
     var blob = new Blob([csv()], {type:'text/csv;charset=utf-8'});
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = url; a.download = 'bmw-consumption-october-2026.csv';
+    a.href = url; a.download = 'acme-corp-consumption-october-2026.csv';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
   });
