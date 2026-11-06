@@ -536,13 +536,13 @@
     <div class="panel" id="panel-storage">
       <div class="panel-box">
         <div class="lane-head"><span class="lane-dot" style="background:#0E9594"></span><div class="block-heading" style="margin:0;">Storage</div></div>
-        <div class="block-desc">Production 1's storage consumption this period, by storage type.</div>
+        <div class="block-desc">Production 1's storage consumption this period.</div>
         <table>
-          <thead><tr><th>Storage type</th><th class="num-col">Consumed</th><th class="num-col">Share of source</th></tr></thead>
+          <thead><tr><th>Category</th><th class="num-col">Consumed</th><th class="num-col">Share of source</th></tr></thead>
           <tbody id="storageTableBody"></tbody>
           <tfoot><tr><td>Total</td><td class="num-col num" id="storageTotalCell"></td><td class="num-col"></td></tr></tfoot>
         </table>
-        <div class="foot-note">Sorted by consumption.</div>
+        <div class="foot-note">The Credit rate depends on the storage type (S3 or Blob). See <a href="credits-conversion.html">Credits conversion</a> for how Credits are calculated.</div>
       </div>
     </div>
 
@@ -592,8 +592,7 @@
     ['MCP Gateway', 700]
   ];
   var STORAGE_BREAKDOWN = [
-    ['Blob', 5600],
-    ['S3', 2900]
+    ['Total Storage', 8500]
   ];
   var COMPUTE_BREAKDOWN = [
     ['Query Engine', 3300],

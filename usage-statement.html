@@ -277,12 +277,18 @@
           rate:m[tt[0]], rateUnit:'Credits / 1M tokens', cents:toCents(q, m[tt[0]], 1)});
       });
     });
+    // Storage is shown to customers as one line, "Total Storage". The Credit rate still
+    // depends on the storage type (S3 or Blob), so the line carries the sum of the typed
+    // amounts and the rate column points to the rate card.
     var st = STORAGE_USAGE[t.name] || {};
+    var stQty = 0, stCents = 0;
     Object.keys(STORAGE_RATE).forEach(function(k){
       if (!st[k]) return;
-      RECORDS.push({team:t.name, source:'Storage', category:k, item:k, qty:st[k], qdp:1, unit:'TB (monthly average)',
-        rate:STORAGE_RATE[k], rateUnit:'Credits / 10 TB', cents:toCents(st[k], STORAGE_RATE[k], 10)});
+      stQty += st[k];
+      stCents += toCents(st[k], STORAGE_RATE[k], 10);
     });
+    if (stQty) RECORDS.push({team:t.name, source:'Storage', category:'Total Storage', item:'Total Storage', qty:stQty, qdp:1, unit:'TB (monthly average)',
+      rate:null, rateUnit:'Varies by storage type (S3, Blob)', cents:stCents});
     var cp = COMPUTE_USAGE[t.name] || {cpu:{}, mlwb:{}};
     CPU_BUCKET_ORDER.forEach(function(k){
       var q = cp.cpu[k];
@@ -307,7 +313,7 @@
   function fmtCr(c){ return (c/100).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2}); }
   function fmtInt(n){ return Math.round(n).toLocaleString('en-US'); }
   function fmtQty(q, dp){ return q.toLocaleString('en-US',{minimumFractionDigits:dp, maximumFractionDigits:dp}); }
-  function fmtRate(r){ return parseFloat(r.toFixed(3)).toString(); }
+  function fmtRate(r){ return r==null ? 'By storage type' : parseFloat(r.toFixed(3)).toString(); }
   function pct(part, whole){
     if (!whole || !part) return '0%';
     var p = part / whole * 100;
@@ -435,16 +441,12 @@
   function sectionStorage(recs){
     var sr = only(recs, 'Storage');
     var total = sum(sr, function(r){ return r.cents; });
-    var rows = Object.keys(STORAGE_RATE).map(function(k){
-      var rr = sr.filter(function(r){ return r.category===k; });
-      if (!rr.length) return '';
-      var q = sum(rr, function(r){ return r.qty; });
-      return '<tr><td>'+k+'</td><td class="r">'+fmtQty(q,1)+'</td><td class="r">'+fmtRate(STORAGE_RATE[k])+'</td><td class="r">'+fmtCr(sum(rr, function(r){ return r.cents; }))+'</td></tr>';
-    }).join('');
+    var q = sum(sr, function(r){ return r.qty; });
+    var rows = sr.length ? '<tr><td>Total Storage</td><td class="r">'+fmtQty(q,1)+'</td><td class="r muted">By storage type</td><td class="r">'+fmtCr(total)+'</td></tr>' : '';
     return '<section class="block"><h2>Storage</h2>'+
-      '<p class="lead">Terabytes stored by storage type, as the average over the month.</p>'+
-      '<div class="tw"><table><thead><tr><th>Storage type</th><th class="r">Average TB</th><th class="r">Rate (Credits / 10 TB)</th><th class="r">Credits</th></tr></thead><tbody>'+rows+
-      '<tr class="total"><td colspan="3">Total</td><td class="r">'+fmtCr(total)+'</td></tr></tbody></table></div></section>';
+      '<p class="lead">Terabytes stored, as the average over the month. The Credit rate depends on the storage type (S3 or Blob). See <a href="credits-conversion.html">how usage converts to Credits</a>.</p>'+
+      '<div class="tw"><table><thead><tr><th>Category</th><th class="r">Average TB</th><th class="r">Rate (Credits / 10 TB)</th><th class="r">Credits</th></tr></thead><tbody>'+rows+
+      '</tbody></table></div></section>';
   }
 
   function sectionCompute(recs){
@@ -477,6 +479,7 @@
     return '<section class="notes"><h2>About this statement</h2><ul>'+
       '<li>Credits on each line are quantity multiplied by the rate shown, rounded to two decimals. Totals are the sum of the rounded lines.</li>'+
       '<li>Each source has its own rate per unit. See <a href="credits-conversion.html">how usage converts to Credits</a>.</li>'+
+      '<li>Storage is shown as one line. Its Credit rate depends on the storage type (S3 or Blob), so the rate card lists both.</li>'+
       '<li>Contract to date includes all usage since the contract started, not only October.</li>'+
       '</ul></section>';
   }
@@ -550,7 +553,7 @@
     var head = ['Period','Team','Source','Category','Item','Quantity','Unit','Rate (Credits per unit)','Rate unit','Credits'];
     var lines = [head.map(q).join(',')];
     scoped().forEach(function(r){
-      lines.push(['October 2026', r.team, r.source, r.category, r.item, r.qty, r.unit, r.rate, r.rateUnit, (r.cents/100).toFixed(2)].map(q).join(','));
+      lines.push(['October 2026', r.team, r.source, r.category, r.item, r.qty, r.unit, (r.rate==null ? '' : r.rate), r.rateUnit, (r.cents/100).toFixed(2)].map(q).join(','));
     });
     return lines.join('\n');
   }
